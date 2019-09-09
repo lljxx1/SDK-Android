@@ -1,0 +1,98 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'maven-publish'
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+//    sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/drawable-xhdpi'] } }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    api 'com.googlecode.android-query:android-query:0.25.9'
+
+    //BasePopup主体库
+    implementation 'com.github.razerdp:BasePopup:2.2.1'
+
+//    implementation 'com.novoda:bintray-release:0.8.1'
+}
+
+/*task clearJar(type: Delete) {
+    delete 'build/test.jar' //jar包的名字，随便命名
+}
+
+task makeJar(type: org.gradle.api.tasks.bundling.Jar) {
+    baseName 'meishu_sdk'
+    from('build/intermediates/bundles/default/')    //jar文件来源
+    into('build/') //生成路径
+    //去掉不需要打包的目录和文件
+    exclude('test/', 'BuildConfig.class', 'R.class')
+    //去掉R开头的文件
+    exclude { it.name.startsWith('R') }
+}
+makeJar.dependsOn(clearJar, build)*/
+
+/*
+task deleteOldJar(type: Delete) {
+    delete 'build/libs/meishu_sdk.jar'
+}
+//task to export contents as jar
+task exportJar(type: Copy) {
+    from('build/intermediates/intermediate-jars/debug/')
+    into('build/libs')
+    include('classes.jar')
+    rename('classes.jar', 'meishu_sdk.jar')
+}
+exportJar.dependsOn(deleteOldJar, build)
+*/
+
+
+//publishing {
+//    publications {
+//        maven(MavenPublication) {
+//            groupId 'com.meishu.sdk'
+//            //You can either define these here or get them from project conf elsewhere
+//            artifactId 'IMLib'
+//            version '0.0.2-SNAPSHOT'
+//            artifact "$buildDir/outputs/aar/sdk-release.aar" //aar artifact you want to publish
+//// generate pom nodes for dependencies
+//            pom.withXml {
+//                def dependenciesNode = asNode().appendNode('dependencies')
+//                configurations.implementation.allDependencies.each { dependency ->
+//                    if (!"unspecified".equals(dependenciesNode.name)) {
+//                        def dependencyNode = dependenciesNode.appendNode('dependency')
+//                        dependencyNode.appendNode('groupId', dependency.group)
+//                        dependencyNode.appendNode('artifactId', dependency.name)
+//                        dependencyNode.appendNode('version', dependency.version)
+//                    }
+//                }
+//            }
+//        }
+//    } //publish to filesystem repo
+//    repositories { maven { url "$buildDir/repo" } }
+//}
