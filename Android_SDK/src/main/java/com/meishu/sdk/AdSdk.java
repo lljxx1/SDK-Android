@@ -24,8 +24,8 @@ public class AdSdk {
 
         AdSdk.testModeEnabled = testModeEnabled;
         if (testModeEnabled) {//测试环境
-//            MeishuConstants.ad_request_url = "http://123.59.48.113/sdk/req_ad";
-            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad";
+            MeishuConstants.ad_request_url = "http://123.59.48.113/sdk/req_ad";
+//            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad";
 //            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/deep_link";
 //            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad_no_ad/1003908";
         } else {
