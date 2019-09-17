@@ -32,4 +32,8 @@ public class MeishuRewardVideoAdWrapper implements RewardVideoAdDelegate {
     public Activity getActivity() {
         return activity;
     }
+
+    public NativeAdSlot getAdSlot() {
+        return adSlot;
+    }
 }

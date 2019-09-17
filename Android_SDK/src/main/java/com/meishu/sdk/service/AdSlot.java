@@ -11,4 +11,8 @@ public interface AdSlot {
     String[] getdUrl();
 
     String getAppName();
+
+    String[] getMonitorUrl();
+
+    String[] getClickUrl();
 }

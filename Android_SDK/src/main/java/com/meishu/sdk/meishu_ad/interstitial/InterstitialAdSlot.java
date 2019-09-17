@@ -14,6 +14,8 @@ public class InterstitialAdSlot implements AdSlot {
     private String[] dUrl;
     private String appName;
     private String deep_link;
+    private String[] monitorUrl;
+    private String[] clickUrl;
     private String[] dp_start;
     private String[] dp_fail;
 
@@ -66,7 +68,15 @@ public class InterstitialAdSlot implements AdSlot {
             InterstitialAdSlot.this.deep_link = deep_link;
             return this;
         }
+        public InterstitialAdSlot.Builder setMonitorUrl(String[] monitorUrl) {
+            InterstitialAdSlot.this.monitorUrl = monitorUrl;
+            return this;
+        }
 
+        public InterstitialAdSlot.Builder setClickUrl(String[] clickUrl) {
+            InterstitialAdSlot.this.clickUrl = clickUrl;
+            return this;
+        }
         public Builder setDp_start(String[] dp_start) {
             InterstitialAdSlot.this.dp_start = dp_start;
             return this;
@@ -112,6 +122,16 @@ public class InterstitialAdSlot implements AdSlot {
 
     public String getAppName() {
         return appName;
+    }
+
+    @Override
+    public String[] getMonitorUrl() {
+        return this.monitorUrl;
+    }
+
+    @Override
+    public String[] getClickUrl() {
+        return this.clickUrl;
     }
 
     @Override

@@ -19,6 +19,14 @@ public class ClickHandler {
 
     public static void handleClick(NativeAd nativeAd) {
         AdSlot adSlot = nativeAd.getAdSlot();
+        String[] clickUrls = adSlot.getClickUrl();
+        if (clickUrls != null) {
+            for (String clickUrl : clickUrls) {
+                if (!TextUtils.isEmpty(clickUrl)) {
+                    HttpUtil.asyncGetWithWebViewUA(nativeAd.getAdView().getContext(), clickUrl, new DefaultHttpGetWithNoHandlerCallback());
+                }
+            }
+        }
         Context context = nativeAd.getAdView().getContext();
         if (!TextUtils.isEmpty(adSlot.getDeep_link())) {
             Intent intent = new Intent();

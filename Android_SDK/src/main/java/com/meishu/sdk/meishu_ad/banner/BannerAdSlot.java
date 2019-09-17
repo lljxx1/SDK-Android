@@ -12,6 +12,8 @@ public class BannerAdSlot implements AdSlot {
     private String[] dUrl;
     private String appName;
     private String deep_link;
+    private String[] monitorUrl;
+    private String[] clickUrl;
     private String[] dp_start;
     private String[] dp_fail;
 
@@ -51,6 +53,16 @@ public class BannerAdSlot implements AdSlot {
 
         public Builder setDeepLink(String deepLink) {
             BannerAdSlot.this.deep_link = deepLink;
+            return this;
+        }
+
+        public Builder setMonitorUrl(String[] monitorUrl) {
+            BannerAdSlot.this.monitorUrl = monitorUrl;
+            return this;
+        }
+
+        public Builder setClickUrl(String[] clickUrl) {
+            BannerAdSlot.this.clickUrl = clickUrl;
             return this;
         }
 
@@ -104,5 +116,15 @@ public class BannerAdSlot implements AdSlot {
     @Override
     public String[] getDp_fail() {
         return dp_fail;
+    }
+
+    @Override
+    public String[] getMonitorUrl() {
+        return monitorUrl;
+    }
+
+    @Override
+    public String[] getClickUrl() {
+        return clickUrl;
     }
 }

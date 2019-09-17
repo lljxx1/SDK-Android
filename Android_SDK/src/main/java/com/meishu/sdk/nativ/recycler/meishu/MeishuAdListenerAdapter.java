@@ -1,17 +1,23 @@
 package com.meishu.sdk.nativ.recycler.meishu;
 
+import android.text.TextUtils;
+
 import com.meishu.sdk.meishu_ad.nativ.AdListener;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdData;
 import com.meishu.sdk.nativ.recycler.AdData;
 import com.meishu.sdk.nativ.recycler.NativeAdListener;
+import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
+import com.meishu.sdk.utils.HttpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MeishuAdListenerAdapter implements AdListener {
     private NativeAdListener apiAdListener;
+    private MeishuAdNativeWrapper adWrapper;
 
-    public MeishuAdListenerAdapter(NativeAdListener apiAdListener) {
+    public MeishuAdListenerAdapter(MeishuAdNativeWrapper adWrapper, NativeAdListener apiAdListener) {
+        this.adWrapper = adWrapper;
         this.apiAdListener = apiAdListener;
     }
 
@@ -28,7 +34,15 @@ public class MeishuAdListenerAdapter implements AdListener {
 
     @Override
     public void onADExposure() {
-        if(this.apiAdListener!=null){
+        String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
+        if (monitorUrls != null) {
+            for (String monitorUrl : monitorUrls) {
+                if (!TextUtils.isEmpty(monitorUrl)) {
+                    HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+                }
+            }
+        }
+        if (this.apiAdListener != null) {
             this.apiAdListener.onAdExposure();
         }
     }

@@ -12,6 +12,7 @@ public class MeishuAdNativeWrapper implements SplashAdDelegate {
     private AdNative adNative;
     private SplashAdListener splashAdListener;
     private SplashAdSlot adSlot;
+    private Activity activity;
 
     public MeishuAdNativeWrapper(Activity activity, SplashAdSlot adSlot, SplashAdListener splashAdListener) {
         adNative = new AdNative(activity);
@@ -21,6 +22,14 @@ public class MeishuAdNativeWrapper implements SplashAdDelegate {
 
     @Override
     public void loadAd() {
-        adNative.loadSplashAd(adSlot, new SplashAdListenerAdapter(this.splashAdListener));
+        adNative.loadSplashAd(adSlot, new SplashAdListenerAdapter(this,this.splashAdListener));
+    }
+
+    public SplashAdSlot getAdSlot() {
+        return adSlot;
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 }

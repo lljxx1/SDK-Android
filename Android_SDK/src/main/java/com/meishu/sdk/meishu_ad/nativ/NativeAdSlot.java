@@ -32,6 +32,8 @@ public class NativeAdSlot implements AdSlot {
     private String appName;
 
     private String deep_link;
+    private String[] monitorUrl;
+    private String[] clickUrl;
     private String[] dp_start;
     private String[] dp_fail;
     private String video_cover;
@@ -115,7 +117,15 @@ public class NativeAdSlot implements AdSlot {
             NativeAdSlot.this.deep_link = deepLink;
             return this;
         }
+        public NativeAdSlot.Builder setMonitorUrl(String[] monitorUrl) {
+            NativeAdSlot.this.monitorUrl = monitorUrl;
+            return this;
+        }
 
+        public NativeAdSlot.Builder setClickUrl(String[] clickUrl) {
+            NativeAdSlot.this.clickUrl = clickUrl;
+            return this;
+        }
         public Builder setDp_start(String[] dp_start) {
             NativeAdSlot.this.dp_start = dp_start;
             return this;
@@ -202,6 +212,16 @@ public class NativeAdSlot implements AdSlot {
 
     public String getAppName() {
         return appName;
+    }
+
+    @Override
+    public String[] getMonitorUrl() {
+        return this.monitorUrl;
+    }
+
+    @Override
+    public String[] getClickUrl() {
+        return this.clickUrl;
     }
 
     @Override

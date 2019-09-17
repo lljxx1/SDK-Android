@@ -1,12 +1,15 @@
 package com.meishu.sdk.reward.meishu;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.meishu.sdk.meishu_ad.nativ.AdListener;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdData;
 import com.meishu.sdk.reward.RewardVideoAd;
 import com.meishu.sdk.reward.RewardVideoAdListener;
+import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
+import com.meishu.sdk.utils.HttpUtil;
 
 import java.util.List;
 
@@ -30,6 +33,14 @@ public class AdListenerAdapter implements AdListener {
 
     @Override
     public void onADExposure() {
+        String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
+        if (monitorUrls != null) {
+            for (String monitorUrl : monitorUrls) {
+                if (!TextUtils.isEmpty(monitorUrl)) {
+                    HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+                }
+            }
+        }
         Log.d(TAG, "onADExposure: ");
     }
 

@@ -15,6 +15,8 @@ public class SplashAdSlot implements AdSlot {
     private String[] dUrl;
     private String appName;
     private String deep_link;
+    private String[] monitorUrl;
+    private String[] clickUrl;
     private String[] dp_start;
     private String[] dp_fail;
 
@@ -59,6 +61,15 @@ public class SplashAdSlot implements AdSlot {
 
         public Builder setDeepLink(String deepLink) {
             SplashAdSlot.this.deep_link = deepLink;
+            return this;
+        }
+        public SplashAdSlot.Builder setMonitorUrl(String[] monitorUrl) {
+            SplashAdSlot.this.monitorUrl = monitorUrl;
+            return this;
+        }
+
+        public SplashAdSlot.Builder setClickUrl(String[] clickUrl) {
+            SplashAdSlot.this.clickUrl = clickUrl;
             return this;
         }
 
@@ -118,5 +129,15 @@ public class SplashAdSlot implements AdSlot {
 
     public String getAppName() {
         return appName;
+    }
+
+    @Override
+    public String[] getMonitorUrl() {
+        return this.monitorUrl;
+    }
+
+    @Override
+    public String[] getClickUrl() {
+        return this.clickUrl;
     }
 }

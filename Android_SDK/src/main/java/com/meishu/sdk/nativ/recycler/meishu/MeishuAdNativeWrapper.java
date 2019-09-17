@@ -11,8 +11,10 @@ public class MeishuAdNativeWrapper implements NativeAdDelegate {
     private AdNative adNative;
     private NativeAdSlot adSlot;
     private NativeAdListener apiAdListener;
+    private Activity activity;
 
     public MeishuAdNativeWrapper(Activity activity, NativeAdSlot adSlot, NativeAdListener apiAdListener) {
+        this.activity=activity;
         this.adNative = new AdNative(activity);
         this.adSlot = adSlot;
         this.apiAdListener = apiAdListener;
@@ -20,6 +22,14 @@ public class MeishuAdNativeWrapper implements NativeAdDelegate {
 
     @Override
     public void loadAd() {
-        adNative.loadNativeAd(this.adSlot, new MeishuAdListenerAdapter(apiAdListener));
+        adNative.loadNativeAd(this.adSlot, new MeishuAdListenerAdapter(this,this.apiAdListener));
+    }
+
+    public NativeAdSlot getAdSlot() {
+        return adSlot;
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 }

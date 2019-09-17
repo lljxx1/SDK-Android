@@ -73,6 +73,8 @@ public class InterstitialAdLoader implements InterstitialAdDelegate {
                                 .setDUrl(meishuAdInfo.getdUrl())
                                 .setAppName(meishuAdInfo.getApp_name())
                                 .setDeepLink(meishuAdInfo.getDeep_link())
+                                .setMonitorUrl(meishuAdInfo.getMonitorUrl())
+                                .setClickUrl(meishuAdInfo.getClickUrl())
                                 .setDp_start(meishuAdInfo.getDp_start())
                                 .setDp_fail(meishuAdInfo.getDp_fail())
                                 .build();
