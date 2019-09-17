@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.meishu.sdk.meishu_ad.MediaView;
+
 import java.util.List;
 
 public class NativeAdDataImpl implements NativeAdData {
@@ -49,13 +51,13 @@ public class NativeAdDataImpl implements NativeAdData {
 
     @Override
     public void bindMediaView(ViewGroup mediaView, NativeAdMediaListener nativeAdMediaListener) {
-        MediaView nativeMediaView = this.getMediaView();
-        if (nativeMediaView != null) {
-            nativeMediaView.setNativeAdMediaListener(nativeAdMediaListener);
-            ViewGroup mediaViewContainer = (ViewGroup) nativeMediaView.getParent();
+        MediaView nativeNormalMediaView = this.getMediaView();
+        if (nativeNormalMediaView != null) {
+            nativeNormalMediaView.setNativeAdMediaListener(nativeAdMediaListener);
+            ViewGroup mediaViewContainer = (ViewGroup) nativeNormalMediaView.getParent();
 
             if (mediaViewContainer == null) {
-                mediaView.addView(nativeMediaView);
+                mediaView.addView(this.getAdView());
             }
         }
 
@@ -88,7 +90,7 @@ public class NativeAdDataImpl implements NativeAdData {
 
     @Override
     public View getAdView() {
-        return getMediaView();
+        return getMediaView().getVideoView();
     }
 
     @Override

@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".nativead.NativeRecyclerListSelectActivity"></activity>
+        <activity android:name=".RewardVideoActivity"></activity>
+        <activity android:name=".nativead.NativeRecyclerListSelectActivity" />
         <activity android:name=".nativead.NativeRecyclerListV1Activity" />
         <activity android:name=".nativead.NativeRecyclerListV2Activity" />
         <activity android:name=".nativead.NativeRecyclerListV3Activity" />

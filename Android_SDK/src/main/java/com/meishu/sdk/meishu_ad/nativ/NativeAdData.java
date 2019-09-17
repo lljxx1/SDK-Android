@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.meishu.sdk.meishu_ad.MediaView;
 import com.meishu.sdk.meishu_ad.NativeAd;
 
 import java.util.List;

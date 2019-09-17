@@ -14,18 +14,20 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.meishu.sdk.R;
-import com.meishu.sdk.meishu_ad.banner.BannerAdSlot;
+import com.meishu.sdk.activity.RewardVideoPlayerActivity;
 import com.meishu.sdk.meishu_ad.banner.BannerAdImpl;
-import com.meishu.sdk.meishu_ad.interstitial.InterstitialAdSlot;
+import com.meishu.sdk.meishu_ad.banner.BannerAdSlot;
 import com.meishu.sdk.meishu_ad.interstitial.InterstitialAdImpl;
+import com.meishu.sdk.meishu_ad.interstitial.InterstitialAdSlot;
 import com.meishu.sdk.meishu_ad.interstitial.Popup;
-import com.meishu.sdk.meishu_ad.nativ.MediaView;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdData;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdDataImpl;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdSlot;
-import com.meishu.sdk.meishu_ad.splash.SplashAdSlot;
+import com.meishu.sdk.meishu_ad.nativ.NormalMediaView;
+import com.meishu.sdk.meishu_ad.reward.FullScreenMediaView;
 import com.meishu.sdk.meishu_ad.splash.SkipView;
 import com.meishu.sdk.meishu_ad.splash.SplashAdImpl;
+import com.meishu.sdk.meishu_ad.splash.SplashAdSlot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,8 +204,51 @@ public class AdNative {
 
     public void loadNativeAd(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
 
-        final View rootView = activity.findViewById(android.R.id.content);
-        final AQuery aQuery = new AQuery(rootView);
+        loadVideoView(adSlot, adListener, new NormalMediaView(this.activity));
+
+    }
+
+    public void loadRewardVideoAd(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
+        int fetchCount = 1;
+        if (adSlot.getFetchCount() != 0) {
+            fetchCount = adSlot.getFetchCount();
+        }
+        MediaView rewardVideoView = new FullScreenMediaView(this.activity);
+        final List<NativeAdData> adDatas = new ArrayList<>();
+        for (int i = 0; i < fetchCount; i++) {
+            rewardVideoView.setOnVideoLoadedListener(new MediaView.OnVideoLoadedListener() {
+                @Override
+                public void onLoaded(MediaView loadedMediaView) {
+                    adDatas.add(new NativeAdDataImpl(adSlot).new Builder()
+                            .setTitle(adSlot.getTitle())
+                            .setDesc(adSlot.getDesc())
+                            .setAdPatternType(adSlot.getAdPatternType())
+                            .setIconUrl(adSlot.getIconUrl())
+                            .setImgUrls(adSlot.getImageUrls())
+                            .setMediaView(loadedMediaView)
+                            .build()
+                    );
+                    RewardVideoPlayerActivity.setRewardMediaView(loadedMediaView);
+                    if (adListener != null) {
+                        adListener.onAdLoaded(adDatas);
+                    }
+                    /*if (adSlot.getAdPatternType() == 2) {//创意类型为视频时，播放视频
+                        loadedMediaView.start();
+                    }
+                    if (adListener != null) {
+                        adListener.onADExposure();
+                    }*/
+                }
+            });
+            if (adSlot.getAdPatternType() == 2) {//创意类型为视频时，加载视频
+//                mediaView.setVideoPath("android.resource://" + activity.getPackageName() + "/" + R.raw.video_sample_2);
+                rewardVideoView.setVideoPath(adSlot.getVideoUrl());
+            }
+            rewardVideoView.performVideoActions();
+        }
+    }
+
+    private void loadVideoView(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener, MediaView mediaView) {
         int fetchCount = 1;
         if (adSlot.getFetchCount() != 0) {
             fetchCount = adSlot.getFetchCount();
@@ -211,24 +256,23 @@ public class AdNative {
 
         final List<NativeAdData> adDatas = new ArrayList<>();
         for (int i = 0; i < fetchCount; i++) {
-            MediaView mediaView = new MediaView(this.activity);
-            mediaView.setVideoListener(new MediaView.VideoListener() {
+            mediaView.setOnVideoLoadedListener(new MediaView.OnVideoLoadedListener() {
                 @Override
-                public void onLoaded(MediaView mediaView) {
+                public void onLoaded(MediaView loadedMediaView) {
                     adDatas.add(new NativeAdDataImpl(adSlot).new Builder()
                             .setTitle(adSlot.getTitle())
                             .setDesc(adSlot.getDesc())
                             .setAdPatternType(adSlot.getAdPatternType())
                             .setIconUrl(adSlot.getIconUrl())
                             .setImgUrls(adSlot.getImageUrls())
-                            .setMediaView(mediaView)
+                            .setMediaView(loadedMediaView)
                             .build()
                     );
                     if (adListener != null) {
                         adListener.onAdLoaded(adDatas);
                     }
                     if (adSlot.getAdPatternType() == 2) {//创意类型为视频时，播放视频
-                        mediaView.start();
+                        loadedMediaView.start();
                     }
                     if (adListener != null) {
                         adListener.onADExposure();
@@ -242,7 +286,6 @@ public class AdNative {
             }
             mediaView.performVideoActions();
         }
-
     }
 
     private Popup createPopupWindow(Activity activity, int width, int height) {

@@ -13,10 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-/**
- * Created by Leon on 2019/1/6. Copyright © Leon. All rights reserved.
- * Functions:SkipView 的view
- */
 public class SkipView extends View {
 
     //准备三支画笔-内部的字体画笔

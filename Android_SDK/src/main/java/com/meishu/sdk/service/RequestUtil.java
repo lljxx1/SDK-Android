@@ -58,7 +58,7 @@ public class RequestUtil {
         params.put("device_ppi", "" + getPPI(context));
         params.put("device_mac", AddressUtils.getMac(context));
         params.put("device_type_os", Build.VERSION.RELEASE);
-        params.put("device_type", isPad(context) ? "pad" : "phone");
+        params.put("device_type", isPad(context) ? "1" : "0");
         params.put("device_brand", Build.BRAND);
         params.put("device_model", Build.MODEL);
         params.put("device_width", context.getResources().getDisplayMetrics().widthPixels + "");
