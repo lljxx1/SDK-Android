@@ -14,6 +14,9 @@ public class BannerAdSlot implements AdSlot {
     private String deep_link;
     private String[] monitorUrl;
     private String[] clickUrl;
+    private String[] dn_start;
+    private String[] dn_succ;
+    private String[] dn_inst_start;
     private String[] dp_start;
     private String[] dp_fail;
 
@@ -66,6 +69,21 @@ public class BannerAdSlot implements AdSlot {
             return this;
         }
 
+        public Builder setDn_start(String[] dn_start) {
+            BannerAdSlot.this.dn_start = dn_start;
+            return this;
+        }
+
+        public Builder setDn_succ(String[] dn_succ) {
+            BannerAdSlot.this.dn_succ = dn_succ;
+            return this;
+        }
+
+        public Builder setDn_inst_start(String[] dn_inst_start) {
+            BannerAdSlot.this.dn_inst_start = dn_inst_start;
+            return this;
+        }
+
         public Builder setDp_start(String[] dp_start) {
             BannerAdSlot.this.dp_start = dp_start;
             return this;
@@ -109,15 +127,6 @@ public class BannerAdSlot implements AdSlot {
         return deep_link;
     }
 
-    public String[] getDp_start() {
-        return dp_start;
-    }
-
-    @Override
-    public String[] getDp_fail() {
-        return dp_fail;
-    }
-
     @Override
     public String[] getMonitorUrl() {
         return monitorUrl;
@@ -127,4 +136,30 @@ public class BannerAdSlot implements AdSlot {
     public String[] getClickUrl() {
         return clickUrl;
     }
+
+    @Override
+    public String[] getDn_start() {
+        return dn_start;
+    }
+
+    @Override
+    public String[] getDn_succ() {
+        return dn_succ;
+    }
+
+    @Override
+    public String[] getDn_inst_start() {
+        return dn_inst_start;
+    }
+
+    public String[] getDp_start() {
+        return dp_start;
+    }
+
+    @Override
+    public String[] getDp_fail() {
+        return dp_fail;
+    }
+
+
 }

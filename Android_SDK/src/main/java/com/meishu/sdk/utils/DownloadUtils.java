@@ -66,6 +66,9 @@ public class DownloadUtils {
         //注册广播接收者，监听下载状态
         mContext.registerReceiver(receiver,
                 new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        if (downloadListener != null) {
+            downloadListener.onDownloadStart();
+        }
     }
 
     //广播监听下载的各个状态
@@ -106,6 +109,9 @@ public class DownloadUtils {
                     break;
                 //下载失败
                 case DownloadManager.STATUS_FAILED:
+                    if (downloadListener != null) {
+                        downloadListener.onDownloadFailed();
+                    }
                     Toast.makeText(mContext, "下载失败", Toast.LENGTH_SHORT).show();
                     cursor.close();
                     mContext.unregisterReceiver(receiver);

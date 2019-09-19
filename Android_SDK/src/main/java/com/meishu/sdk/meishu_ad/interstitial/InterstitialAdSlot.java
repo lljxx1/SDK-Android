@@ -16,6 +16,9 @@ public class InterstitialAdSlot implements AdSlot {
     private String deep_link;
     private String[] monitorUrl;
     private String[] clickUrl;
+    private String[] dn_start;
+    private String[] dn_succ;
+    private String[] dn_inst_start;
     private String[] dp_start;
     private String[] dp_fail;
 
@@ -68,6 +71,7 @@ public class InterstitialAdSlot implements AdSlot {
             InterstitialAdSlot.this.deep_link = deep_link;
             return this;
         }
+
         public InterstitialAdSlot.Builder setMonitorUrl(String[] monitorUrl) {
             InterstitialAdSlot.this.monitorUrl = monitorUrl;
             return this;
@@ -77,6 +81,22 @@ public class InterstitialAdSlot implements AdSlot {
             InterstitialAdSlot.this.clickUrl = clickUrl;
             return this;
         }
+
+        public InterstitialAdSlot.Builder setDn_start(String[] dn_start) {
+            InterstitialAdSlot.this.dn_start = dn_start;
+            return this;
+        }
+
+        public InterstitialAdSlot.Builder setDn_succ(String[] dn_succ) {
+            InterstitialAdSlot.this.dn_succ = dn_succ;
+            return this;
+        }
+
+        public InterstitialAdSlot.Builder setDn_inst_start(String[] dn_inst_start) {
+            InterstitialAdSlot.this.dn_inst_start = dn_inst_start;
+            return this;
+        }
+
         public Builder setDp_start(String[] dp_start) {
             InterstitialAdSlot.this.dp_start = dp_start;
             return this;
@@ -137,6 +157,21 @@ public class InterstitialAdSlot implements AdSlot {
     @Override
     public String getDeep_link() {
         return deep_link;
+    }
+
+    @Override
+    public String[] getDn_start() {
+        return dn_start;
+    }
+
+    @Override
+    public String[] getDn_succ() {
+        return dn_succ;
+    }
+
+    @Override
+    public String[] getDn_inst_start() {
+        return dn_inst_start;
     }
 
     @Override

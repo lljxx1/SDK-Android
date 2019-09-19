@@ -16,13 +16,9 @@ public interface NativeDownloadListener {
      */
     void onInstallStart();
 
-    /**
-     * 成功安装下载的应用
-     */
-//    void onInstalled();
 
     /**
-     * 成功打开下载的应用
+     * 下载应用失败
      */
-//    void onOpened();
+    void onDownloadFailed();
 }

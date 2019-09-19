@@ -81,7 +81,7 @@ public class ClickHandler {
                             nativeAd.getAdView().getContext(),
                             adSlot.getdUrl()[0],
                             adSlot.getAppName() + ".apk");
-            downloadUtils.setDownloadListener(new NativeDownloadListenerImpl());
+            downloadUtils.setDownloadListener(new NativeDownloadListenerImpl(nativeAd));
             downloadUtils.downloadAPK();
         }
     }

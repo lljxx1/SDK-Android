@@ -25,7 +25,7 @@ public class NativeAdSlot implements AdSlot {
      */
     private int interactionType;
     private String iconUrl;
-    private String [] imageUrls;
+    private String[] imageUrls;
     private String videoUrl;
 
     private String[] dUrl;
@@ -34,6 +34,9 @@ public class NativeAdSlot implements AdSlot {
     private String deep_link;
     private String[] monitorUrl;
     private String[] clickUrl;
+    private String[] dn_start;
+    private String[] dn_succ;
+    private String[] dn_inst_start;
     private String[] dp_start;
     private String[] dp_fail;
     private String video_cover;
@@ -117,6 +120,7 @@ public class NativeAdSlot implements AdSlot {
             NativeAdSlot.this.deep_link = deepLink;
             return this;
         }
+
         public NativeAdSlot.Builder setMonitorUrl(String[] monitorUrl) {
             NativeAdSlot.this.monitorUrl = monitorUrl;
             return this;
@@ -126,6 +130,22 @@ public class NativeAdSlot implements AdSlot {
             NativeAdSlot.this.clickUrl = clickUrl;
             return this;
         }
+
+        public NativeAdSlot.Builder setDn_start(String[] dn_start) {
+            NativeAdSlot.this.dn_start = dn_start;
+            return this;
+        }
+
+        public NativeAdSlot.Builder setDn_succ(String[] dn_succ) {
+            NativeAdSlot.this.dn_succ = dn_succ;
+            return this;
+        }
+
+        public NativeAdSlot.Builder setDn_inst_start(String[] dn_inst_start) {
+            NativeAdSlot.this.dn_inst_start = dn_inst_start;
+            return this;
+        }
+
         public Builder setDp_start(String[] dp_start) {
             NativeAdSlot.this.dp_start = dp_start;
             return this;
@@ -227,6 +247,21 @@ public class NativeAdSlot implements AdSlot {
     @Override
     public String getDeep_link() {
         return deep_link;
+    }
+
+    @Override
+    public String[] getDn_start() {
+        return dn_start;
+    }
+
+    @Override
+    public String[] getDn_succ() {
+        return dn_succ;
+    }
+
+    @Override
+    public String[] getDn_inst_start() {
+        return dn_inst_start;
     }
 
     @Override
