@@ -1,65 +1,45 @@
 package com.meishu.sdk.splash.gdt;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.meishu.sdk.DelegateChain;
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
 import com.meishu.sdk.splash.AdListenerWrapper;
-import com.meishu.sdk.splash.SplashAdDelegate;
-import com.meishu.sdk.splash.SplashAdListener;
+import com.meishu.sdk.splash.SplashAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 import com.qq.e.ads.splash.SplashAD;
 
-public class GDTSplashAdWrapper implements SplashAdDelegate, DelegateChain {
+public class GDTSplashAdWrapper extends BaseSdkAdWrapper {
     private static final String TAG = "GDTSplashAdWrapper";
     private SplashAD splashAD;
-    private ViewGroup adContainer;
-    private SdkAdInfo sdkAdInfo;
-    private DelegateChain next;
-    private Activity activity;
+    private SplashAdLoader adLoader;
 
-    public GDTSplashAdWrapper(Activity context, ViewGroup adContainer, SdkAdInfo sdkAdInfo, SplashAdListener adListener, int fetchDelay) {
-        this.adContainer = adContainer;
-        this.sdkAdInfo = sdkAdInfo;
-        this.activity = context;
-        splashAD = new SplashAD(context, sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTSplashADListenerImpl(this, new AdListenerWrapper(this, adListener)), fetchDelay);
+    public GDTSplashAdWrapper(@NonNull SplashAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
+        super(adLoader.getActivity(), sdkAdInfo);
+        this.adLoader = adLoader;
+        splashAD = new SplashAD(adLoader.getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTSplashADListenerImpl(this, new AdListenerWrapper(this, adLoader.getApiAdListener())), adLoader.getFetchDelay());
     }
 
     @Override
     public void loadAd() {
-        HttpUtil.asyncGetWithWebViewUA(this.activity, this.sdkAdInfo.getReq(), new DefaultHttpGetWithNoHandlerCallback());
-        if (this.adContainer != null) {
-            splashAD.fetchAndShowIn(adContainer);
+        HttpUtil.asyncGetWithWebViewUA(this.adLoader.getActivity(), this.getSdkAdInfo().getReq(), new DefaultHttpGetWithNoHandlerCallback());
+        if (this.adLoader.getAdContainer() != null) {
+            splashAD.fetchAndShowIn(this.adLoader.getAdContainer());
         } else {
             Log.e(TAG, "loadAd: ", new Exception("广告容器不能为空"));
         }
     }
 
+    @Override
+    public AdLoader getAdLoader() {
+        return adLoader;
+    }
+
     public View getView() {
-        return this.adContainer;
-    }
-
-    @Override
-    public void setNext(DelegateChain next) {
-        this.next = next;
-    }
-
-    @Override
-    public DelegateChain getNext() {
-        return this.next;
-    }
-
-    @Override
-    public SdkAdInfo getSdkAdInfo() {
-        return this.sdkAdInfo;
-    }
-
-    @Override
-    public Activity getActivity() {
-        return this.activity;
+        return this.adLoader.getAdContainer();
     }
 }

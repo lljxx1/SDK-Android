@@ -1,36 +1,34 @@
 package com.meishu.sdk.reward.meishu;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 
-import com.meishu.sdk.DelegateChain;
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseMeishuWrapper;
 import com.meishu.sdk.meishu_ad.AdNative;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdSlot;
-import com.meishu.sdk.reward.RewardVideoAdDelegate;
-import com.meishu.sdk.reward.RewardVideoAdListener;
+import com.meishu.sdk.reward.RewardVideoLoader;
 
-public class MeishuRewardVideoAdWrapper implements RewardVideoAdDelegate {
+public class MeishuRewardVideoAdWrapper extends BaseMeishuWrapper {
 
-    private Activity activity;
     private NativeAdSlot adSlot;
-    private RewardVideoAdListener adListener;
     private AdNative adNative;
-    private DelegateChain next;
+    private RewardVideoLoader adLoader;
 
-    public MeishuRewardVideoAdWrapper(@NonNull Activity activity, @NonNull NativeAdSlot adSlot,@NonNull RewardVideoAdListener adListener) {
-        this.activity = activity;
+    public MeishuRewardVideoAdWrapper(@NonNull RewardVideoLoader adLoader, @NonNull NativeAdSlot adSlot) {
+        super(adLoader.getActivity());
+        this.adLoader=adLoader;
         this.adSlot = adSlot;
-        this.adListener = adListener;
-        this.adNative = new AdNative(activity);
+        this.adNative = new AdNative(adLoader.getActivity());
     }
 
     @Override
     public void loadAd() {
-        this.adNative.loadRewardVideoAd(this.adSlot, new AdListenerAdapter(this,this.adListener));
+        this.adNative.loadRewardVideoAd(this.adSlot, new AdListenerAdapter(this,this.adLoader.getApiAdListener()));
     }
 
-    public Activity getActivity() {
-        return activity;
+    @Override
+    public AdLoader getAdLoader() {
+        return this.adLoader;
     }
 
     public NativeAdSlot getAdSlot() {

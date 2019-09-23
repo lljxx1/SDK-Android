@@ -113,6 +113,8 @@ public class MeishuAdInfo {
 
     private String video_cover;
 
+    private SdkAdInfo[] sdk;
+
     public String getAder_id() {
         return ader_id;
     }
@@ -303,5 +305,13 @@ public class MeishuAdInfo {
 
     public void setVideo_cover(String video_cover) {
         this.video_cover = video_cover;
+    }
+
+    public SdkAdInfo[] getSdk() {
+        return sdk;
+    }
+
+    public void setSdk(SdkAdInfo[] sdk) {
+        this.sdk = sdk;
     }
 }

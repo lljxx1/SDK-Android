@@ -1,35 +1,36 @@
 package com.meishu.sdk.nativ.recycler.meishu;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseMeishuWrapper;
 import com.meishu.sdk.meishu_ad.AdNative;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdSlot;
-import com.meishu.sdk.nativ.recycler.NativeAdDelegate;
-import com.meishu.sdk.nativ.recycler.NativeAdListener;
+import com.meishu.sdk.nativ.recycler.NativeAdLoader;
 
-public class MeishuAdNativeWrapper implements NativeAdDelegate {
+public class MeishuAdNativeWrapper extends BaseMeishuWrapper {
     private AdNative adNative;
     private NativeAdSlot adSlot;
-    private NativeAdListener apiAdListener;
-    private Activity activity;
+    private NativeAdLoader adLoader;
 
-    public MeishuAdNativeWrapper(Activity activity, NativeAdSlot adSlot, NativeAdListener apiAdListener) {
-        this.activity=activity;
-        this.adNative = new AdNative(activity);
+    public MeishuAdNativeWrapper(@NonNull NativeAdLoader adLoader, NativeAdSlot adSlot) {
+        super(adLoader.getActivity());
+        this.adLoader = adLoader;
+        this.adNative = new AdNative(adLoader.getActivity());
         this.adSlot = adSlot;
-        this.apiAdListener = apiAdListener;
     }
 
     @Override
     public void loadAd() {
-        adNative.loadNativeAd(this.adSlot, new MeishuAdListenerAdapter(this,this.apiAdListener));
+        adNative.loadNativeAd(this.adSlot, new MeishuAdListenerAdapter(this, this.adLoader.getApiAdListener()));
+    }
+
+    @Override
+    public AdLoader getAdLoader() {
+        return this.adLoader;
     }
 
     public NativeAdSlot getAdSlot() {
         return adSlot;
-    }
-
-    public Activity getActivity() {
-        return activity;
     }
 }

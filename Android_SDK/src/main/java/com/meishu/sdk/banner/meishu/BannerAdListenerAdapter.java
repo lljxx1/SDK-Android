@@ -10,9 +10,9 @@ import com.meishu.sdk.utils.HttpUtil;
 
 public class BannerAdListenerAdapter implements AdListener {
     private com.meishu.sdk.banner.BannerAdListener bannerAdListener;
-    private MeishuBannerViewWrapper adWrapper;
+    private MeishuViewWrapper adWrapper;
 
-    public BannerAdListenerAdapter(@NonNull MeishuBannerViewWrapper adWrapper, @NonNull com.meishu.sdk.banner.BannerAdListener bannerAdListener) {
+    public BannerAdListenerAdapter(@NonNull MeishuViewWrapper adWrapper, @NonNull com.meishu.sdk.banner.BannerAdListener bannerAdListener) {
         this.adWrapper = adWrapper;
         this.bannerAdListener = bannerAdListener;
     }

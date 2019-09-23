@@ -2,8 +2,6 @@ package com.meishu.sdk.nativ.image;
 
 import android.app.Activity;
 
-import com.meishu.sdk.nativ.image.chuanshanjia.CSJTTAdNativeWrapper;
-import com.meishu.sdk.nativ.image.gdt.GDTNativeAdWrapper;
 import com.meishu.sdk.nativ.image.meishu.MeishuNativeAdListenerAdapter;
 
 public class NativeAdLoader {
@@ -29,4 +27,5 @@ public class NativeAdLoader {
     public void loadData() {
         this.nativeAdLoader.loadAd();
     }
+
 }

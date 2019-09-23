@@ -1,71 +1,51 @@
 package com.meishu.sdk.splash.chuanshanjia;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.meishu.sdk.DelegateChain;
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
 import com.meishu.sdk.splash.AdListenerWrapper;
-import com.meishu.sdk.splash.SplashAdDelegate;
-import com.meishu.sdk.splash.SplashAdListener;
+import com.meishu.sdk.splash.SplashAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 
-public class CSJTTAdNativeWrapper implements SplashAdDelegate, DelegateChain {
+public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
 
     private TTAdNative ttAdNative;
-    private ViewGroup adContainer;
     private TTAdNative.SplashAdListener ttAdListener;
-    private int fetchDelay;
-    private SdkAdInfo sdkAdInfo;
-    private DelegateChain next;
-    private Activity activity;
+    private SplashAdLoader adLoader;
 
-    public CSJTTAdNativeWrapper(Activity context, ViewGroup adContainer, SdkAdInfo sdkAdInfo, SplashAdListener adListener, int fetchDelay) {
-        this.activity = context;
-        this.adContainer = adContainer;
-        this.ttAdNative = TTAdSdk.getAdManager().createAdNative(context);
-        this.sdkAdInfo = sdkAdInfo;
-        this.fetchDelay = fetchDelay;
-        this.ttAdListener = new TTSplashAdListenerImpl(this, new AdListenerWrapper(this, adListener));
+    public CSJTTAdNativeWrapper(@NonNull SplashAdLoader adLoader, SdkAdInfo sdkAdInfo) {
+        super(adLoader.getActivity(),sdkAdInfo);
+        this.adLoader=adLoader;
+        this.ttAdNative = TTAdSdk.getAdManager().createAdNative(adLoader.getActivity());
+        this.ttAdListener = new TTSplashAdListenerImpl(this, new AdListenerWrapper(this, adLoader.getApiAdListener()));
     }
 
     @Override
     public void loadAd() {
-        HttpUtil.asyncGetWithWebViewUA(this.activity, this.sdkAdInfo.getReq(), new DefaultHttpGetWithNoHandlerCallback());
+        HttpUtil.asyncGetWithWebViewUA(this.adLoader.getActivity(), this.getSdkAdInfo().getReq(), new DefaultHttpGetWithNoHandlerCallback());
 //step4:创建广告请求参数AdSlot, 具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(this.sdkAdInfo.getPid()) //广告位id
+                .setCodeId(this.getSdkAdInfo().getPid()) //广告位id
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(1080, 1920)
                 .build();
-        ttAdNative.loadSplashAd(adSlot, this.ttAdListener, this.fetchDelay);
+        ttAdNative.loadSplashAd(adSlot, this.ttAdListener, this.adLoader.getFetchDelay());
+    }
+
+    @Override
+    public AdLoader getAdLoader() {
+        return this.adLoader;
     }
 
     public ViewGroup getView() {
-        return adContainer;
+        return this.adLoader.getAdContainer();
     }
 
-    @Override
-    public void setNext(DelegateChain next) {
-        this.next = next;
-    }
-
-    @Override
-    public DelegateChain getNext() {
-        return this.next;
-    }
-
-    @Override
-    public SdkAdInfo getSdkAdInfo() {
-        return this.sdkAdInfo;
-    }
-
-    @Override
-    public Activity getActivity() {
-        return this.activity;
-    }
 }

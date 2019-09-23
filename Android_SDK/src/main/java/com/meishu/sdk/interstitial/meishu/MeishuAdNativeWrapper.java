@@ -1,40 +1,37 @@
 package com.meishu.sdk.interstitial.meishu;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseMeishuWrapper;
+import com.meishu.sdk.interstitial.InterstitialAdLoader;
 import com.meishu.sdk.meishu_ad.AdNative;
 import com.meishu.sdk.meishu_ad.interstitial.InterstitialAdSlot;
-import com.meishu.sdk.interstitial.InterstitialAdDelegate;
-import com.meishu.sdk.interstitial.InterstitialAdListener;
 
-public class MeishuAdNativeWrapper implements InterstitialAdDelegate {
+public class MeishuAdNativeWrapper extends BaseMeishuWrapper {
     private AdNative adNative;
+    private InterstitialAdLoader adLoader;
     private InterstitialAdSlot adSlot;
-    private InterstitialAdListener adListener;
-    private Activity activity;
 
-    public MeishuAdNativeWrapper(Activity activity, InterstitialAdSlot adSlot, InterstitialAdListener adListener) {
-        this.activity = activity;
-        this.adNative = new AdNative(activity);
+    public MeishuAdNativeWrapper(@NonNull InterstitialAdLoader adLoader, @NonNull InterstitialAdSlot adSlot) {
+        super(adLoader.getActivity());
+        this.adLoader = adLoader;
         this.adSlot = adSlot;
-        this.adListener = adListener;
+        this.adNative = new AdNative(adLoader.getActivity());
     }
 
     @Override
     public void loadAd() {
-        adNative.loadInstitialAd(adSlot, new MeishuAdListenerAdapter(this, this.adListener));
+        adNative.loadInstitialAd(this.adSlot, new MeishuAdListenerAdapter(this, this.adLoader.getApiAdListener()));
     }
 
     @Override
-    public void destroy() {
-        //do nothing
+    public AdLoader getAdLoader() {
+        return this.adLoader;
     }
 
     public InterstitialAdSlot getAdSlot() {
         return adSlot;
     }
 
-    public Activity getActivity() {
-        return activity;
-    }
 }

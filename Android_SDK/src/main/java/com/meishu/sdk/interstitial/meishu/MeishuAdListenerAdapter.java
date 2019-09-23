@@ -2,7 +2,6 @@ package com.meishu.sdk.interstitial.meishu;
 
 import android.text.TextUtils;
 
-import com.meishu.sdk.banner.meishu.MeishuBannerViewWrapper;
 import com.meishu.sdk.meishu_ad.interstitial.AdListener;
 import com.meishu.sdk.meishu_ad.interstitial.NativeInterstitialAd;
 import com.meishu.sdk.interstitial.InterstitialAdListener;

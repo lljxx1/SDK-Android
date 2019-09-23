@@ -3,10 +3,6 @@ package com.meishu.sdk;
 public final class MeishuConstants {
     public static String ad_request_url;
 
-    public final static String response_type_meishu = "API";
-    public final static String getResponse_type_others = "SDK";
-    public final static String response_type_key = "Response_type";
-
     /**
      * 交互类型：网页跳转类广告
      */

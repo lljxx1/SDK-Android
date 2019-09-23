@@ -1,35 +1,38 @@
 package com.meishu.sdk.splash.meishu;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseMeishuWrapper;
 import com.meishu.sdk.meishu_ad.AdNative;
 import com.meishu.sdk.meishu_ad.splash.SplashAdSlot;
-import com.meishu.sdk.splash.SplashAdDelegate;
-import com.meishu.sdk.splash.SplashAdListener;
+import com.meishu.sdk.splash.SplashAdLoader;
 
-public class MeishuAdNativeWrapper implements SplashAdDelegate {
+public class MeishuAdNativeWrapper extends BaseMeishuWrapper {
 
     private AdNative adNative;
-    private SplashAdListener splashAdListener;
     private SplashAdSlot adSlot;
-    private Activity activity;
+    private SplashAdLoader adLoader;
 
-    public MeishuAdNativeWrapper(Activity activity, SplashAdSlot adSlot, SplashAdListener splashAdListener) {
-        adNative = new AdNative(activity);
+    public MeishuAdNativeWrapper(@NonNull SplashAdLoader adLoader, SplashAdSlot adSlot) {
+        super(adLoader.getActivity());
+        this.adLoader = adLoader;
+        adNative = new AdNative(adLoader.getActivity());
         this.adSlot = adSlot;
-        this.splashAdListener = splashAdListener;
     }
 
     @Override
     public void loadAd() {
-        adNative.loadSplashAd(adSlot, new SplashAdListenerAdapter(this,this.splashAdListener));
+        adNative.loadSplashAd(adSlot, new SplashAdListenerAdapter(this, this.adLoader.getApiAdListener()));
+    }
+
+    @Override
+    public AdLoader getAdLoader() {
+        return this.adLoader;
     }
 
     public SplashAdSlot getAdSlot() {
         return adSlot;
     }
 
-    public Activity getActivity() {
-        return activity;
-    }
 }

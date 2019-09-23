@@ -1,30 +1,32 @@
 package com.meishu.sdk.reward.gdt;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 
-import com.meishu.sdk.DelegateChain;
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.reward.RewardVideoAdDelegate;
-import com.meishu.sdk.reward.RewardVideoAdListener;
+import com.meishu.sdk.reward.RewardVideoLoader;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 
-public class GDTRewardVideoAdWrapper implements RewardVideoAdDelegate, DelegateChain {
+public class GDTRewardVideoAdWrapper extends BaseSdkAdWrapper {
 
-    private Activity activity;
-    private SdkAdInfo sdkAdInfo;
     private RewardVideoAD rewardVideoAd;
-    private DelegateChain next;
+    private RewardVideoLoader adLoader;
 
-    public GDTRewardVideoAdWrapper(@NonNull Activity activity, @NonNull SdkAdInfo sdkAdInfo, @NonNull RewardVideoAdListener adListener) {
-        this.activity = activity;
-        this.sdkAdInfo = sdkAdInfo;
-        this.rewardVideoAd = new RewardVideoAD(activity, sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new RewardVideoAdListenerAdapter(this, adListener));
+    public GDTRewardVideoAdWrapper(@NonNull RewardVideoLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
+        super(adLoader.getActivity(),sdkAdInfo);
+        this.adLoader=adLoader;
+        this.rewardVideoAd = new RewardVideoAD(adLoader.getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new RewardVideoAdListenerAdapter(this, adLoader.getApiAdListener()));
     }
 
     @Override
     public void loadAd() {
         this.rewardVideoAd.loadAD();
+    }
+
+    @Override
+    public AdLoader getAdLoader() {
+        return this.adLoader;
     }
 
     public void showAd() {
@@ -33,25 +35,5 @@ public class GDTRewardVideoAdWrapper implements RewardVideoAdDelegate, DelegateC
 
     public boolean hasShown() {
         return this.rewardVideoAd.hasShown();
-    }
-
-    @Override
-    public void setNext(DelegateChain next) {
-        this.next = next;
-    }
-
-    @Override
-    public DelegateChain getNext() {
-        return this.next;
-    }
-
-    @Override
-    public SdkAdInfo getSdkAdInfo() {
-        return this.sdkAdInfo;
-    }
-
-    @Override
-    public Activity getActivity() {
-        return this.activity;
     }
 }

@@ -1,59 +1,41 @@
 package com.meishu.sdk.nativ.recycler.gdt;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 
-import com.meishu.sdk.DelegateChain;
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
 import com.meishu.sdk.nativ.recycler.AdListenerWrapper;
-import com.meishu.sdk.nativ.recycler.NativeAdDelegate;
 import com.meishu.sdk.nativ.recycler.NativeAdListener;
+import com.meishu.sdk.nativ.recycler.NativeAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 
-public class GDTNativeUnifiedAdWrapper implements NativeAdDelegate, DelegateChain {
+public class GDTNativeUnifiedAdWrapper extends BaseSdkAdWrapper {
 
     private NativeUnifiedAD nativeUnifiedAD;
-    private NativeAdListener adListener;
-    private SdkAdInfo sdkAdInfo;
-    private DelegateChain next;
-    private Activity activity;
+    private NativeAdLoader adLoader;
 
-    public GDTNativeUnifiedAdWrapper(Activity activity, SdkAdInfo sdkAdInfo, NativeAdListener adListener) {
-        this.activity = activity;
-        this.adListener = adListener;
-        this.sdkAdInfo = sdkAdInfo;
-        nativeUnifiedAD = new NativeUnifiedAD(activity, sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTNativeAdListenerAdapter(this, new AdListenerWrapper(this, adListener)));
+    public GDTNativeUnifiedAdWrapper(@NonNull NativeAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
+        super(adLoader.getActivity(), sdkAdInfo);
+        this.adLoader = adLoader;
+        nativeUnifiedAD = new NativeUnifiedAD(getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTNativeAdListenerAdapter(this, new AdListenerWrapper(this, adLoader.getApiAdListener())));
     }
 
     @Override
     public void loadAd() {
-        HttpUtil.asyncGetWithWebViewUA(this.activity, this.sdkAdInfo.getReq(), new DefaultHttpGetWithNoHandlerCallback());
+        HttpUtil.asyncGetWithWebViewUA(this.getActivity(), this.getSdkAdInfo().getReq(), new DefaultHttpGetWithNoHandlerCallback());
         nativeUnifiedAD.loadData(1);
     }
 
+    @Override
+    public AdLoader getAdLoader() {
+        return this.adLoader;
+    }
+
     public NativeAdListener getAdListener() {
-        return adListener;
-    }
-
-    @Override
-    public void setNext(DelegateChain next) {
-        this.next = next;
-    }
-
-    @Override
-    public DelegateChain getNext() {
-        return this.next;
-    }
-
-    @Override
-    public SdkAdInfo getSdkAdInfo() {
-        return this.sdkAdInfo;
-    }
-
-    @Override
-    public Activity getActivity() {
-        return this.activity;
+        return this.adLoader.getApiAdListener();
     }
 
 }

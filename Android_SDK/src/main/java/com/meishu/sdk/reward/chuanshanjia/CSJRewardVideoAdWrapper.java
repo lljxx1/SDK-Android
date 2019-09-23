@@ -1,6 +1,5 @@
 package com.meishu.sdk.reward.chuanshanjia;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.Surface;
@@ -10,29 +9,27 @@ import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.meishu.sdk.DelegateChain;
+import com.meishu.sdk.AdLoader;
+import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.reward.RewardVideoAdDelegate;
-import com.meishu.sdk.reward.RewardVideoAdListener;
+import com.meishu.sdk.reward.RewardVideoLoader;
 
-public class CSJRewardVideoAdWrapper implements RewardVideoAdDelegate, DelegateChain {
+public class CSJRewardVideoAdWrapper extends BaseSdkAdWrapper {
 
-    private Activity activity;
     private SdkAdInfo sdkAdInfo;
-    private RewardVideoAdListener adListener;
     private TTAdNative mTTAdNative;
-    private DelegateChain next;
+    private RewardVideoLoader adLoader;
 
-    public CSJRewardVideoAdWrapper(@NonNull Activity activity, @NonNull SdkAdInfo sdkAdInfo, @NonNull RewardVideoAdListener adListener) {
-        this.activity = activity;
+    public CSJRewardVideoAdWrapper(@NonNull RewardVideoLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
+        super(adLoader.getActivity(), sdkAdInfo);
+        this.adLoader = adLoader;
         this.sdkAdInfo = sdkAdInfo;
-        this.adListener = adListener;
-        this.mTTAdNative = TTAdSdk.getAdManager().createAdNative(activity);
+        this.mTTAdNative = TTAdSdk.getAdManager().createAdNative(adLoader.getActivity());
     }
 
     @Override
     public void loadAd() {
-        int rotation = ((WindowManager) this.activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        int rotation = ((WindowManager) this.adLoader.getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         int orientation = TTAdConstant.VERTICAL;
         switch (rotation) {
             case Surface.ROTATION_0:
@@ -53,28 +50,11 @@ public class CSJRewardVideoAdWrapper implements RewardVideoAdDelegate, DelegateC
                 .setUserID("")
                 .setOrientation(orientation) //必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
                 .build();
-        mTTAdNative.loadRewardVideoAd(adSlot, new RewardVideoListenerAdapter(this,this.adListener));
-    }
-
-
-    @Override
-    public void setNext(DelegateChain next) {
-        this.next = next;
+        mTTAdNative.loadRewardVideoAd(adSlot, new RewardVideoListenerAdapter(this, this.adLoader.getApiAdListener()));
     }
 
     @Override
-    public DelegateChain getNext() {
-        return this.next;
+    public AdLoader getAdLoader() {
+        return this.adLoader;
     }
-
-    @Override
-    public SdkAdInfo getSdkAdInfo() {
-        return this.sdkAdInfo;
-    }
-
-    @Override
-    public Activity getActivity() {
-        return this.activity;
-    }
-
 }

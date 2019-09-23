@@ -74,7 +74,8 @@ public class CSJAdDataAdapter implements AdData {
 
         //创意点击views是指，点击对应的views会执行广告的目的，比如下载app、跳转目标网页等
         //clickableViews，在视频类广告中，点击clickableViews会跳转到视频页面
-        ttFeedAd.registerViewForInteraction(container, clickableViews, creativeClickableViews, new CSJAdInteractionListenerAdapter(this, adInteractionListener));
+        //viewGroup参数必须为container的根view，否则穿山甲无法加载广告
+        ttFeedAd.registerViewForInteraction((ViewGroup) container.getRootView(), clickableViews, creativeClickableViews, new CSJAdInteractionListenerAdapter(this, adInteractionListener));
     }
 
     @Override

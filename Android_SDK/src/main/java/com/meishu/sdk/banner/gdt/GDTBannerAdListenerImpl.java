@@ -14,9 +14,9 @@ public class GDTBannerAdListenerImpl implements BannerADListener {
     private static final String TAG = "GDTBannerAdListenerImpl";
     private BannerAdListener meishuBannerAdListener;
 
-    private GDTBannerViewWrapper bannerViewWrapper;
+    private GDTViewWrapper bannerViewWrapper;
 
-    public GDTBannerAdListenerImpl(@NonNull GDTBannerViewWrapper bannerViewWrapper, BannerAdListener meishuBannerAdListener) {
+    public GDTBannerAdListenerImpl(@NonNull GDTViewWrapper bannerViewWrapper, BannerAdListener meishuBannerAdListener) {
         this.bannerViewWrapper = bannerViewWrapper;
         this.meishuBannerAdListener = meishuBannerAdListener;
     }
