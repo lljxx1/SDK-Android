@@ -18,7 +18,6 @@ import android.widget.VideoView;
 import com.androidquery.AQuery;
 import com.meishu.sdk.R;
 import com.meishu.sdk.meishu_ad.MediaView;
-import com.meishu.sdk.meishu_ad.reward.FullScreenMediaView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,10 @@ public class NormalMediaView extends FrameLayout implements MediaView {
      */
     private static final int UPDATE_TIME = 1;
 
+    private volatile boolean oneQuarterPerformed;
+    private volatile boolean oneHalfPerformed;
+    private volatile boolean threeQuarterPerformed;
+
     @SuppressLint("HandlerLeak")
     private Handler uiHandler = new Handler() {
         @Override
@@ -49,11 +52,40 @@ public class NormalMediaView extends FrameLayout implements MediaView {
             int currentTime = videoView.getCurrentPosition();
             updateTimeFormat(currentTimeView, currentTime);
             seekBar.setProgress(currentTime);
+
+            double totalTime = videoView.getDuration();
+            double percent = currentTime / totalTime;
+            if (percent >= 0.25 && percent < 0.5) {
+                if (!oneQuarterPerformed) {
+                    if (nativeAdMediaListener != null) {
+                        nativeAdMediaListener.onVideoOneQuarter();
+                    }
+                    oneQuarterPerformed = true;
+                }
+            } else if (percent >= 0.5 && percent < 0.75) {
+                if (!oneHalfPerformed) {
+                    if (nativeAdMediaListener != null) {
+                        nativeAdMediaListener.onVideoOneHalf();
+                    }
+                    oneHalfPerformed = true;
+                }
+            } else if (percent >= 0.75 && percent < 1) {
+                if (!threeQuarterPerformed) {
+                    if (nativeAdMediaListener != null) {
+                        nativeAdMediaListener.onVideoThreeQuarter();
+                    }
+                    threeQuarterPerformed = true;
+                }
+            }
+
             uiHandler.sendEmptyMessageDelayed(UPDATE_TIME, 100);
         }
     };
 
     public void start() {
+        oneQuarterPerformed = false;
+        oneHalfPerformed = false;
+        threeQuarterPerformed = false;
         this.videoView.start();
         onPlay();
         if (nativeAdMediaListener != null) {
@@ -79,7 +111,7 @@ public class NormalMediaView extends FrameLayout implements MediaView {
         videoView.setVideoPath(url);
     }
 
-    public void setVideoCover(String coverUrl){
+    public void setVideoCover(String coverUrl) {
 //        videoView.setBackgroundResource();
     }
 
@@ -129,10 +161,10 @@ public class NormalMediaView extends FrameLayout implements MediaView {
 
                 if (started) {
                     onPlay();
-                }else{
+                } else {
                     onReset();
                 }
-                started=false;//设置为false可以避免：正在播放时，重新加载了视频，会出现无法播放的情况
+                started = false;//设置为false可以避免：正在播放时，重新加载了视频，会出现无法播放的情况
                 if (nativeAdMediaListener != null) {
                     nativeAdMediaListener.onVideoLoaded();
                 }
@@ -141,11 +173,7 @@ public class NormalMediaView extends FrameLayout implements MediaView {
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                started = false;
                 NormalMediaView.this.onCompletion();
-                for (OnVideoCompleteListener onVideoCompleteListener : NormalMediaView.this.onVideoCompleteListeners) {
-                    onVideoCompleteListener.onCompleted();
-                }
             }
         });
     }
@@ -180,6 +208,12 @@ public class NormalMediaView extends FrameLayout implements MediaView {
         this.nativeAdMediaListener = nativeAdMediaListener;
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.start();
+    }
+
     private void initUI(Context context) {
         final View mediaPlayerContainer = LayoutInflater.from(context).inflate(R.layout.normal_video_player_layout, null);
         this.addView(mediaPlayerContainer);
@@ -190,6 +224,8 @@ public class NormalMediaView extends FrameLayout implements MediaView {
         endTimeView = aQuery.id(R.id.video_endTime).getTextView();
         seekBar = aQuery.id(R.id.video_seekBar).getSeekBar();
     }
+
+    private volatile boolean hasCompleted;
 
     private void onPlay() {
         started = true;
@@ -202,6 +238,16 @@ public class NormalMediaView extends FrameLayout implements MediaView {
             uiHandler.sendEmptyMessage(UPDATE_TIME);
         }
 
+        if (hasCompleted) {
+            hasCompleted = false;
+            onReplay();
+        }
+    }
+
+    private void onReplay() {
+        if (nativeAdMediaListener != null) {
+            nativeAdMediaListener.onVideoReplay();
+        }
     }
 
     private void onPause() {
@@ -226,19 +272,36 @@ public class NormalMediaView extends FrameLayout implements MediaView {
     }
 
     private void onCompletion() {
+        started = false;
+        hasCompleted = true;
         onPause();
+        int endTime = videoView.getDuration();
+        updateTimeFormat(currentTimeView, endTime);
+        seekBar.setProgress(endTime);
+        for (OnVideoCompleteListener onVideoCompleteListener : NormalMediaView.this.onVideoCompleteListeners) {
+            onVideoCompleteListener.onCompleted();
+        }
+        if (nativeAdMediaListener != null) {
+            nativeAdMediaListener.onVideoComplete();
+        }
     }
 
     private void onMute() {
         this.mediaPlayer.setVolume(0, 0);
         aQuery.id(R.id.video_volume_mute).visibility(VISIBLE);
         aQuery.id(R.id.video_volume).visibility(GONE);
+        if (nativeAdMediaListener != null) {
+            nativeAdMediaListener.onVideoMute();
+        }
     }
 
     private void onOpenVolume() {
         this.mediaPlayer.setVolume(1, 1);
         aQuery.id(R.id.video_volume_mute).visibility(GONE);
         aQuery.id(R.id.video_volume).visibility(VISIBLE);
+        if (nativeAdMediaListener != null) {
+            nativeAdMediaListener.onVideoUnmute();
+        }
     }
 
     private void updateTimeFormat(TextView tv, int millisecond) {

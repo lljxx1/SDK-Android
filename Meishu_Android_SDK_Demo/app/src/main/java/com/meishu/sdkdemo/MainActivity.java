@@ -16,9 +16,8 @@ import android.widget.Toast;
 import com.meishu.sdk.meishu_ad.interstitial.Popup;
 import com.meishu.sdkdemo.nativead.NativeAdSelectActivity;
 import com.meishu.sdkdemo.nativead.NativeRecyclerListSelectActivity;
-import com.meishu.sdkdemo.nativead.NativeRecyclerListV1Activity;
 import com.meishu.sdkdemo.nativead.NativeVideoActivity;
-import com.meishu.sdkdemo.slash.SplashActivity;
+import com.meishu.sdkdemo.splash.SplashActivity;
 
 import java.util.ArrayList;
 import java.util.List;

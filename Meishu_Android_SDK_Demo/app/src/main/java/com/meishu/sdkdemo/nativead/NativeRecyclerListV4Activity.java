@@ -304,8 +304,8 @@ public class NativeRecyclerListV4Activity extends AppCompatActivity implements N
                     }
 
                     @Override
-                    public void onVideoResume() {
-                        Log.d(TAG, "onVideoResume: 视频继续播放");
+                    public void onVideoCompleted() {
+                        Log.d(TAG, "onVideoCompleted: 视频结束");
                     }
 
                     @Override

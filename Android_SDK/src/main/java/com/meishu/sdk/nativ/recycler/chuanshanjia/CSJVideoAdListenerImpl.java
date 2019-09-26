@@ -1,9 +1,12 @@
 package com.meishu.sdk.nativ.recycler.chuanshanjia;
 
+import android.util.Log;
+
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.meishu.sdk.nativ.recycler.AdMediaListener;
 
 public class CSJVideoAdListenerImpl implements TTFeedAd.VideoAdListener {
+    private static final String TAG = "CSJVideoAdListenerImpl";
     private AdMediaListener meishuAdMediaListener;
 
     public CSJVideoAdListenerImpl(AdMediaListener meishuAdMediaListener) {
@@ -40,8 +43,6 @@ public class CSJVideoAdListenerImpl implements TTFeedAd.VideoAdListener {
 
     @Override
     public void onVideoAdContinuePlay(TTFeedAd ttFeedAd) {
-        if(this.meishuAdMediaListener!=null){
-            this.meishuAdMediaListener.onVideoResume();
-        }
+        Log.d(TAG, "onVideoAdContinuePlay: ");
     }
 }

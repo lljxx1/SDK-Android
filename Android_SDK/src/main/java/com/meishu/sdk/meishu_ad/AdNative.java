@@ -271,9 +271,6 @@ public class AdNative {
                     if (adListener != null) {
                         adListener.onAdLoaded(adDatas);
                     }
-                    if (adSlot.getAdPatternType() == 2) {//创意类型为视频时，播放视频
-                        loadedMediaView.start();
-                    }
                     if (adListener != null) {
                         adListener.onADExposure();
                     }

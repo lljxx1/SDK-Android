@@ -8,7 +8,7 @@ public interface AdMediaListener {
 
     void onVideoPause();
 
-    void onVideoResume();
+    void onVideoCompleted();
 
     void onVideoError();
 }

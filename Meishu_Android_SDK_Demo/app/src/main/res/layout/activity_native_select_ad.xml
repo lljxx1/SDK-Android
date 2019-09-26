@@ -8,8 +8,13 @@
     tools:context=".nativead.NativeAdSelectActivity">
 
     <Button
-        android:id="@+id/openNativeAD"
+        android:id="@+id/native_image_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开原生广告" />
+        android:text="原生图片广告" />
+    <Button
+        android:id="@+id/paster_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="视频贴片广告"/>
 </LinearLayout>

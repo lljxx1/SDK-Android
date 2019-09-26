@@ -25,7 +25,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation(name: 'meishu-sdk', ext: 'aar')
+    implementation(name: 'meishu_sdk', ext: 'aar')
     implementation(name: 'open_ad_sdk', ext: 'aar')//需要添加此包，否则无法正常使用穿山甲所有广告
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'//需要添加此包，否则无法正常使用穿山甲开屏广告
     implementation 'com.github.razerdp:BasePopup:2.2.1'//需要添加此包，否则无法正常使用美数插屏广告

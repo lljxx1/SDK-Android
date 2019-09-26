@@ -13,15 +13,20 @@ public class NativeAdSelectActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_native_select_ad);
-        findViewById(R.id.openNativeAD).setOnClickListener(this);
+        findViewById(R.id.native_image_ad).setOnClickListener(this);
+        findViewById(R.id.paster_ad).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()){
-            case R.id.openNativeAD:
+        switch (v.getId()) {
+            case R.id.native_image_ad:
                 intent.setClass(this, NativeAdActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.paster_ad:
+                intent.setClass(this, PasterActivity.class);
                 startActivity(intent);
                 break;
         }

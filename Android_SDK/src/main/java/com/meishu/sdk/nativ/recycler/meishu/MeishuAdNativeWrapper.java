@@ -6,9 +6,10 @@ import com.meishu.sdk.AdLoader;
 import com.meishu.sdk.BaseMeishuWrapper;
 import com.meishu.sdk.meishu_ad.AdNative;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdSlot;
+import com.meishu.sdk.meishu_ad.nativ.NativeAdWrapper;
 import com.meishu.sdk.nativ.recycler.NativeAdLoader;
 
-public class MeishuAdNativeWrapper extends BaseMeishuWrapper {
+public class MeishuAdNativeWrapper extends BaseMeishuWrapper implements NativeAdWrapper {
     private AdNative adNative;
     private NativeAdSlot adSlot;
     private NativeAdLoader adLoader;

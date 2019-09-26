@@ -15,8 +15,10 @@ import java.util.List;
 
 public class MeishuAdDataAdapter implements AdData {
     private NativeAdData nativeAdData;
+    private MeishuAdNativeWrapper adWrapper;
 
-    public MeishuAdDataAdapter(@NonNull NativeAdData nativeAdData) {
+    public MeishuAdDataAdapter(@NonNull MeishuAdNativeWrapper adWrapper, @NonNull NativeAdData nativeAdData) {
+        this.adWrapper = adWrapper;
         this.nativeAdData = nativeAdData;
     }
 
@@ -40,7 +42,7 @@ public class MeishuAdDataAdapter implements AdData {
     public void bindMediaView(ViewGroup mediaView, AdMediaListener adMediaListener) {
 //        NativeAdUtils.removeGdtMediaView(mediaView);
         mediaView.removeAllViews();
-        this.nativeAdData.bindMediaView(mediaView, new MeishuAdMediaListenerAdapter(adMediaListener));
+        this.nativeAdData.bindMediaView(mediaView, new MeishuAdMediaListenerAdapter(this.adWrapper, adMediaListener));
     }
 
     @Override

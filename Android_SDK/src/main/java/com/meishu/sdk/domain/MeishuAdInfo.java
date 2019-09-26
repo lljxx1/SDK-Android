@@ -110,6 +110,15 @@ public class MeishuAdInfo {
      * deep_link 字段非空时，直接唤起类（唤起 失败时上报）
      */
     private String[] dp_fail;
+    private String[] video_start;
+    private String[] video_one_quarter;
+    private String[] video_one_half;
+    private String[] video_three_quarter;
+    private String[] video_complete;
+    private String[] video_pause;
+    private String[] video_mute;
+    private String[] video_unmute;
+    private String[] video_replay;
 
     private String video_cover;
 
@@ -301,6 +310,78 @@ public class MeishuAdInfo {
 
     public String getVideo_cover() {
         return video_cover;
+    }
+
+    public String[] getVideo_start() {
+        return video_start;
+    }
+
+    public void setVideo_start(String[] video_start) {
+        this.video_start = video_start;
+    }
+
+    public String[] getVideo_one_quarter() {
+        return video_one_quarter;
+    }
+
+    public void setVideo_one_quarter(String[] video_one_quarter) {
+        this.video_one_quarter = video_one_quarter;
+    }
+
+    public String[] getVideo_one_half() {
+        return video_one_half;
+    }
+
+    public void setVideo_one_half(String[] video_one_half) {
+        this.video_one_half = video_one_half;
+    }
+
+    public String[] getVideo_three_quarter() {
+        return video_three_quarter;
+    }
+
+    public void setVideo_three_quarter(String[] video_three_quarter) {
+        this.video_three_quarter = video_three_quarter;
+    }
+
+    public String[] getVideo_complete() {
+        return video_complete;
+    }
+
+    public void setVideo_complete(String[] video_complete) {
+        this.video_complete = video_complete;
+    }
+
+    public String[] getVideo_pause() {
+        return video_pause;
+    }
+
+    public void setVideo_pause(String[] video_pause) {
+        this.video_pause = video_pause;
+    }
+
+    public String[] getVideo_mute() {
+        return video_mute;
+    }
+
+    public void setVideo_mute(String[] video_mute) {
+        this.video_mute = video_mute;
+    }
+
+    public String[] getVideo_unmute() {
+        return video_unmute;
+    }
+
+    public void setVideo_unmute(String[] video_unmute) {
+        this.video_unmute = video_unmute;
+    }
+
+    public String[] getVideo_replay() {
+        return video_replay;
+    }
+
+    public void setVideo_replay(String[] video_replay) {
+        this.video_replay = video_replay;
     }
 
     public void setVideo_cover(String video_cover) {

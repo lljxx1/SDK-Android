@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RewardVideoActivity"></activity>
+        <activity android:name=".nativead.PasterActivity"></activity>
+        <activity android:name=".RewardVideoActivity" />
         <activity android:name=".nativead.NativeRecyclerListSelectActivity" />
         <activity android:name=".nativead.NativeRecyclerListV1Activity" />
         <activity android:name=".nativead.NativeRecyclerListV2Activity" />
@@ -32,8 +33,8 @@
         <activity android:name=".nativead.NativeAdActivity" />
         <activity android:name=".nativead.NativeAdSelectActivity" />
         <activity android:name=".InterstitialAdActivity" />
-        <activity android:name=".slash.SplashActivity" />
-        <activity android:name=".slash.SlashAdActivity" />
+        <activity android:name=".splash.SplashActivity" />
+        <activity android:name=".splash.SplashAdActivity" />
         <activity android:name=".BannerAdActivity">
             <intent-filter>
                 <action android:name="meishu.intent.action.BANNER" />

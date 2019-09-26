@@ -6,9 +6,18 @@ public interface NativeAdMediaListener {
 
     void onVideoStart();
 
+    void onVideoOneQuarter();
+    void onVideoOneHalf();
+    void onVideoThreeQuarter();
+    void onVideoComplete();
+
     void onVideoPause();
 
-    void onVideoResume();
+//    void onVideoResume();
+
+    void onVideoMute();
+    void onVideoUnmute();
+    void onVideoReplay();
 
     void onVideoError();
 }

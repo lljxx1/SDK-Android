@@ -47,7 +47,7 @@ public class GDTNativeAdMediaListenerImpl implements NativeADMediaListener {
 
     @Override
     public void onVideoResume() {
-        this.nativeAdMediaListener.onVideoResume();
+        Log.d(TAG, "onVideoResume: ");
     }
 
     @Override

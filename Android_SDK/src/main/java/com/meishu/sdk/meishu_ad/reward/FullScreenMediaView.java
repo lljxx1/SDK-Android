@@ -30,6 +30,11 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
     private OnVideoLoadedListener onVideoLoadedListener;
     private NativeAdMediaListener nativeAdMediaListener;
 
+
+    private volatile boolean oneQuarterPerformed;
+    private volatile boolean oneHalfPerformed;
+    private volatile boolean threeQuarterPerformed;
+
     /**
      * 播放进度更新消息
      */
@@ -41,6 +46,32 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
             super.handleMessage(msg);
             int currentTime = videoView.getCurrentPosition();
             processBar.refreshProcess(currentTime);
+
+            double totalTime = videoView.getDuration();
+            double percent = currentTime / totalTime;
+            if (percent >= 0.25 && percent < 0.5) {
+                if (!oneQuarterPerformed) {
+                    if (nativeAdMediaListener != null) {
+                        nativeAdMediaListener.onVideoOneQuarter();
+                    }
+                    oneQuarterPerformed = true;
+                }
+            } else if (percent >= 0.5 && percent < 0.75) {
+                if (!oneHalfPerformed) {
+                    if (nativeAdMediaListener != null) {
+                        nativeAdMediaListener.onVideoOneHalf();
+                    }
+                    oneHalfPerformed = true;
+                }
+            } else if (percent >= 0.75 && percent < 1) {
+                if (!threeQuarterPerformed) {
+                    if (nativeAdMediaListener != null) {
+                        nativeAdMediaListener.onVideoThreeQuarter();
+                    }
+                    threeQuarterPerformed = true;
+                }
+            }
+
             uiHandler.sendEmptyMessageDelayed(UPDATE_TIME, 100);
         }
     };
@@ -133,11 +164,8 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                started = false;
                 FullScreenMediaView.this.onCompletion();
-                for (OnVideoCompleteListener onVideoCompleteListener : FullScreenMediaView.this.onVideoCompleteListeners) {
-                    onVideoCompleteListener.onCompleted();
-                }
+
             }
         });
     }
@@ -222,7 +250,14 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
     }
 
     private void onCompletion() {
+        started = false;
         onPause();
+        for (OnVideoCompleteListener onVideoCompleteListener : FullScreenMediaView.this.onVideoCompleteListeners) {
+            onVideoCompleteListener.onCompleted();
+        }
+        if (nativeAdMediaListener != null) {
+            nativeAdMediaListener.onVideoComplete();
+        }
     }
 
     private void onMute() {

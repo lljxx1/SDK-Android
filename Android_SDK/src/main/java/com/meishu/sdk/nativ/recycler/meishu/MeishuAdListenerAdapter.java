@@ -26,7 +26,7 @@ public class MeishuAdListenerAdapter implements AdListener {
         if (this.apiAdListener != null && adDatas != null) {
             List<AdData> apiAdDatas = new ArrayList<>();
             for (NativeAdData adData : adDatas) {
-                apiAdDatas.add(new MeishuAdDataAdapter(adData));
+                apiAdDatas.add(new MeishuAdDataAdapter(this.adWrapper, adData));
             }
             this.apiAdListener.onAdLoaded(apiAdDatas);
         }
