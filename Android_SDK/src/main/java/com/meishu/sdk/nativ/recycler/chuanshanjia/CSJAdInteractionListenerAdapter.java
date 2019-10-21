@@ -5,16 +5,17 @@ import android.view.View;
 
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.meishu.sdk.nativ.recycler.AdInteractionListener;
+import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 
 public class CSJAdInteractionListenerAdapter implements TTNativeAd.AdInteractionListener {
 
-    private CSJAdDataAdapter adData;
+    private CSJNativeAdDataAdapter adData;
 
     private AdInteractionListener meishuInteractionListener;
 
-    public CSJAdInteractionListenerAdapter(@NonNull CSJAdDataAdapter adData, AdInteractionListener meishuInteractionListener) {
+    public CSJAdInteractionListenerAdapter(@NonNull CSJNativeAdDataAdapter adData, AdInteractionListener meishuInteractionListener) {
         this.adData = adData;
         this.meishuInteractionListener = meishuInteractionListener;
     }
@@ -22,7 +23,11 @@ public class CSJAdInteractionListenerAdapter implements TTNativeAd.AdInteraction
     @Override
     public void onAdClicked(View view, TTNativeAd ttNativeAd) {
         if (this.adData.getAdWrapper() != null) {
-            HttpUtil.asyncGetWithWebViewUA(adData.getAdWrapper().getActivity(), this.adData.getAdWrapper().getSdkAdInfo().getClk(), new DefaultHttpGetWithNoHandlerCallback());
+            HttpUtil.asyncGetWithWebViewUA(
+                    adData.getAdWrapper().getActivity(),
+                    ClickHandler.replaceMacros(this.adData.getAdWrapper().getSdkAdInfo().getClk(),this.adData),
+                    new DefaultHttpGetWithNoHandlerCallback()
+            );
         }
         if (this.meishuInteractionListener != null) {
             this.meishuInteractionListener.onAdClicked();

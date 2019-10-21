@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.meishu.sdk.nativ.recycler.AdInteractionListener;
+import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 import com.qq.e.ads.nativ.NativeADEventListener;
@@ -12,9 +13,9 @@ import com.qq.e.comm.util.AdError;
 public class GDTAdInteractionListener implements NativeADEventListener {
     private static final String TAG = "GDTAdInteractionListene";
     private AdInteractionListener meishuAdInteractionListener;
-    private GDTNativeAdDataAdapter adData;
+    private GDTNativeNativeAdDataAdapter adData;
 
-    public GDTAdInteractionListener(@NonNull GDTNativeAdDataAdapter adData, AdInteractionListener meishuAdInteractionListener) {
+    public GDTAdInteractionListener(@NonNull GDTNativeNativeAdDataAdapter adData, AdInteractionListener meishuAdInteractionListener) {
         this.adData = adData;
         this.meishuAdInteractionListener = meishuAdInteractionListener;
     }
@@ -22,7 +23,11 @@ public class GDTAdInteractionListener implements NativeADEventListener {
     @Override
     public void onADClicked() {
         if (this.adData.getAdWrapper() != null) {
-            HttpUtil.asyncGetWithWebViewUA(adData.getAdWrapper().getActivity(), this.adData.getAdWrapper().getSdkAdInfo().getClk(), new DefaultHttpGetWithNoHandlerCallback());
+            HttpUtil.asyncGetWithWebViewUA(
+                    adData.getAdWrapper().getActivity(),
+                    ClickHandler.replaceMacros(this.adData.getAdWrapper().getSdkAdInfo().getClk(),this.adData),
+                    new DefaultHttpGetWithNoHandlerCallback()
+            );
         }
         if (this.meishuAdInteractionListener != null) {
             this.meishuAdInteractionListener.onAdClicked();

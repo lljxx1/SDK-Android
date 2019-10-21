@@ -1,6 +1,6 @@
 package com.meishu.sdk.nativ.recycler.gdt;
 
-import com.meishu.sdk.nativ.recycler.AdData;
+import com.meishu.sdk.nativ.recycler.NativeAdData;
 import com.meishu.sdk.nativ.recycler.NativeAdListener;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -22,9 +22,9 @@ public class GDTNativeAdListenerAdapter implements NativeADUnifiedListener {
     @Override
     public void onADLoaded(List<NativeUnifiedADData> list) {
         if (list != null && this.meishuAdListener != null) {
-            List<AdData> meishuAdDatas = new ArrayList<>();
+            List<NativeAdData> meishuAdDatas = new ArrayList<>();
             for (NativeUnifiedADData nativeUnifiedADData : list) {
-                meishuAdDatas.add(new GDTNativeAdDataAdapter(adWrapper,nativeUnifiedADData, this.meishuAdListener));
+                meishuAdDatas.add(new GDTNativeNativeAdDataAdapter(adWrapper,nativeUnifiedADData, this.meishuAdListener));
             }
             this.meishuAdListener.onAdLoaded(meishuAdDatas);
         }

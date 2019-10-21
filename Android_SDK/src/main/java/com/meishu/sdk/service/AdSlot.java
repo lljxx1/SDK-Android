@@ -20,6 +20,8 @@ public interface AdSlot {
 
     String[] getdUrl();
 
+    void setdUrl(String[] dUrls);
+
     String getAppName();
 
 }

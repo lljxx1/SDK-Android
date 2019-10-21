@@ -3,6 +3,7 @@ package com.meishu.sdk.splash.gdt;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.splash.SplashAdListener;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
@@ -24,7 +25,11 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
     @Override
     public void onADClicked() {
         if (this.splashAdWrapper.getSdkAdInfo() != null) {
-            HttpUtil.asyncGetWithWebViewUA(this.splashAdWrapper.getView().getContext(), this.splashAdWrapper.getSdkAdInfo().getClk(), new DefaultHttpGetWithNoHandlerCallback());
+            HttpUtil.asyncGetWithWebViewUA(
+                    this.splashAdWrapper.getView().getContext(),
+                    ClickHandler.replaceMacros(this.splashAdWrapper.getSdkAdInfo().getClk(),this.splashAd),
+                    new DefaultHttpGetWithNoHandlerCallback()
+            );
         }
         if (splashAd != null && splashAd.getInteractionListener() != null) {
             splashAd.getInteractionListener().onAdClicked();

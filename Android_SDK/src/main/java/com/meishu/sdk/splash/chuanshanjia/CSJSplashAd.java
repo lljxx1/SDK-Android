@@ -1,13 +1,17 @@
 package com.meishu.sdk.splash.chuanshanjia;
 
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.TTSplashAd;
+import com.meishu.sdk.BaseAdData;
+import com.meishu.sdk.TouchAdContainer;
+import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.domain.SdkAdInfo;
 import com.meishu.sdk.splash.SplashAd;
 import com.meishu.sdk.splash.SplashInteractionListener;
 
-public class CSJSplashAd implements SplashAd {
+public class CSJSplashAd extends BaseAdData implements SplashAd {
     private TTSplashAd ttSplashAd;
     private SplashInteractionListener interactionListener;
     private SdkAdInfo sdkAdInfo;
@@ -19,11 +23,23 @@ public class CSJSplashAd implements SplashAd {
 
     @Override
     public View getAdView() {
+        View adView =null;
         if (ttSplashAd != null) {
-            return ttSplashAd.getSplashView();
-        } else {
-            return null;
+            adView= ttSplashAd.getSplashView();
+
+            ViewGroup parent = (ViewGroup) adView.getParent();
+            if(parent!=null){
+                parent.removeView(adView);
+            }
+            TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
+            touchContainer.setTouchPositionListener(new TouchPositionListener(this));
+            touchContainer.addView(adView);
+            if(parent!=null){
+                parent.addView(touchContainer);
+            }
+            adView=touchContainer;
         }
+        return adView;
     }
 
     @Override

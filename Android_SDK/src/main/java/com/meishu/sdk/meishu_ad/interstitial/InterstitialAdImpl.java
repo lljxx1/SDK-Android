@@ -3,9 +3,10 @@ package com.meishu.sdk.meishu_ad.interstitial;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.meishu.sdk.BaseAdData;
 import com.meishu.sdk.meishu_ad.NativeDownloadListener;
 
-public class InterstitialAdImpl implements NativeInterstitialAd {
+public class InterstitialAdImpl extends BaseAdData implements NativeInterstitialAd {
     private View adView;
     private InteractionListener interactionListener;
     private NativeDownloadListener downloadListener;

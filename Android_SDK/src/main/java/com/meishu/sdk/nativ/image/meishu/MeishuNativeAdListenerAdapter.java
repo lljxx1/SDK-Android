@@ -1,7 +1,6 @@
 package com.meishu.sdk.nativ.image.meishu;
 
-import com.meishu.sdk.nativ.image.NativeAdData;
-import com.meishu.sdk.nativ.recycler.AdData;
+import com.meishu.sdk.nativ.recycler.NativeAdData;
 import com.meishu.sdk.nativ.recycler.NativeAdListener;
 
 import java.util.ArrayList;
@@ -15,10 +14,10 @@ public class MeishuNativeAdListenerAdapter implements NativeAdListener {
     }
 
     @Override
-    public void onAdLoaded(List<AdData> adDatas) {
+    public void onAdLoaded(List<NativeAdData> adDatas) {
         if (adDatas != null) {
-            List<NativeAdData> nativeAdDatas = new ArrayList<>();
-            for (AdData adData : adDatas) {
+            List<com.meishu.sdk.nativ.image.NativeAdData> nativeAdDatas = new ArrayList<>();
+            for (NativeAdData adData : adDatas) {
                 nativeAdDatas.add(new MeishuNativeAdDataAdapter(adData));
             }
             this.internalAdListener.onAdLoaded(nativeAdDatas);

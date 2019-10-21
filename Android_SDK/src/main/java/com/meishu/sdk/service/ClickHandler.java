@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.meishu.sdk.AdData;
 import com.meishu.sdk.MeishuConstants;
+import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.activity.WebviewActivity;
 import com.meishu.sdk.meishu_ad.NativeAd;
 import com.meishu.sdk.meishu_ad.NativeDownloadListenerImpl;
@@ -17,15 +20,44 @@ import com.meishu.sdk.utils.HttpUtil;
 public class ClickHandler {
     private static final String TAG = "ClickHandler";
 
+    public static String replaceMacros(@NonNull String url, AdData adData) {
+        TouchPositionListener.TouchPosition touchPosition = adData.getTouchPosition();
+long currentTime = System.currentTimeMillis();
+        return TextUtils.replace(url, new String[]{
+                "__DOWN_X__",
+                "__DOWN_Y__",
+                "__UP_X__",
+                "__UP_Y__",
+                "__MS_EVENT_SEC__",
+                "__MS_EVENT_MSEC__"
+        }, new String[]{
+                String.valueOf(touchPosition==null?-999:touchPosition.getDownX()),
+                String.valueOf(touchPosition==null?-999:touchPosition.getDownY()),
+                String.valueOf(touchPosition==null?-999:touchPosition.getUpX()),
+                String.valueOf(touchPosition==null?-999:touchPosition.getUpY()),
+                String.valueOf(touchPosition==null?currentTime/1000:touchPosition.getTouchTime().getTime() / 1000),
+                String.valueOf(touchPosition==null?currentTime:touchPosition.getTouchTime().getTime())
+        }).toString();
+    }
+
     public static void handleClick(NativeAd nativeAd) {
         AdSlot adSlot = nativeAd.getAdSlot();
         String[] clickUrls = adSlot.getClickUrl();
         if (clickUrls != null) {
             for (String clickUrl : clickUrls) {
                 if (!TextUtils.isEmpty(clickUrl)) {
-                    HttpUtil.asyncGetWithWebViewUA(nativeAd.getAdView().getContext(), clickUrl, new DefaultHttpGetWithNoHandlerCallback());
+                    HttpUtil.asyncGetWithWebViewUA(nativeAd.getAdView().getContext(), replaceMacros(clickUrl,nativeAd), new DefaultHttpGetWithNoHandlerCallback());
                 }
             }
+        }
+        String[] dUrls = adSlot.getdUrl();
+        if(dUrls!=null){
+            String[] handledDUrls=new String[dUrls.length];
+            int i=0;
+            for(String dUrl:dUrls){
+                handledDUrls[i++]=replaceMacros(dUrl,nativeAd);
+            }
+            adSlot.setdUrl(handledDUrls);
         }
         Context context = nativeAd.getAdView().getContext();
         if (!TextUtils.isEmpty(adSlot.getDeep_link())) {

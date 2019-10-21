@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.bytedance.sdk.openadsdk.TTSplashAd;
+import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.splash.SplashInteractionListener;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
@@ -21,7 +22,11 @@ public class CSJSplashInteractionListenerImpl implements TTSplashAd.AdInteractio
     @Override
     public void onAdClicked(View view, int i) {
         if (this.csjSplashAd.getSdkAdInfo() != null) {
-            HttpUtil.asyncGetWithWebViewUA(csjSplashAd.getAdView().getContext(), this.csjSplashAd.getSdkAdInfo().getClk(), new DefaultHttpGetWithNoHandlerCallback());
+            HttpUtil.asyncGetWithWebViewUA(
+                    csjSplashAd.getAdView().getContext(),
+                    ClickHandler.replaceMacros(this.csjSplashAd.getSdkAdInfo().getClk(),this.csjSplashAd),
+                    new DefaultHttpGetWithNoHandlerCallback()
+            );
         }
         if (meishuInteractionListener != null) {
             meishuInteractionListener.onAdClicked();

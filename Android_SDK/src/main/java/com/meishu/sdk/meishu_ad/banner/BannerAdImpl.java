@@ -3,9 +3,10 @@ package com.meishu.sdk.meishu_ad.banner;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.meishu.sdk.BaseAdData;
 import com.meishu.sdk.meishu_ad.NativeDownloadListener;
 
-public class BannerAdImpl implements BannerAd {
+public class BannerAdImpl extends BaseAdData implements BannerAd {
     private View adView;
     private InteractionListener interactionListener;
     private NativeDownloadListener downloadListener;

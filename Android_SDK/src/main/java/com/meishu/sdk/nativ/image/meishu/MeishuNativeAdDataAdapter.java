@@ -5,15 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meishu.sdk.nativ.image.AdInteractionListener;
-import com.meishu.sdk.nativ.image.NativeAdData;
-import com.meishu.sdk.nativ.recycler.AdData;
+import com.meishu.sdk.nativ.recycler.NativeAdData;
 
 import java.util.List;
 
-public class MeishuNativeAdDataAdapter implements NativeAdData {
-    private AdData internalAdData;
+public class MeishuNativeAdDataAdapter implements com.meishu.sdk.nativ.image.NativeAdData {
+    private NativeAdData internalAdData;
 
-    public MeishuNativeAdDataAdapter(AdData internalAdData) {
+    public MeishuNativeAdDataAdapter(NativeAdData internalAdData) {
         this.internalAdData = internalAdData;
     }
 

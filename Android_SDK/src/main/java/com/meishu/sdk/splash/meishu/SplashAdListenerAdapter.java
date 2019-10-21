@@ -20,7 +20,9 @@ public class SplashAdListenerAdapter implements AdListener {
 
     @Override
     public void onLoaded(NativeSplashAd splashAd) {
-        splashAdListener.onLoaded(new MeishuSplashAdAdapter(splashAd));
+        MeishuSplashAdAdapter nativeSplashAd=new MeishuSplashAdAdapter(splashAd);
+        nativeSplashAd.getAdView();
+        splashAdListener.onLoaded(nativeSplashAd);
     }
 
     @Override

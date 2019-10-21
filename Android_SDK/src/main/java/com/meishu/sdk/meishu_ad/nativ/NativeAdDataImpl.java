@@ -5,11 +5,12 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.meishu.sdk.BaseAdData;
 import com.meishu.sdk.meishu_ad.MediaView;
 
 import java.util.List;
 
-public class NativeAdDataImpl implements NativeAdData {
+public class NativeAdDataImpl extends BaseAdData implements NativeAdData {
     private int adPatternType;
     private String iconUrl;
     private String[] imgUrls;

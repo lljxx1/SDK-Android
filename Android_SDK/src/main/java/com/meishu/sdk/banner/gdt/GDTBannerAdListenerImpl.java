@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.meishu.sdk.banner.BannerAdListener;
+import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 import com.qq.e.ads.banner.BannerADListener;
@@ -26,7 +27,14 @@ public class GDTBannerAdListenerImpl implements BannerADListener {
     @Override
     public void onADClicked() {
         if (bannerViewWrapper.getSdkAdInfo() != null) {
-            HttpUtil.asyncGetWithWebViewUA(bannerViewWrapper.getAdView().getContext(), bannerViewWrapper.getSdkAdInfo().getClk(), new DefaultHttpGetWithNoHandlerCallback());
+            HttpUtil.asyncGetWithWebViewUA(
+                    bannerViewWrapper.getAdView().getContext(),
+                    ClickHandler.replaceMacros(
+                            bannerViewWrapper.getSdkAdInfo().getClk(),
+                            this.bannerAd
+                    ),
+                    new DefaultHttpGetWithNoHandlerCallback()
+            );
         }
         if (this.bannerAd != null && this.bannerAd.getInteractionListener() != null) {
             this.bannerAd.getInteractionListener().onAdClicked();

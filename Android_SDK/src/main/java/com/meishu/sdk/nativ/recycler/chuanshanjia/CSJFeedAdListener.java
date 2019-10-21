@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
-import com.meishu.sdk.nativ.recycler.AdData;
+import com.meishu.sdk.nativ.recycler.NativeAdData;
 import com.meishu.sdk.nativ.recycler.NativeAdListener;
 
 import java.util.ArrayList;
@@ -29,9 +29,9 @@ public class CSJFeedAdListener implements TTAdNative.FeedAdListener {
     @Override
     public void onFeedAdLoad(List<TTFeedAd> list) {
         if (list != null && this.meishuAdListener != null) {
-            List<AdData> meishuAdDatas = new ArrayList<>();
+            List<NativeAdData> meishuAdDatas = new ArrayList<>();
             for (TTFeedAd ttFeedAd : list) {
-                meishuAdDatas.add(new CSJAdDataAdapter(this.adNativeWrapper, ttFeedAd));
+                meishuAdDatas.add(new CSJNativeAdDataAdapter(this.adNativeWrapper, ttFeedAd));
             }
             this.meishuAdListener.onAdLoaded(meishuAdDatas);
         }

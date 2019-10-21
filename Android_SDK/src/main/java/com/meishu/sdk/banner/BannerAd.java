@@ -2,7 +2,9 @@ package com.meishu.sdk.banner;
 
 import android.view.View;
 
-public interface BannerAd {
+import com.meishu.sdk.AdData;
+
+public interface BannerAd extends AdData {
     /**
      * 获取广告view
      *

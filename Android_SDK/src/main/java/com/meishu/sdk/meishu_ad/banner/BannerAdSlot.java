@@ -119,6 +119,11 @@ public class BannerAdSlot implements AdSlot {
         return dUrl;
     }
 
+    @Override
+    public void setdUrl(String[] dUrls) {
+        this.dUrl=dUrls;
+    }
+
     public String getAppName() {
         return appName;
     }

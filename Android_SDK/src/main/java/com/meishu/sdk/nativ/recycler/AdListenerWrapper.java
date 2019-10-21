@@ -19,7 +19,7 @@ public class AdListenerWrapper implements NativeAdListener {
     }
 
     @Override
-    public void onAdLoaded(List<AdData> ads) {
+    public void onAdLoaded(List<NativeAdData> ads) {
         HttpUtil.asyncGetWithWebViewUA(this.delegateChain.getActivity(), this.delegateChain.getSdkAdInfo().getRsp(), new DefaultHttpGetWithNoHandlerCallback());
         if (this.apiAdListener != null) {
             this.apiAdListener.onAdLoaded(ads);

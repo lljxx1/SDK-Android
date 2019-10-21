@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.bytedance.sdk.openadsdk.TTBannerAd;
+import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.banner.BannerInteractionListener;
+import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 
@@ -21,7 +23,16 @@ public class CSJBannerInteractionListenerImpl implements TTBannerAd.AdInteractio
     @Override
     public void onAdClicked(View view, int i) {
         if (this.csjBannerAd.getSdkAdInfo() != null) {
-            HttpUtil.asyncGetWithWebViewUA(this.csjBannerAd.getAdView().getContext(), this.csjBannerAd.getSdkAdInfo().getClk(), new DefaultHttpGetWithNoHandlerCallback());
+            TouchPositionListener.TouchPosition touchPosition = csjBannerAd.getTouchPosition();
+
+            HttpUtil.asyncGetWithWebViewUA(
+                    this.csjBannerAd.getAdView().getContext(),
+                    ClickHandler.replaceMacros(
+                            this.csjBannerAd.getSdkAdInfo().getClk(),
+                            this.csjBannerAd
+                    ),
+                    new DefaultHttpGetWithNoHandlerCallback()
+            );
         }
         interactionListener.onAdClicked();
     }
