@@ -39,6 +39,7 @@ public class BannerAdLoader extends AdLoader {
                 .setDn_inst_start(meishuAdInfo.getDn_inst_start())
                 .setDp_start(meishuAdInfo.getDp_start())
                 .setDp_fail(meishuAdInfo.getDp_fail())
+                .setClickid(meishuAdInfo.getClickid())
                 .build();
         return new MeishuViewWrapper(this, adSlot);
     }

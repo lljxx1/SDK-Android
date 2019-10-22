@@ -27,7 +27,7 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
         if (this.splashAdWrapper.getSdkAdInfo() != null) {
             HttpUtil.asyncGetWithWebViewUA(
                     this.splashAdWrapper.getView().getContext(),
-                    ClickHandler.replaceMacros(this.splashAdWrapper.getSdkAdInfo().getClk(),this.splashAd),
+                    ClickHandler.replaceOtherMacros(this.splashAdWrapper.getSdkAdInfo().getClk(),this.splashAd),
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }

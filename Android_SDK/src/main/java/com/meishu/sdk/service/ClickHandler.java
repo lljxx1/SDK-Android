@@ -20,9 +20,9 @@ import com.meishu.sdk.utils.HttpUtil;
 public class ClickHandler {
     private static final String TAG = "ClickHandler";
 
-    public static String replaceMacros(@NonNull String url, AdData adData) {
+    public static String replaceOtherMacros(@NonNull String url, AdData adData) {
         TouchPositionListener.TouchPosition touchPosition = adData.getTouchPosition();
-long currentTime = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
         return TextUtils.replace(url, new String[]{
                 "__DOWN_X__",
                 "__DOWN_Y__",
@@ -31,13 +31,25 @@ long currentTime = System.currentTimeMillis();
                 "__MS_EVENT_SEC__",
                 "__MS_EVENT_MSEC__"
         }, new String[]{
-                String.valueOf(touchPosition==null?-999:touchPosition.getDownX()),
-                String.valueOf(touchPosition==null?-999:touchPosition.getDownY()),
-                String.valueOf(touchPosition==null?-999:touchPosition.getUpX()),
-                String.valueOf(touchPosition==null?-999:touchPosition.getUpY()),
-                String.valueOf(touchPosition==null?currentTime/1000:touchPosition.getTouchTime().getTime() / 1000),
-                String.valueOf(touchPosition==null?currentTime:touchPosition.getTouchTime().getTime())
+                String.valueOf(touchPosition == null ? -999 : touchPosition.getDownX()),
+                String.valueOf(touchPosition == null ? -999 : touchPosition.getDownY()),
+                String.valueOf(touchPosition == null ? -999 : touchPosition.getUpX()),
+                String.valueOf(touchPosition == null ? -999 : touchPosition.getUpY()),
+                String.valueOf(touchPosition == null ? currentTime / 1000 : touchPosition.getTouchTime().getTime() / 1000),
+                String.valueOf(touchPosition == null ? currentTime : touchPosition.getTouchTime().getTime())
         }).toString();
+    }
+
+    public static String replaceMacros(@NonNull String url, NativeAd nativeAd) {
+        AdSlot adSlot = nativeAd.getAdSlot();
+        String replaceOtherMacros = replaceOtherMacros(url, nativeAd);
+        return TextUtils.replace(
+                replaceOtherMacros,
+                new String[]{"__CLICK_ID__"},
+                new String[]{
+                        TextUtils.isEmpty(adSlot.getClickid()) ? "__CLICK_ID__" : adSlot.getClickid()
+                }
+        ).toString();
     }
 
     public static void handleClick(NativeAd nativeAd) {
@@ -46,16 +58,16 @@ long currentTime = System.currentTimeMillis();
         if (clickUrls != null) {
             for (String clickUrl : clickUrls) {
                 if (!TextUtils.isEmpty(clickUrl)) {
-                    HttpUtil.asyncGetWithWebViewUA(nativeAd.getAdView().getContext(), replaceMacros(clickUrl,nativeAd), new DefaultHttpGetWithNoHandlerCallback());
+                    HttpUtil.asyncGetWithWebViewUA(nativeAd.getAdView().getContext(), replaceMacros(clickUrl, nativeAd), new DefaultHttpGetWithNoHandlerCallback());
                 }
             }
         }
         String[] dUrls = adSlot.getdUrl();
-        if(dUrls!=null){
-            String[] handledDUrls=new String[dUrls.length];
-            int i=0;
-            for(String dUrl:dUrls){
-                handledDUrls[i++]=replaceMacros(dUrl,nativeAd);
+        if (dUrls != null) {
+            String[] handledDUrls = new String[dUrls.length];
+            int i = 0;
+            for (String dUrl : dUrls) {
+                handledDUrls[i++] = replaceMacros(dUrl, nativeAd);
             }
             adSlot.setdUrl(handledDUrls);
         }
@@ -72,7 +84,7 @@ long currentTime = System.currentTimeMillis();
                 if (urls != null) {
                     for (String dp_start : urls) {
                         if (!TextUtils.isEmpty(dp_start)) {
-                            HttpUtil.asyncGetWithWebViewUA(context, dp_start, new DefaultHttpGetWithNoHandlerCallback());
+                            HttpUtil.asyncGetWithWebViewUA(context, replaceMacros(dp_start, nativeAd), new DefaultHttpGetWithNoHandlerCallback());
                         }
                     }
                 }

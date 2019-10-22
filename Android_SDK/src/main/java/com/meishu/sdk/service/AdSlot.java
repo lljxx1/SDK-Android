@@ -24,4 +24,6 @@ public interface AdSlot {
 
     String getAppName();
 
+    String getClickid();
+
 }

@@ -53,6 +53,7 @@ public class RewardVideoLoader extends AdLoader {
                 .setVideo_replay(meishuAdInfo.getVideo_replay())
                 .setImageUrl(meishuAdInfo.getSrcUrls())
                 .setVideo_cover(meishuAdInfo.getVideo_cover())
+                .setClickid(meishuAdInfo.getClickid())
                 .build();
         int creativeType = 1;
 

@@ -21,6 +21,7 @@ public class InterstitialAdSlot implements AdSlot {
     private String[] dn_inst_start;
     private String[] dp_start;
     private String[] dp_fail;
+    private String clickid;
 
     public class Builder {
 
@@ -107,6 +108,11 @@ public class InterstitialAdSlot implements AdSlot {
             return this;
         }
 
+        public Builder setClickid(String clickid) {
+            InterstitialAdSlot.this.clickid = clickid;
+            return this;
+        }
+
         public InterstitialAdSlot build() {
             return InterstitialAdSlot.this;
         }
@@ -147,6 +153,11 @@ public class InterstitialAdSlot implements AdSlot {
 
     public String getAppName() {
         return appName;
+    }
+
+    @Override
+    public String getClickid() {
+        return this.clickid;
     }
 
     @Override

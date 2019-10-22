@@ -5,6 +5,7 @@ public class MeishuAdInfo {
      * ssp平台广告主id，非必须
      */
     private String ader_id;
+    private String from;
     private String app_name;
     /**
      * ssp平台创意id，非必须，保留字段
@@ -124,12 +125,22 @@ public class MeishuAdInfo {
 
     private SdkAdInfo[] sdk;
 
+    private String clickid;
+
     public String getAder_id() {
         return ader_id;
     }
 
     public void setAder_id(String ader_id) {
         this.ader_id = ader_id;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public String getApp_name() {
@@ -394,5 +405,13 @@ public class MeishuAdInfo {
 
     public void setSdk(SdkAdInfo[] sdk) {
         this.sdk = sdk;
+    }
+
+    public String getClickid() {
+        return clickid;
+    }
+
+    public void setClickid(String clickid) {
+        this.clickid = clickid;
     }
 }

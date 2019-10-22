@@ -49,6 +49,7 @@ public class NativeAdSlot implements AdSlot {
     private String[] video_unmute;
     private String[] video_replay;
     private String video_cover;
+    private String clickid;
 
     public class Builder {
 
@@ -206,6 +207,11 @@ public class NativeAdSlot implements AdSlot {
 
         public Builder setVideo_cover(String video_cover) {
             NativeAdSlot.this.video_cover = video_cover;
+            return this;
+        }
+
+        public Builder setClickid(String clickid) {
+            NativeAdSlot.this.clickid = clickid;
             return this;
         }
 
@@ -367,4 +373,8 @@ public class NativeAdSlot implements AdSlot {
         return video_cover;
     }
 
+    @Override
+    public String getClickid() {
+        return clickid;
+    }
 }

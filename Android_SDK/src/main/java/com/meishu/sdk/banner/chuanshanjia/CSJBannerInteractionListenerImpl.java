@@ -27,7 +27,7 @@ public class CSJBannerInteractionListenerImpl implements TTBannerAd.AdInteractio
 
             HttpUtil.asyncGetWithWebViewUA(
                     this.csjBannerAd.getAdView().getContext(),
-                    ClickHandler.replaceMacros(
+                    ClickHandler.replaceOtherMacros(
                             this.csjBannerAd.getSdkAdInfo().getClk(),
                             this.csjBannerAd
                     ),

@@ -19,6 +19,7 @@ public class BannerAdSlot implements AdSlot {
     private String[] dn_inst_start;
     private String[] dp_start;
     private String[] dp_fail;
+    private String clickid;
 
     public class Builder {
         public Builder() {
@@ -94,6 +95,11 @@ public class BannerAdSlot implements AdSlot {
             return this;
         }
 
+        public Builder setClickid(String clickid) {
+            BannerAdSlot.this.clickid = clickid;
+            return this;
+        }
+
         public BannerAdSlot build() {
             return BannerAdSlot.this;
         }
@@ -166,5 +172,8 @@ public class BannerAdSlot implements AdSlot {
         return dp_fail;
     }
 
-
+    @Override
+    public String getClickid() {
+        return clickid;
+    }
 }

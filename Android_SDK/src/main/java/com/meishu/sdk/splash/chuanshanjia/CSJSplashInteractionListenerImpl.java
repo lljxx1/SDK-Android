@@ -24,7 +24,7 @@ public class CSJSplashInteractionListenerImpl implements TTSplashAd.AdInteractio
         if (this.csjSplashAd.getSdkAdInfo() != null) {
             HttpUtil.asyncGetWithWebViewUA(
                     csjSplashAd.getAdView().getContext(),
-                    ClickHandler.replaceMacros(this.csjSplashAd.getSdkAdInfo().getClk(),this.csjSplashAd),
+                    ClickHandler.replaceOtherMacros(this.csjSplashAd.getSdkAdInfo().getClk(),this.csjSplashAd),
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }

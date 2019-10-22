@@ -155,7 +155,7 @@ public class RequestUtil {
     private static String getNetworkType(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        return networkInfo.getTypeName();
+        return networkInfo==null?"":networkInfo.getTypeName();
     }
 
     /**

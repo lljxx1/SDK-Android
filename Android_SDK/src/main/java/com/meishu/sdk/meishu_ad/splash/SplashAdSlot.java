@@ -22,6 +22,7 @@ public class SplashAdSlot implements AdSlot {
     private String[] dn_inst_start;
     private String[] dp_start;
     private String[] dp_fail;
+    private String clickid;
 
     public class Builder {
         public Builder() {
@@ -76,6 +77,7 @@ public class SplashAdSlot implements AdSlot {
             SplashAdSlot.this.clickUrl = clickUrl;
             return this;
         }
+
         public Builder setDn_start(String[] dn_start) {
             SplashAdSlot.this.dn_start = dn_start;
             return this;
@@ -90,6 +92,7 @@ public class SplashAdSlot implements AdSlot {
             SplashAdSlot.this.dn_inst_start = dn_inst_start;
             return this;
         }
+
         public Builder setDp_start(String[] dp_start) {
             SplashAdSlot.this.dp_start = dp_start;
             return this;
@@ -97,6 +100,11 @@ public class SplashAdSlot implements AdSlot {
 
         public Builder setDp_fail(String[] dp_fail) {
             SplashAdSlot.this.dp_fail = dp_fail;
+            return this;
+        }
+
+        public Builder setClickid(String clickid) {
+            SplashAdSlot.this.clickid = clickid;
             return this;
         }
 
@@ -161,7 +169,7 @@ public class SplashAdSlot implements AdSlot {
 
     @Override
     public void setdUrl(String[] dUrls) {
-        this.dUrl=dUrls;
+        this.dUrl = dUrls;
     }
 
     public String getAppName() {
@@ -176,5 +184,10 @@ public class SplashAdSlot implements AdSlot {
     @Override
     public String[] getClickUrl() {
         return this.clickUrl;
+    }
+
+    @Override
+    public String getClickid() {
+        return clickid;
     }
 }

@@ -29,7 +29,7 @@ public class GDTBannerAdListenerImpl implements BannerADListener {
         if (bannerViewWrapper.getSdkAdInfo() != null) {
             HttpUtil.asyncGetWithWebViewUA(
                     bannerViewWrapper.getAdView().getContext(),
-                    ClickHandler.replaceMacros(
+                    ClickHandler.replaceOtherMacros(
                             bannerViewWrapper.getSdkAdInfo().getClk(),
                             this.bannerAd
                     ),
