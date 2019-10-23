@@ -47,6 +47,7 @@
         android:id="@+id/rewardVideoAd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="激励视频" />
     <Button
         android:id="@+id/open_popupwindow"

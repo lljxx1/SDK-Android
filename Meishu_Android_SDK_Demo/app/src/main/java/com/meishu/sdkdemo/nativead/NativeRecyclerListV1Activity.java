@@ -23,7 +23,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.meishu.sdk.MeishuAdPatternType;
-import com.meishu.sdk.nativ.recycler.AdData;
+import com.meishu.sdk.nativ.recycler.NativeAdData;
 import com.meishu.sdk.nativ.recycler.AdInteractionListener;
 import com.meishu.sdk.nativ.recycler.NativeAdListener;
 import com.meishu.sdk.nativ.recycler.NativeAdLoader;
@@ -83,12 +83,12 @@ public class NativeRecyclerListV1Activity extends AppCompatActivity implements N
         });
     }
 
-    private List<AdData> loadedAdDatas = new ArrayList<>();
+    private List<NativeAdData> loadedAdDatas = new ArrayList<>();
     private static final int MSG_REFRESH_LIST = 1;
     private H mHandler = new H();
 
     @Override
-    public void onAdLoaded(List<AdData> adDatas) {
+    public void onAdLoaded(List<NativeAdData> adDatas) {
         this.mIsLoading = false;
         loadedAdDatas.addAll(adDatas);
         Message msg = mHandler.obtainMessage(MSG_REFRESH_LIST, adDatas);
@@ -132,7 +132,7 @@ public class NativeRecyclerListV1Activity extends AppCompatActivity implements N
     protected void onDestroy() {
         super.onDestroy();
         if (this.loadedAdDatas != null) {
-            for (AdData adData : loadedAdDatas) {
+            for (NativeAdData adData : loadedAdDatas) {
                 adData.destroy();
             }
         }
@@ -156,7 +156,7 @@ public class NativeRecyclerListV1Activity extends AppCompatActivity implements N
             mData.add(item);
         }
 
-        public void addAdToPosition(AdData nativeAdData, int position) {
+        public void addAdToPosition(NativeAdData nativeAdData, int position) {
             if (position >= 0 && position < mData.size()) {
                 mData.add(position, nativeAdData);
                 mADSet.add(position);
@@ -200,7 +200,7 @@ public class NativeRecyclerListV1Activity extends AppCompatActivity implements N
         }
 
         private void initItemView(int position, final CustomHolder holder) {
-            final AdData ad = (AdData) mData.get(position);
+            final NativeAdData ad = (NativeAdData) mData.get(position);
             AQuery logoAQ = holder.logoAQ;
             String iconUrl = null;
             if (!TextUtils.isEmpty(ad.getIconUrl())) {
@@ -297,7 +297,7 @@ public class NativeRecyclerListV1Activity extends AppCompatActivity implements N
 
         }
 
-        private void setAdListener(final CustomHolder holder, final AdData ad) {
+        private void setAdListener(final CustomHolder holder, final NativeAdData ad) {
             // 视频广告
             if (ad.getAdPatternType() == MeishuAdPatternType.VIDEO) {
                 ad.bindMediaView(holder.mediaView, new AdMediaListener() {
@@ -417,7 +417,7 @@ public class NativeRecyclerListV1Activity extends AppCompatActivity implements N
                         mAdapter.addNormalItem(new NormalItem(count + i));
                     }
 
-                    List<AdData> ads = (List<AdData>) msg.obj;
+                    List<NativeAdData> ads = (List<NativeAdData>) msg.obj;
                     if (ads != null && ads.size() > 0 && mAdapter != null) {
                         for (int i = 0; i < ads.size(); i++) {
                             mAdapter.addAdToPosition(ads.get(i), count + i * AD_DISTANCE + FIRST_AD_POSITION);

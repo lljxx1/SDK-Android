@@ -30,6 +30,7 @@ public class BannerAdActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.loadBannerAd:
                 bannerView = new BannerAdLoader(this, "1003908", this);
+//                bannerView = new BannerAdLoader(this, "200000", this);
                 bannerView.loadAd();
                 break;
         }

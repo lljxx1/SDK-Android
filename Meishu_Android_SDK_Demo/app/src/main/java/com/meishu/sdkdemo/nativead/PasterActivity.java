@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.meishu.sdk.nativ.recycler.AdData;
+import com.meishu.sdk.nativ.recycler.NativeAdData;
 import com.meishu.sdk.nativ.recycler.AdInteractionListener;
 import com.meishu.sdk.nativ.recycler.AdMediaListener;
 import com.meishu.sdk.nativ.recycler.NativeAdListener;
@@ -32,14 +32,14 @@ public class PasterActivity extends AppCompatActivity implements NativeAdListene
         nativeAD.loadAd();
     }
 
-    private List<AdData> adDatas;
+    private List<NativeAdData> adDatas;
 
     @Override
-    public void onAdLoaded(List<AdData> adDatas) {
+    public void onAdLoaded(List<NativeAdData> adDatas) {
         this.adDatas = adDatas;
         if (adDatas != null && adDatas.size() > 0) {
             this.video_container.setVisibility(View.VISIBLE);
-            AdData ad = adDatas.get(0);
+            NativeAdData ad = adDatas.get(0);
             List<View> clickableViews = new ArrayList();
             clickableViews.add(video_container);
             ad.bindAdToView(this, video_container, clickableViews, new AdInteractionListener() {
@@ -97,7 +97,7 @@ public class PasterActivity extends AppCompatActivity implements NativeAdListene
     protected void onDestroy() {
         super.onDestroy();
         if (this.adDatas != null) {
-            for (AdData adData : adDatas) {
+            for (NativeAdData adData : adDatas) {
                 adData.destroy();
             }
         }
