@@ -4,9 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-public class TouchAdContainer extends RelativeLayout {
+public class TouchAdContainer extends FrameLayout {
 
     private TouchPositionListener touchPositionListener;
 
@@ -34,7 +35,4 @@ public class TouchAdContainer extends RelativeLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public TouchAdContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
 }

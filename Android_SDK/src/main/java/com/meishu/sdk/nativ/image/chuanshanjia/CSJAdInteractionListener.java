@@ -5,14 +5,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.bytedance.sdk.openadsdk.TTNativeAd;
-import com.meishu.sdk.nativ.image.AdInteractionListener;
+import com.meishu.sdk.nativ.image.ImageAdInteractionListener;
 
 public class CSJAdInteractionListener implements TTNativeAd.AdInteractionListener {
     private static final String TAG = "CSJAdInteractionListene";
-    private AdInteractionListener meishuInteractionListener;
-    private CSJNativeAdDataAdapter csjNativeAdDataAdapter;
+    private ImageAdInteractionListener meishuInteractionListener;
+    private CSJImageAdDataAdapter csjNativeAdDataAdapter;
 
-    public CSJAdInteractionListener(@NonNull CSJNativeAdDataAdapter csjNativeAdDataAdapter, AdInteractionListener meishuInteractionListener) {
+    public CSJAdInteractionListener(@NonNull CSJImageAdDataAdapter csjNativeAdDataAdapter, ImageAdInteractionListener meishuInteractionListener) {
         this.csjNativeAdDataAdapter=csjNativeAdDataAdapter;
         this.meishuInteractionListener = meishuInteractionListener;
     }

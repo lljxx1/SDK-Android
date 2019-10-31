@@ -14,6 +14,7 @@ import com.meishu.sdk.meishu_ad.banner.BannerAd;
 public class MeishuBannerAdAdapter extends BaseAdData implements com.meishu.sdk.banner.BannerAd {
     private BannerAd nativeBannerAd;
     private BannerInteractionListener interactionListener;
+    private View adView;
 
     public MeishuBannerAdAdapter(@NonNull BannerAd nativeBannerAd) {
         this.nativeBannerAd = nativeBannerAd;
@@ -21,18 +22,11 @@ public class MeishuBannerAdAdapter extends BaseAdData implements com.meishu.sdk.
 
     @Override
     public View getAdView() {
-        View adView=this.nativeBannerAd.getAdView();
-        ViewGroup parent = (ViewGroup) adView.getParent();
-        if(parent!=null){
-            parent.removeView(adView);
-        }
-        TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
-        touchContainer.setTouchPositionListener(new TouchPositionListener(this.nativeBannerAd));
-        touchContainer.addView(adView);
-        if(parent!=null){
-            parent.addView(touchContainer);
-        }
-        return touchContainer;
+        return this.adView;
+    }
+
+    public void setAdView(View adView) {
+        this.adView = adView;
     }
 
     @Override

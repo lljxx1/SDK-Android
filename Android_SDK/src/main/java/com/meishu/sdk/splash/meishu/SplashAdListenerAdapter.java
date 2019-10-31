@@ -2,7 +2,11 @@ package com.meishu.sdk.splash.meishu;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.meishu.sdk.TouchAdContainer;
+import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.meishu_ad.splash.AdListener;
 import com.meishu.sdk.meishu_ad.splash.NativeSplashAd;
 import com.meishu.sdk.splash.SplashAdListener;
@@ -20,9 +24,25 @@ public class SplashAdListenerAdapter implements AdListener {
 
     @Override
     public void onLoaded(NativeSplashAd splashAd) {
-        MeishuSplashAdAdapter nativeSplashAd=new MeishuSplashAdAdapter(splashAd);
-        nativeSplashAd.getAdView();
-        splashAdListener.onLoaded(nativeSplashAd);
+        View adView =splashAd.getAdView();
+        if(adView!=null){
+            MeishuSplashAdAdapter meishuSplashAd=new MeishuSplashAdAdapter(splashAd);
+
+            ViewGroup parent = (ViewGroup) adView.getParent();
+            if(parent!=null){
+                parent.removeView(adView);
+            }
+            TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
+            touchContainer.setTouchPositionListener(new TouchPositionListener(meishuSplashAd));
+            touchContainer.addView(adView);
+            if(parent!=null){
+                parent.addView(touchContainer);
+            }
+            adView=touchContainer;
+
+            meishuSplashAd.setAdView(adView);
+            splashAdListener.onLoaded(meishuSplashAd);
+        }
     }
 
     @Override

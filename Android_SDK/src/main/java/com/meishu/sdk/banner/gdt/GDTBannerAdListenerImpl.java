@@ -2,8 +2,11 @@ package com.meishu.sdk.banner.gdt;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
+import com.meishu.sdk.TouchAdContainer;
+import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.banner.BannerAdListener;
 import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
@@ -65,11 +68,19 @@ public class GDTBannerAdListenerImpl implements BannerADListener {
     @Override
     public void onADReceiv() {
         if (meishuBannerAdListener != null) {
-            this.bannerAd = new GDTBannerAd(bannerViewWrapper.getAdView());
-            if (bannerAd.getAdView() != null && bannerAd.getAdView().getParent() != null) {
-                ViewGroup parent = (ViewGroup) bannerAd.getAdView().getParent();
-                parent.removeView(bannerAd.getAdView());
+            View  originalView = bannerViewWrapper.getAdView();
+            if (originalView != null && originalView.getParent() != null) {//广点通广告会滚动刷新内容，滚动后originalView.getParent的值为之前附加上的TouchAdContainer
+                ViewGroup parent = (ViewGroup) originalView.getParent();
+                parent.removeView(originalView);
             }
+
+            this.bannerAd = new GDTBannerAd();
+
+            TouchAdContainer touchContainer = new TouchAdContainer(originalView.getContext());
+            touchContainer.setTouchPositionListener(new TouchPositionListener(bannerAd));
+            touchContainer.addView(originalView);
+            bannerAd.setAdView(touchContainer);
+
             meishuBannerAdListener.onLoaded(this.bannerAd);
         }
     }

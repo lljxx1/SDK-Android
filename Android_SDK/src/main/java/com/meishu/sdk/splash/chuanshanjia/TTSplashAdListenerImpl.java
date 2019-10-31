@@ -1,6 +1,6 @@
 package com.meishu.sdk.splash.chuanshanjia;
 
-import android.util.Log;
+import android.view.View;
 
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
@@ -25,14 +25,27 @@ public class TTSplashAdListenerImpl implements TTAdNative.SplashAdListener {
 
     @Override
     public void onTimeout() {
-        Log.d(TAG, "onTimeout: ");
+        if (this.meishuAdListener != null) {
+            this.meishuAdListener.onError();
+        }
     }
 
     @Override
     public void onSplashAdLoad(TTSplashAd ttSplashAd) {
         if (this.meishuAdListener != null && ttSplashAd != null) {
-            adNativeWrapper.getView().addView(ttSplashAd.getSplashView());
-            this.meishuAdListener.onLoaded(new CSJSplashAd(this.adNativeWrapper.getSdkAdInfo(), ttSplashAd));
+            CSJSplashAd csjSplashAd = new CSJSplashAd(this.adNativeWrapper.getSdkAdInfo(), ttSplashAd,this.meishuAdListener);
+            View adView = ttSplashAd.getSplashView();
+
+            //这里不添加TouchAdContainer，添加后会使广告不能全屏显示
+//            TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
+//            touchContainer.setTouchPositionListener(new TouchPositionListener(csjSplashAd));
+//            touchContainer.addView(adView);
+//            adView = touchContainer;
+
+            csjSplashAd.setAdView(adView);
+
+            adNativeWrapper.getView().addView(adView);
+            this.meishuAdListener.onLoaded(csjSplashAd);
         }
     }
 }

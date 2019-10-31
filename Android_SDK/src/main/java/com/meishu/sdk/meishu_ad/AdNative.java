@@ -14,6 +14,8 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.meishu.sdk.R;
+import com.meishu.sdk.TouchAdContainer;
+import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.activity.RewardVideoPlayerActivity;
 import com.meishu.sdk.meishu_ad.banner.BannerAdImpl;
 import com.meishu.sdk.meishu_ad.banner.BannerAdSlot;
@@ -128,7 +130,7 @@ public class AdNative {
                                     if (nativeAd.getInteractionListener() != null) {
                                         nativeAd.getInteractionListener().onSkip();
                                         if (adRoot.getParent() != null) {
-                                            ((ViewGroup) adRoot.getParent()).removeView(adRoot);
+//                                            ((ViewGroup) adRoot.getParent()).removeView(adRoot);//关闭广告时不移除广告图片，否则导致开发者应用在启动新activity时出现一段白屏。
                                         }
                                         if (adListener != null) {
                                             adListener.onADClosed();
@@ -159,7 +161,6 @@ public class AdNative {
             @Override
             public void onClick(View v) {
                 popup.dismiss();
-                adListener.onADClosed();
             }
         }, popup.findViewById(R.id.popupwindow_cancel));
         popup.setOnDismissListener(new BasePopupWindow.OnDismissListener() {
@@ -181,8 +182,18 @@ public class AdNative {
                         @Override
                         protected void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                             iv.setImageBitmap(bm);
+                            iv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (nativeAd.getInteractionListener() != null) {
+                                        nativeAd.getInteractionListener().onAdClicked();
+                                    }
+                                }
+                            });
+                            nativeAd.setAdView(interstitialRoot);
+                            TouchAdContainer touchAdContainer = interstitialRoot.findViewById(R.id.meishu_interstitial_touch_container);
+                            touchAdContainer.setTouchPositionListener(new TouchPositionListener(nativeAd));
                             if (adListener != null) {
-                                nativeAd.setAdView(interstitialRoot);
                                 popup.showPopupWindow();
                                 adListener.onLoaded(nativeAd);
                                 adListener.onADExposure();
@@ -191,14 +202,6 @@ public class AdNative {
                     });
 
         }
-        aQuery.id(R.id.interstitial_image).clicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (nativeAd.getInteractionListener() != null) {
-                    nativeAd.getInteractionListener().onAdClicked();
-                }
-            }
-        });
 
     }
 

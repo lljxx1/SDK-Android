@@ -7,14 +7,14 @@ import com.meishu.sdk.BaseMeishuWrapper;
 import com.meishu.sdk.meishu_ad.AdNative;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdSlot;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdWrapper;
-import com.meishu.sdk.nativ.recycler.NativeAdLoader;
+import com.meishu.sdk.nativ.recycler.RecyclerAdLoader;
 
 public class MeishuAdNativeWrapper extends BaseMeishuWrapper implements NativeAdWrapper {
     private AdNative adNative;
     private NativeAdSlot adSlot;
-    private NativeAdLoader adLoader;
+    private RecyclerAdLoader adLoader;
 
-    public MeishuAdNativeWrapper(@NonNull NativeAdLoader adLoader, NativeAdSlot adSlot) {
+    public MeishuAdNativeWrapper(@NonNull RecyclerAdLoader adLoader, NativeAdSlot adSlot) {
         super(adLoader.getActivity());
         this.adLoader = adLoader;
         this.adNative = new AdNative(adLoader.getActivity());

@@ -3,7 +3,7 @@ package com.meishu.sdk.nativ.recycler.gdt;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.meishu.sdk.nativ.recycler.AdInteractionListener;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
 import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
@@ -12,12 +12,12 @@ import com.qq.e.comm.util.AdError;
 
 public class GDTAdInteractionListener implements NativeADEventListener {
     private static final String TAG = "GDTAdInteractionListene";
-    private AdInteractionListener meishuAdInteractionListener;
-    private GDTNativeNativeAdDataAdapter adData;
+    private RecylcerAdInteractionListener meishuRecylcerAdInteractionListener;
+    private GDTNativeRecyclerAdDataAdapter adData;
 
-    public GDTAdInteractionListener(@NonNull GDTNativeNativeAdDataAdapter adData, AdInteractionListener meishuAdInteractionListener) {
+    public GDTAdInteractionListener(@NonNull GDTNativeRecyclerAdDataAdapter adData, RecylcerAdInteractionListener meishuRecylcerAdInteractionListener) {
         this.adData = adData;
-        this.meishuAdInteractionListener = meishuAdInteractionListener;
+        this.meishuRecylcerAdInteractionListener = meishuRecylcerAdInteractionListener;
     }
 
     @Override
@@ -29,8 +29,8 @@ public class GDTAdInteractionListener implements NativeADEventListener {
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }
-        if (this.meishuAdInteractionListener != null) {
-            this.meishuAdInteractionListener.onAdClicked();
+        if (this.meishuRecylcerAdInteractionListener != null) {
+            this.meishuRecylcerAdInteractionListener.onAdClicked();
         }
     }
 

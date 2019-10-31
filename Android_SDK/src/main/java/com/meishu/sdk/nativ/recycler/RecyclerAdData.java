@@ -6,15 +6,15 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-public interface NativeAdData{
+public interface RecyclerAdData {
 
     int getAdPatternType();
 
     int getInteractionType();
 
-    void bindAdToView(Activity activity, ViewGroup container, List<View> clickableViews, AdInteractionListener adInteractionListener);
+    void bindAdToView(Activity activity, ViewGroup container, List<View> clickableViews, RecylcerAdInteractionListener recylcerAdInteractionListener);
 
-    void bindMediaView(ViewGroup mediaView, AdMediaListener nativeAdMediaListener);
+    void bindMediaView(ViewGroup mediaView, RecyclerAdMediaListener nativeRecyclerAdMediaListener);
 
     String getIconUrl();
 

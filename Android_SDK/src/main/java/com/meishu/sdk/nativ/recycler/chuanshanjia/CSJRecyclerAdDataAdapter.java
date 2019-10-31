@@ -12,23 +12,23 @@ import com.meishu.sdk.BaseAdData;
 import com.meishu.sdk.MeishuAdPatternType;
 import com.meishu.sdk.TouchAdContainer;
 import com.meishu.sdk.TouchPositionListener;
-import com.meishu.sdk.nativ.recycler.NativeAdData;
-import com.meishu.sdk.nativ.recycler.AdInteractionListener;
-import com.meishu.sdk.nativ.recycler.AdMediaListener;
-import com.meishu.sdk.nativ.recycler.NativeAdListener;
-import com.meishu.sdk.nativ.recycler.NativeAdUtils;
+import com.meishu.sdk.nativ.recycler.RecyclerAdData;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSJNativeAdDataAdapter extends BaseAdData implements NativeAdData {
+public class CSJRecyclerAdDataAdapter extends BaseAdData implements RecyclerAdData {
     private static final String TAG = "CSJAdDataAdapter";
     private TTFeedAd ttFeedAd;
 
-    private NativeAdListener adListener;
+    private RecyclerAdListener adListener;
     private CSJTTAdNativeWrapper adNativeWrapper;
 
-    public CSJNativeAdDataAdapter(@NonNull CSJTTAdNativeWrapper adNativeWrapper, @NonNull TTFeedAd ttFeedAd) {
+    public CSJRecyclerAdDataAdapter(@NonNull CSJTTAdNativeWrapper adNativeWrapper, @NonNull TTFeedAd ttFeedAd) {
         this.adNativeWrapper = adNativeWrapper;
         this.adListener = adNativeWrapper.getAdListener();
         this.ttFeedAd = ttFeedAd;
@@ -69,7 +69,10 @@ public class CSJNativeAdDataAdapter extends BaseAdData implements NativeAdData {
     }
 
     @Override
-    public void bindAdToView(Activity activity,@NonNull ViewGroup container, List<View> creativeClickableViews, AdInteractionListener adInteractionListener) {
+    public void bindAdToView(Activity activity,@NonNull ViewGroup container, List<View> creativeClickableViews, RecylcerAdInteractionListener recylcerAdInteractionListener) {
+        RecyclerAdUtils.removeGdtNativeAdContainer(container);//广点通接口可能会给container添加parent，故在此清理
+        RecyclerAdUtils.removeTouchAdContainer(container);//所有接口都会给container添加TouchAdContainer，故在此清理
+
         ViewGroup parent = (ViewGroup) container.getParent();
         if(parent!=null){
             parent.removeView(container);
@@ -82,20 +85,19 @@ public class CSJNativeAdDataAdapter extends BaseAdData implements NativeAdData {
         }
         container=touchContainer;
 
-        NativeAdUtils.removeGdtNativeAdContainer(container);//广点通接口可能会给container添加parent，故在此清理
         List<View> clickableViews = new ArrayList<>();
         clickableViews.add(container.getRootView());
 
         //创意点击views是指，点击对应的views会执行广告的目的，比如下载app、跳转目标网页等
         //clickableViews，在视频类广告中，点击clickableViews会跳转到视频页面
         //viewGroup参数必须为container的根view，否则穿山甲无法加载广告
-        ttFeedAd.registerViewForInteraction((ViewGroup) container.getRootView(), clickableViews, creativeClickableViews, new CSJAdInteractionListenerAdapter(this, adInteractionListener));
+        ttFeedAd.registerViewForInteraction((ViewGroup) container.getRootView(), clickableViews, creativeClickableViews, new CSJAdInteractionListenerAdapter(this, recylcerAdInteractionListener));
     }
 
     @Override
-    public void bindMediaView(ViewGroup mediaView, AdMediaListener nativeAdMediaListener) {
+    public void bindMediaView(ViewGroup mediaView, RecyclerAdMediaListener nativeRecyclerAdMediaListener) {
 //        NativeAdUtils.removeGdtMediaView(mediaView);
-        ttFeedAd.setVideoAdListener(new CSJVideoAdListenerImpl(nativeAdMediaListener));
+        ttFeedAd.setVideoAdListener(new CSJVideoAdListenerImpl(nativeRecyclerAdMediaListener));
         mediaView.removeAllViews();
         mediaView.addView(ttFeedAd.getAdView());
     }
@@ -135,7 +137,7 @@ public class CSJNativeAdDataAdapter extends BaseAdData implements NativeAdData {
         //do nothing
     }
 
-    public NativeAdListener getAdListener() {
+    public RecyclerAdListener getAdListener() {
         return this.adListener;
     }
 

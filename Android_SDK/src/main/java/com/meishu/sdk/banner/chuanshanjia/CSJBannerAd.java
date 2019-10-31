@@ -2,12 +2,9 @@ package com.meishu.sdk.banner.chuanshanjia;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.TTBannerAd;
 import com.meishu.sdk.BaseAdData;
-import com.meishu.sdk.TouchAdContainer;
-import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.banner.BannerAd;
 import com.meishu.sdk.banner.BannerInteractionListener;
 import com.meishu.sdk.domain.SdkAdInfo;
@@ -16,6 +13,7 @@ public class CSJBannerAd extends BaseAdData implements BannerAd {
     private TTBannerAd ttBannerAd;
     private BannerInteractionListener interactionListener;
     private SdkAdInfo sdkAdInfo;
+    private View adView;
 
     public CSJBannerAd(@NonNull SdkAdInfo sdkAdInfo, TTBannerAd ttBannerAd) {
         this.sdkAdInfo=sdkAdInfo;
@@ -24,22 +22,11 @@ public class CSJBannerAd extends BaseAdData implements BannerAd {
 
     @Override
     public View getAdView() {
-        if (this.ttBannerAd != null) {
-            View adView =this.ttBannerAd.getBannerView();
-            ViewGroup parent = (ViewGroup) adView.getParent();
-            if(parent!=null){
-                parent.removeView(adView);
-            }
-            TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
-            touchContainer.setTouchPositionListener(new TouchPositionListener(this));
-            touchContainer.addView(adView);
-            if(parent!=null){
-                parent.addView(touchContainer);
-            }
-            return touchContainer;
-        } else {
-            return null;
-        }
+        return this.adView;
+    }
+
+    public void setAdView(View adView) {
+        this.adView = adView;
     }
 
     @Override

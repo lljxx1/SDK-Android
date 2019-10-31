@@ -1,6 +1,6 @@
 package com.meishu.sdk.nativ.image.gdt;
 
-import com.meishu.sdk.nativ.image.NativeAdData;
+import com.meishu.sdk.nativ.image.ImageAdData;
 import com.meishu.sdk.nativ.image.NativeAdListener;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -20,9 +20,9 @@ public class GDTNativeAdListenerImpl implements NativeADUnifiedListener {
     @Override
     public void onADLoaded(List<NativeUnifiedADData> list) {
         if (list != null) {
-            List<NativeAdData> meishuADDataList = new ArrayList<>();
+            List<ImageAdData> meishuADDataList = new ArrayList<>();
             for (NativeUnifiedADData nativeUnifiedADData : list) {
-                meishuADDataList.add(new GDTNativeAdDataAdapter(nativeUnifiedADData, this));
+                meishuADDataList.add(new GDTImageAdDataAdapter(nativeUnifiedADData, this));
             }
             nativeADListener.onAdLoaded(meishuADDataList);
         }

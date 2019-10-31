@@ -2,6 +2,7 @@ package com.meishu.sdk.splash.gdt;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 
 import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.splash.SplashAdListener;
@@ -65,7 +66,24 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
     @Override
     public void onADPresent() {
         if (splashAdWrapper != null && splashAdWrapper.getView() != null) {
-            splashAd = new GDTSplashAd(splashAdWrapper.getView());
+            splashAd = new GDTSplashAd();
+            View adView=splashAdWrapper.getView();
+
+            //广点通开屏广告不允许给adView添加TouchAdContainer，否则会导致开屏广告无法正常显示
+//            ViewGroup parent = (ViewGroup) adView.getParent();
+//            if(parent!=null){
+//                parent.removeView(adView);
+//            }
+//            TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
+//            touchContainer.setTouchPositionListener(new TouchPositionListener(splashAd));
+//            touchContainer.addView(adView);
+//            if(parent!=null){
+//                parent.addView(touchContainer);
+//            }
+//            adView=touchContainer;
+
+            splashAd.setAdView(adView);
+
             splashADListener.onLoaded(splashAd);
         }
     }

@@ -5,23 +5,23 @@ import android.text.TextUtils;
 
 import com.meishu.sdk.meishu_ad.nativ.NativeAdMediaListener;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdWrapper;
-import com.meishu.sdk.nativ.recycler.AdMediaListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 
 public class MeishuAdMediaListenerAdapter implements NativeAdMediaListener {
-    private AdMediaListener apiAdMediaListener;
+    private RecyclerAdMediaListener apiRecyclerAdMediaListener;
     private NativeAdWrapper adWrapper;
 
-    public MeishuAdMediaListenerAdapter(@NonNull NativeAdWrapper adWrapper, AdMediaListener apiAdMediaListener) {
+    public MeishuAdMediaListenerAdapter(@NonNull NativeAdWrapper adWrapper, RecyclerAdMediaListener apiRecyclerAdMediaListener) {
         this.adWrapper = adWrapper;
-        this.apiAdMediaListener = apiAdMediaListener;
+        this.apiRecyclerAdMediaListener = apiRecyclerAdMediaListener;
     }
 
     @Override
     public void onVideoLoaded() {
-        if (this.apiAdMediaListener != null) {
-            this.apiAdMediaListener.onVideoLoaded();
+        if (this.apiRecyclerAdMediaListener != null) {
+            this.apiRecyclerAdMediaListener.onVideoLoaded();
         }
     }
 
@@ -35,8 +35,8 @@ public class MeishuAdMediaListenerAdapter implements NativeAdMediaListener {
                 }
             }
         }
-        if (this.apiAdMediaListener != null) {
-            this.apiAdMediaListener.onVideoStart();
+        if (this.apiRecyclerAdMediaListener != null) {
+            this.apiRecyclerAdMediaListener.onVideoStart();
         }
     }
 
@@ -86,8 +86,8 @@ public class MeishuAdMediaListenerAdapter implements NativeAdMediaListener {
                 }
             }
         }
-        if (this.apiAdMediaListener != null) {
-            this.apiAdMediaListener.onVideoCompleted();
+        if (this.apiRecyclerAdMediaListener != null) {
+            this.apiRecyclerAdMediaListener.onVideoCompleted();
         }
     }
 
@@ -101,8 +101,8 @@ public class MeishuAdMediaListenerAdapter implements NativeAdMediaListener {
                 }
             }
         }
-        if (this.apiAdMediaListener != null) {
-            this.apiAdMediaListener.onVideoPause();
+        if (this.apiRecyclerAdMediaListener != null) {
+            this.apiRecyclerAdMediaListener.onVideoPause();
         }
     }
 
@@ -144,8 +144,8 @@ public class MeishuAdMediaListenerAdapter implements NativeAdMediaListener {
 
     @Override
     public void onVideoError() {
-        if (this.apiAdMediaListener != null) {
-            this.apiAdMediaListener.onVideoLoaded();
+        if (this.apiRecyclerAdMediaListener != null) {
+            this.apiRecyclerAdMediaListener.onVideoLoaded();
         }
     }
 }

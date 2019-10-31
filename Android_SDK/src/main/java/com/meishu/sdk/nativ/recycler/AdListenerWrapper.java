@@ -9,17 +9,17 @@ import com.meishu.sdk.utils.HttpUtil;
 
 import java.util.List;
 
-public class AdListenerWrapper implements NativeAdListener {
+public class AdListenerWrapper implements RecyclerAdListener {
     private DelegateChain delegateChain;
-    private NativeAdListener apiAdListener;
+    private RecyclerAdListener apiAdListener;
 
-    public AdListenerWrapper(@NonNull DelegateChain delegateChain, @Nullable NativeAdListener apiAdListener) {
+    public AdListenerWrapper(@NonNull DelegateChain delegateChain, @Nullable RecyclerAdListener apiAdListener) {
         this.delegateChain = delegateChain;
         this.apiAdListener = apiAdListener;
     }
 
     @Override
-    public void onAdLoaded(List<NativeAdData> ads) {
+    public void onAdLoaded(List<RecyclerAdData> ads) {
         HttpUtil.asyncGetWithWebViewUA(this.delegateChain.getActivity(), this.delegateChain.getSdkAdInfo().getRsp(), new DefaultHttpGetWithNoHandlerCallback());
         if (this.apiAdListener != null) {
             this.apiAdListener.onAdLoaded(ads);

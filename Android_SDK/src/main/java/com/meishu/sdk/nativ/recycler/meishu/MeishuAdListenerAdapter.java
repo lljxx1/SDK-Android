@@ -3,8 +3,8 @@ package com.meishu.sdk.nativ.recycler.meishu;
 import android.text.TextUtils;
 
 import com.meishu.sdk.meishu_ad.nativ.AdListener;
-import com.meishu.sdk.nativ.recycler.NativeAdData;
-import com.meishu.sdk.nativ.recycler.NativeAdListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdData;
+import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 
@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MeishuAdListenerAdapter implements AdListener {
-    private NativeAdListener apiAdListener;
+    private RecyclerAdListener apiAdListener;
     private MeishuAdNativeWrapper adWrapper;
 
-    public MeishuAdListenerAdapter(MeishuAdNativeWrapper adWrapper, NativeAdListener apiAdListener) {
+    public MeishuAdListenerAdapter(MeishuAdNativeWrapper adWrapper, RecyclerAdListener apiAdListener) {
         this.adWrapper = adWrapper;
         this.apiAdListener = apiAdListener;
     }
@@ -23,9 +23,9 @@ public class MeishuAdListenerAdapter implements AdListener {
     @Override
     public void onAdLoaded(List<com.meishu.sdk.meishu_ad.nativ.NativeAdData> adDatas) {
         if (this.apiAdListener != null && adDatas != null) {
-            List<NativeAdData> apiAdDatas = new ArrayList<>();
+            List<RecyclerAdData> apiAdDatas = new ArrayList<>();
             for (com.meishu.sdk.meishu_ad.nativ.NativeAdData adData : adDatas) {
-                apiAdDatas.add(new MeishuNativeAdDataAdapter(this.adWrapper, adData));
+                apiAdDatas.add(new MeishuRecyclerAdDataAdapter(this.adWrapper, adData));
             }
             this.apiAdListener.onAdLoaded(apiAdDatas);
         }

@@ -6,11 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.meishu.sdk.nativ.recycler.NativeAdData;
-import com.meishu.sdk.nativ.recycler.AdInteractionListener;
-import com.meishu.sdk.nativ.recycler.AdMediaListener;
-import com.meishu.sdk.nativ.recycler.NativeAdListener;
-import com.meishu.sdk.nativ.recycler.NativeAdLoader;
+import com.meishu.sdk.nativ.recycler.RecyclerAdData;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdLoader;
 import com.meishu.sdkdemo.R;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 视频贴片
  */
-public class PasterActivity extends AppCompatActivity implements NativeAdListener {
+public class PasterActivity extends AppCompatActivity implements RecyclerAdListener {
     private static final String TAG = "PasterActivity";
     private RelativeLayout video_container;
 
@@ -28,27 +28,27 @@ public class PasterActivity extends AppCompatActivity implements NativeAdListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paster);
         video_container = findViewById(R.id.video_container);
-        NativeAdLoader nativeAD = new NativeAdLoader(this, "1003910", this);//文字类广告，文字内容取信息流广告中的title
+        RecyclerAdLoader nativeAD = new RecyclerAdLoader(this, "1003910", this);//文字类广告，文字内容取信息流广告中的title
         nativeAD.loadAd();
     }
 
-    private List<NativeAdData> adDatas;
+    private List<RecyclerAdData> adDatas;
 
     @Override
-    public void onAdLoaded(List<NativeAdData> adDatas) {
+    public void onAdLoaded(List<RecyclerAdData> adDatas) {
         this.adDatas = adDatas;
         if (adDatas != null && adDatas.size() > 0) {
             this.video_container.setVisibility(View.VISIBLE);
-            NativeAdData ad = adDatas.get(0);
+            RecyclerAdData ad = adDatas.get(0);
             List<View> clickableViews = new ArrayList();
             clickableViews.add(video_container);
-            ad.bindAdToView(this, video_container, clickableViews, new AdInteractionListener() {
+            ad.bindAdToView(this, video_container, clickableViews, new RecylcerAdInteractionListener() {
                 @Override
                 public void onAdClicked() {
                     Log.d(TAG, "onAdClicked: 广告被点击");
                 }
             });
-            ad.bindMediaView(video_container, new AdMediaListener() {
+            ad.bindMediaView(video_container, new RecyclerAdMediaListener() {
                 @Override
                 public void onVideoLoaded() {
                     Log.d(TAG, "onVideoLoaded: 视频加载成功");
@@ -97,7 +97,7 @@ public class PasterActivity extends AppCompatActivity implements NativeAdListene
     protected void onDestroy() {
         super.onDestroy();
         if (this.adDatas != null) {
-            for (NativeAdData adData : adDatas) {
+            for (RecyclerAdData adData : adDatas) {
                 adData.destroy();
             }
         }

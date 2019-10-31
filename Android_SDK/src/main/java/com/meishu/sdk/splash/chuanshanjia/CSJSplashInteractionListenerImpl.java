@@ -35,16 +35,22 @@ public class CSJSplashInteractionListenerImpl implements TTSplashAd.AdInteractio
 
     @Override
     public void onAdShow(View view, int i) {
-        Log.d(TAG, "onAdShow: ");
+        if(csjSplashAd.getApiAdListener()!=null){
+            csjSplashAd.getApiAdListener().onAdExposure();
+        }
     }
 
     @Override
     public void onAdSkip() {
-        Log.d(TAG, "onAdSkip: ");
+        if(csjSplashAd.getApiAdListener()!=null){
+            csjSplashAd.getApiAdListener().onAdClosed();
+        }
     }
 
     @Override
     public void onAdTimeOver() {
-        Log.d(TAG, "onAdTimeOver: ");
+        if(csjSplashAd.getApiAdListener()!=null){
+            csjSplashAd.getApiAdListener().onAdClosed();
+        }
     }
 }

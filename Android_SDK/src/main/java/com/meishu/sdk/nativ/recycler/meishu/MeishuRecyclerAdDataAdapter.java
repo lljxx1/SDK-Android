@@ -7,18 +7,18 @@ import android.view.ViewGroup;
 
 import com.meishu.sdk.TouchAdContainer;
 import com.meishu.sdk.TouchPositionListener;
-import com.meishu.sdk.nativ.recycler.NativeAdData;
-import com.meishu.sdk.nativ.recycler.AdInteractionListener;
-import com.meishu.sdk.nativ.recycler.AdMediaListener;
-import com.meishu.sdk.nativ.recycler.NativeAdUtils;
+import com.meishu.sdk.nativ.recycler.RecyclerAdData;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdUtils;
 
 import java.util.List;
 
-public class MeishuNativeAdDataAdapter implements NativeAdData {
+public class MeishuRecyclerAdDataAdapter implements RecyclerAdData {
     private com.meishu.sdk.meishu_ad.nativ.NativeAdData nativeAdData;
     private MeishuAdNativeWrapper adWrapper;
 
-    public MeishuNativeAdDataAdapter(@NonNull MeishuAdNativeWrapper adWrapper, @NonNull com.meishu.sdk.meishu_ad.nativ.NativeAdData nativeAdData) {
+    public MeishuRecyclerAdDataAdapter(@NonNull MeishuAdNativeWrapper adWrapper, @NonNull com.meishu.sdk.meishu_ad.nativ.NativeAdData nativeAdData) {
         this.adWrapper = adWrapper;
         this.nativeAdData = nativeAdData;
     }
@@ -34,7 +34,9 @@ public class MeishuNativeAdDataAdapter implements NativeAdData {
     }
 
     @Override
-    public void bindAdToView(Activity activity,@NonNull ViewGroup container, List<View> clickableViews, AdInteractionListener adInteractionListener) {
+    public void bindAdToView(Activity activity,@NonNull ViewGroup container, List<View> clickableViews, RecylcerAdInteractionListener recylcerAdInteractionListener) {
+        RecyclerAdUtils.removeGdtNativeAdContainer(container);//广点通接口可能会给container添加parent，故在此清理
+        RecyclerAdUtils.removeTouchAdContainer(container);//所有接口都会给container添加TouchAdContainer，故在此清理
 
         ViewGroup parent = (ViewGroup) container.getParent();
         if(parent!=null){
@@ -48,15 +50,14 @@ public class MeishuNativeAdDataAdapter implements NativeAdData {
         }
         container=touchContainer;
 
-        NativeAdUtils.removeGdtNativeAdContainer(container);//广点通接口可能会给container添加parent，故在此清理
-        this.nativeAdData.bindAdToView(activity, container, clickableViews, new MeishuInteractionListenerAdapter(this.nativeAdData, adInteractionListener));
+        this.nativeAdData.bindAdToView(activity, container, clickableViews, new MeishuInteractionListenerAdapter(this.nativeAdData, recylcerAdInteractionListener));
     }
 
     @Override
-    public void bindMediaView(ViewGroup mediaView, AdMediaListener adMediaListener) {
+    public void bindMediaView(ViewGroup mediaView, RecyclerAdMediaListener recyclerAdMediaListener) {
 //        NativeAdUtils.removeGdtMediaView(mediaView);
         mediaView.removeAllViews();
-        this.nativeAdData.bindMediaView(mediaView, new MeishuAdMediaListenerAdapter(this.adWrapper, adMediaListener));
+        this.nativeAdData.bindMediaView(mediaView, new MeishuAdMediaListenerAdapter(this.adWrapper, recyclerAdMediaListener));
     }
 
     @Override

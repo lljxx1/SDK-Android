@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface NativeAdListener {
 
-    void onAdLoaded(List<NativeAdData> adDatas);
+    void onAdLoaded(List<ImageAdData> adDatas);
 
     void onAdExposure();
 

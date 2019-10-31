@@ -3,16 +3,16 @@ package com.meishu.sdk.nativ.image.gdt;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.meishu.sdk.nativ.image.AdInteractionListener;
+import com.meishu.sdk.nativ.image.ImageAdInteractionListener;
 import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.comm.util.AdError;
 
 public class GDTNativeAdEventListenerImpl implements NativeADEventListener {
     private static final String TAG = "GDTNativeAdEventListene";
-    private GDTNativeAdDataAdapter adDataAdapter;
-    private AdInteractionListener nativeADEventListener;
+    private GDTImageAdDataAdapter adDataAdapter;
+    private ImageAdInteractionListener nativeADEventListener;
 
-    public GDTNativeAdEventListenerImpl(@NonNull GDTNativeAdDataAdapter adDataAdapter, AdInteractionListener nativeADEventListener) {
+    public GDTNativeAdEventListenerImpl(@NonNull GDTImageAdDataAdapter adDataAdapter, ImageAdInteractionListener nativeADEventListener) {
         this.adDataAdapter = adDataAdapter;
         this.nativeADEventListener = nativeADEventListener;
     }

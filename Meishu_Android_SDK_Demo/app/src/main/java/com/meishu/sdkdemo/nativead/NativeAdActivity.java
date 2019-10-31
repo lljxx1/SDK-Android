@@ -14,10 +14,10 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.meishu.sdk.MeishuAdPatternType;
-import com.meishu.sdk.nativ.image.AdInteractionListener;
-import com.meishu.sdk.nativ.image.NativeAdData;
+import com.meishu.sdk.nativ.image.ImageAdInteractionListener;
+import com.meishu.sdk.nativ.image.ImageAdData;
 import com.meishu.sdk.nativ.image.NativeAdListener;
-import com.meishu.sdk.nativ.image.NativeAdLoader;
+import com.meishu.sdk.nativ.image.ImageAdLoader;
 import com.meishu.sdkdemo.R;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class NativeAdActivity extends AppCompatActivity implements NativeAdListe
         setContentView(R.layout.activity_native_ad);
 
         initView();
-        NativeAdLoader nativeAD = new NativeAdLoader(this, "1003912", this);//文字类广告，文字内容取信息流广告中的title
+        ImageAdLoader nativeAD = new ImageAdLoader(this, "1003912", this);//文字类广告，文字内容取信息流广告中的title
 //        NativeAdLoader nativeAD = new NativeAdLoader(this, "100424013", this);//图片类广告
         nativeAD.loadData();
     }
@@ -51,10 +51,10 @@ public class NativeAdActivity extends AppCompatActivity implements NativeAdListe
 
     }
 
-    private List<NativeAdData> loadedAdDatas = new ArrayList<>();
+    private List<ImageAdData> loadedAdDatas = new ArrayList<>();
 
     @Override
-    public void onAdLoaded(List<NativeAdData> adDatas) {
+    public void onAdLoaded(List<ImageAdData> adDatas) {
         if (adDatas != null && adDatas.size() > 0) {
             loadedAdDatas.addAll(adDatas);
             initAd(adDatas.get(0));
@@ -64,7 +64,7 @@ public class NativeAdActivity extends AppCompatActivity implements NativeAdListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        for (NativeAdData adData : loadedAdDatas) {//不再使用广告时，必须回收资源
+        for (ImageAdData adData : loadedAdDatas) {//不再使用广告时，必须回收资源
             adData.destroy();
         }
     }
@@ -79,13 +79,13 @@ public class NativeAdActivity extends AppCompatActivity implements NativeAdListe
         Log.d(TAG, "onAdError: 没有加载到广告");
     }
 
-    private void initAd(final NativeAdData ad) {
+    private void initAd(final ImageAdData ad) {
 
         renderAdUi(ad);
 
         List<View> clickableViews = new ArrayList<>();
         clickableViews.add(mDownloadButton);
-        ad.bindAdToView(this, mContainer, clickableViews, new AdInteractionListener() {
+        ad.bindAdToView(this, mContainer, clickableViews, new ImageAdInteractionListener() {
 
             @Override
             public void onAdClicked() {
@@ -96,7 +96,7 @@ public class NativeAdActivity extends AppCompatActivity implements NativeAdListe
 
     }
 
-    private void renderAdUi(NativeAdData ad) {
+    private void renderAdUi(ImageAdData ad) {
         int patternType = ad.getAdPatternType();
         if(!TextUtils.isEmpty(ad.getTitle())){
             mAQuery.id(R.id.text_title).text(ad.getTitle());

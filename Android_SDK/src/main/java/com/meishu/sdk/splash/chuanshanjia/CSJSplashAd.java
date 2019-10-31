@@ -9,37 +9,29 @@ import com.meishu.sdk.TouchAdContainer;
 import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.domain.SdkAdInfo;
 import com.meishu.sdk.splash.SplashAd;
+import com.meishu.sdk.splash.SplashAdListener;
 import com.meishu.sdk.splash.SplashInteractionListener;
 
 public class CSJSplashAd extends BaseAdData implements SplashAd {
     private TTSplashAd ttSplashAd;
+    private SplashAdListener apiAdListener;
     private SplashInteractionListener interactionListener;
     private SdkAdInfo sdkAdInfo;
+    private View adView;
 
-    public CSJSplashAd(SdkAdInfo sdkAdInfo, TTSplashAd ttSplashAd) {
+    public CSJSplashAd(SdkAdInfo sdkAdInfo, TTSplashAd ttSplashAd, SplashAdListener apiAdListener) {
         this.sdkAdInfo = sdkAdInfo;
         this.ttSplashAd = ttSplashAd;
+        this.apiAdListener = apiAdListener;
     }
 
     @Override
     public View getAdView() {
-        View adView =null;
-        if (ttSplashAd != null) {
-            adView= ttSplashAd.getSplashView();
+        return this.adView;
+    }
 
-            ViewGroup parent = (ViewGroup) adView.getParent();
-            if(parent!=null){
-                parent.removeView(adView);
-            }
-            TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
-            touchContainer.setTouchPositionListener(new TouchPositionListener(this));
-            touchContainer.addView(adView);
-            if(parent!=null){
-                parent.addView(touchContainer);
-            }
-            adView=touchContainer;
-        }
-        return adView;
+    public void setAdView(View adView) {
+        this.adView = adView;
     }
 
     @Override
@@ -53,6 +45,10 @@ public class CSJSplashAd extends BaseAdData implements SplashAd {
     @Override
     public SplashInteractionListener getInteractionListener() {
         return this.interactionListener;
+    }
+
+    public SplashAdListener getApiAdListener() {
+        return apiAdListener;
     }
 
     public SdkAdInfo getSdkAdInfo() {

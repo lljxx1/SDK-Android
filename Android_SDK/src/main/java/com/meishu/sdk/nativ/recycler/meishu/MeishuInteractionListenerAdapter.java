@@ -4,30 +4,30 @@ import android.support.annotation.NonNull;
 
 import com.meishu.sdk.meishu_ad.nativ.NativeAdData;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdInteractionListener;
-import com.meishu.sdk.nativ.recycler.AdInteractionListener;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
 import com.meishu.sdk.service.ClickHandler;
 
 public class MeishuInteractionListenerAdapter implements NativeAdInteractionListener {
-    private AdInteractionListener adInteractionListener;
+    private RecylcerAdInteractionListener recylcerAdInteractionListener;
     private NativeAdData nativeAdData;
 
-    public MeishuInteractionListenerAdapter(@NonNull NativeAdData nativeAdData, AdInteractionListener adInteractionListener) {
+    public MeishuInteractionListenerAdapter(@NonNull NativeAdData nativeAdData, RecylcerAdInteractionListener recylcerAdInteractionListener) {
         this.nativeAdData = nativeAdData;
-        this.adInteractionListener = adInteractionListener;
+        this.recylcerAdInteractionListener = recylcerAdInteractionListener;
     }
 
     @Override
     public void onAdClicked() {
-        if (this.adInteractionListener != null) {
-            this.adInteractionListener.onAdClicked();
+        if (this.recylcerAdInteractionListener != null) {
+            this.recylcerAdInteractionListener.onAdClicked();
         }
         ClickHandler.handleClick(nativeAdData);
     }
 
     @Override
     public void onADExposure() {
-        if (this.adInteractionListener != null) {
-            this.adInteractionListener.onAdClicked();
+        if (this.recylcerAdInteractionListener != null) {
+            this.recylcerAdInteractionListener.onAdClicked();
         }
     }
 }

@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import com.meishu.sdk.BaseAdData;
 import com.meishu.sdk.TouchAdContainer;
 import com.meishu.sdk.TouchPositionListener;
-import com.meishu.sdk.nativ.recycler.AdInteractionListener;
-import com.meishu.sdk.nativ.recycler.AdMediaListener;
-import com.meishu.sdk.nativ.recycler.NativeAdData;
-import com.meishu.sdk.nativ.recycler.NativeAdListener;
-import com.meishu.sdk.nativ.recycler.NativeAdUtils;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdData;
+import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdUtils;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.nativ.MediaView;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -21,13 +21,13 @@ import com.qq.e.comm.constants.AdPatternType;
 
 import java.util.List;
 
-public class GDTNativeNativeAdDataAdapter extends BaseAdData implements NativeAdData {
+public class GDTNativeRecyclerAdDataAdapter extends BaseAdData implements RecyclerAdData {
     private static final String TAG = "GDTNativeAdDataAdapter";
     private NativeUnifiedADData nativeUnifiedADData;
-    private NativeAdListener apiAdListener;
+    private RecyclerAdListener apiAdListener;
     private GDTNativeUnifiedAdWrapper adWrapper;
 
-    public GDTNativeNativeAdDataAdapter(@NonNull GDTNativeUnifiedAdWrapper adWrapper, @NonNull NativeUnifiedADData nativeUnifiedADData, NativeAdListener apiAdListener) {
+    public GDTNativeRecyclerAdDataAdapter(@NonNull GDTNativeUnifiedAdWrapper adWrapper, @NonNull NativeUnifiedADData nativeUnifiedADData, RecyclerAdListener apiAdListener) {
         this.adWrapper = adWrapper;
         this.apiAdListener = apiAdListener;
         this.nativeUnifiedADData = nativeUnifiedADData;
@@ -44,7 +44,9 @@ public class GDTNativeNativeAdDataAdapter extends BaseAdData implements NativeAd
     }
 
     @Override
-    public void bindAdToView(Activity activity, ViewGroup adContainer, List<View> clickableViews, AdInteractionListener meishuAdInteractionListener) {
+    public void bindAdToView(Activity activity, ViewGroup adContainer, List<View> clickableViews, RecylcerAdInteractionListener meishuRecylcerAdInteractionListener) {
+        RecyclerAdUtils.removeGdtNativeAdContainer(adContainer);//广点通接口可能会给container添加parent，故在此清理
+        RecyclerAdUtils.removeTouchAdContainer(adContainer);//所有接口都会给container添加TouchAdContainer，故在此清理
 
         ViewGroup parent = (ViewGroup) adContainer.getParent();
         if(parent!=null){
@@ -58,7 +60,6 @@ public class GDTNativeNativeAdDataAdapter extends BaseAdData implements NativeAd
         }
         adContainer=touchContainer;
 
-        NativeAdUtils.removeGdtNativeAdContainer(adContainer);//广点通接口可能会给container添加parent，故在此清理
         NativeAdContainer gdtNativeAdContainer = new NativeAdContainer(activity);//NativeAdContainer必须为adContainer父容器，否则点击无效
         if (parent != null) {
             parent.removeView(adContainer);
@@ -68,11 +69,11 @@ public class GDTNativeNativeAdDataAdapter extends BaseAdData implements NativeAd
             gdtNativeAdContainer.addView(adContainer);
         }
         nativeUnifiedADData.bindAdToView(activity, gdtNativeAdContainer, null, clickableViews);
-        nativeUnifiedADData.setNativeAdEventListener(new GDTAdInteractionListener(this, meishuAdInteractionListener));
+        nativeUnifiedADData.setNativeAdEventListener(new GDTAdInteractionListener(this, meishuRecylcerAdInteractionListener));
     }
 
     @Override
-    public void bindMediaView(ViewGroup mediaView, AdMediaListener nativeAdMediaListener) {
+    public void bindMediaView(ViewGroup mediaView, RecyclerAdMediaListener nativeRecyclerAdMediaListener) {
 //        mediaView.setVisibility(View.INVISIBLE);//必须设置mediaview不可见，否则会遮挡实际视频画面
 
         mediaView.removeAllViews();
@@ -100,7 +101,7 @@ public class GDTNativeNativeAdDataAdapter extends BaseAdData implements NativeAd
         builder.setEnableDetailPage(false);//必须设置为false，否则广点通广告无法正常播放（跳转到详情页再返回到信息流页后，视频无法正常播放，同时点击其它广告日志提示点击过快）
         builder.setEnableUserControl(true);//必须设置为true，否则用户点击视频播放器无反应（不会播放视频）
 
-        this.nativeUnifiedADData.bindMediaView(gdtMediaView, builder.build(), new GDTNativeAdMediaListenerImpl(nativeAdMediaListener));
+        this.nativeUnifiedADData.bindMediaView(gdtMediaView, builder.build(), new GDTNativeAdMediaListenerImpl(nativeRecyclerAdMediaListener));
 //        gdtMediaView.addView(mediaView);//nativeUnifiedADData.bindMediaView()会删除gdtMediaView的孩子，但上面的清理依赖此父子关系，故强制加上此关系
     }
 
@@ -149,7 +150,7 @@ public class GDTNativeNativeAdDataAdapter extends BaseAdData implements NativeAd
         }
     }
 
-    public NativeAdListener getApiAdListener() {
+    public RecyclerAdListener getApiAdListener() {
         return apiAdListener;
     }
 

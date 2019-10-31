@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.meishu.sdk.TouchAdContainer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:background="#ffffff">
-
-    <ImageView
-        android:id="@+id/interstitial_image"
+    android:id="@+id/meishu_interstitial_touch_container">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff">
 
-    <ImageView
-        android:id="@+id/popupwindow_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/gdt_ic_express_close"/>
+        <ImageView
+            android:id="@+id/interstitial_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
 
-    <TextView
-        android:text="广告"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/meishu_white"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"/>
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/popupwindow_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/gdt_ic_express_close"/>
+
+        <TextView
+            android:text="广告"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/meishu_white"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</com.meishu.sdk.TouchAdContainer>
+

@@ -4,18 +4,18 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.bytedance.sdk.openadsdk.TTNativeAd;
-import com.meishu.sdk.nativ.recycler.AdInteractionListener;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
 import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 
 public class CSJAdInteractionListenerAdapter implements TTNativeAd.AdInteractionListener {
 
-    private CSJNativeAdDataAdapter adData;
+    private CSJRecyclerAdDataAdapter adData;
 
-    private AdInteractionListener meishuInteractionListener;
+    private RecylcerAdInteractionListener meishuInteractionListener;
 
-    public CSJAdInteractionListenerAdapter(@NonNull CSJNativeAdDataAdapter adData, AdInteractionListener meishuInteractionListener) {
+    public CSJAdInteractionListenerAdapter(@NonNull CSJRecyclerAdDataAdapter adData, RecylcerAdInteractionListener meishuInteractionListener) {
         this.adData = adData;
         this.meishuInteractionListener = meishuInteractionListener;
     }

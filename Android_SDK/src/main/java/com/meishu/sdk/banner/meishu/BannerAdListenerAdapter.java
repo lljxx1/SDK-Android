@@ -2,7 +2,10 @@ package com.meishu.sdk.banner.meishu;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
 
+import com.meishu.sdk.TouchAdContainer;
+import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.meishu_ad.banner.AdListener;
 import com.meishu.sdk.meishu_ad.banner.BannerAd;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
@@ -19,7 +22,16 @@ public class BannerAdListenerAdapter implements AdListener {
 
     @Override
     public void onLoaded(BannerAd bannerAd) {
-        bannerAdListener.onLoaded(new MeishuBannerAdAdapter(bannerAd));
+        MeishuBannerAdAdapter meishuBannerAd= new MeishuBannerAdAdapter(bannerAd);
+
+        View adView=bannerAd.getAdView();
+        TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
+        touchContainer.setTouchPositionListener(new TouchPositionListener(meishuBannerAd));
+        touchContainer.addView(adView);
+        adView= touchContainer;
+        meishuBannerAd.setAdView(adView);
+
+        bannerAdListener.onLoaded(meishuBannerAd);
     }
 
     @Override

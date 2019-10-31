@@ -1,11 +1,10 @@
 package com.meishu.sdk.nativ.image.chuanshanjia;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
-import com.meishu.sdk.nativ.image.NativeAdData;
+import com.meishu.sdk.nativ.image.ImageAdData;
 import com.meishu.sdk.nativ.image.NativeAdListener;
 
 import java.util.ArrayList;
@@ -32,9 +31,9 @@ public class CSJNativeAdListener implements TTAdNative.NativeAdListener {
     @Override
     public void onNativeAdLoad(List<TTNativeAd> list) {
         if (list != null && this.meishuAdListener != null) {
-            List<NativeAdData> adDatas = new ArrayList<>();
+            List<ImageAdData> adDatas = new ArrayList<>();
             for (TTNativeAd ttNativeAd : list) {
-                adDatas.add(new CSJNativeAdDataAdapter(ttNativeAd, this));
+                adDatas.add(new CSJImageAdDataAdapter(ttNativeAd, this));
             }
             this.meishuAdListener.onAdLoaded(adDatas);
         }

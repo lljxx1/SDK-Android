@@ -7,7 +7,7 @@ import android.view.View;
 import java.sql.Timestamp;
 
 public class TouchPositionListener {
-    AdData adData;
+    private AdData adData;
 
     public TouchPositionListener(@NonNull AdData adData) {
         this.adData = adData;
