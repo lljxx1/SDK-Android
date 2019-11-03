@@ -7,8 +7,9 @@ import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.meishu.sdk.AdLoader;
 import com.meishu.sdk.BaseSdkAdWrapper;
+import com.meishu.sdk.domain.MeishuAdInfo;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.nativ.recycler.AdListenerWrapper;
+import com.meishu.sdk.nativ.recycler.SdkAdListenerWrapper;
 import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
@@ -18,11 +19,13 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
 
     private TTAdNative ttAdNative;
     private RecyclerAdLoader adLoader;
+    private MeishuAdInfo meishuAdInfo;
 
-    public CSJTTAdNativeWrapper(@NonNull RecyclerAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
+    public CSJTTAdNativeWrapper(@NonNull RecyclerAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo, @NonNull MeishuAdInfo meishuAdInfo) {
         super(adLoader.getActivity(), sdkAdInfo);
         this.adLoader = adLoader;
         this.ttAdNative = TTAdSdk.getAdManager().createAdNative(adLoader.getActivity());
+        this.meishuAdInfo = meishuAdInfo;
     }
 
     @Override
@@ -32,10 +35,10 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(this.getSdkAdInfo().getPid())
                 .setSupportDeepLink(true)
-                .setImageAcceptedSize(640, 320)
+                .setImageAcceptedSize(meishuAdInfo.getWidth(), meishuAdInfo.getHeight())
                 .setAdCount(1)
                 .build();
-        this.ttAdNative.loadFeedAd(adSlot, new CSJFeedAdListener(this, new AdListenerWrapper(this, this.adLoader.getApiAdListener())));
+        this.ttAdNative.loadFeedAd(adSlot, new CSJFeedAdListener(this, new SdkAdListenerWrapper(this, this.adLoader.getApiAdListener())));
     }
 
     @Override

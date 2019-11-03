@@ -33,7 +33,8 @@
         <activity android:name=".nativead.NativeAdActivity" />
         <activity android:name=".nativead.NativeAdSelectActivity" />
         <activity android:name=".InterstitialAdActivity" />
-        <activity android:name=".splash.SplashActivity" />
+        <activity android:name=".splash.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".splash.SplashAdActivity" />
         <activity android:name=".BannerAdActivity">
             <intent-filter>

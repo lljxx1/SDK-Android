@@ -6,5 +6,11 @@ public interface RewardVideoAdListener {
 
     void onVideoCached();
 
+    void onAdExposure();
+
+    void onReward();
+
+    void onAdClosed();
+
     void onAdError();
 }

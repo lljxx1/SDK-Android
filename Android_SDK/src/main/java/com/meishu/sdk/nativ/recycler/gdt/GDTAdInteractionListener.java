@@ -22,10 +22,10 @@ public class GDTAdInteractionListener implements NativeADEventListener {
 
     @Override
     public void onADClicked() {
-        if (this.adData.getAdWrapper() != null) {
+        if (this.adData.getAdWrapper() != null && this.adData.getAdWrapper().getSdkAdInfo() != null) {
             HttpUtil.asyncGetWithWebViewUA(
                     adData.getAdWrapper().getActivity(),
-                    ClickHandler.replaceOtherMacros(this.adData.getAdWrapper().getSdkAdInfo().getClk(),this.adData),
+                    ClickHandler.replaceOtherMacros(this.adData.getAdWrapper().getSdkAdInfo().getClk(), this.adData),
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }

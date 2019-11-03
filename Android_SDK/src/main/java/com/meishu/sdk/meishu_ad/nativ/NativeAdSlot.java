@@ -29,9 +29,19 @@ public class NativeAdSlot implements AdSlot {
     private String videoUrl;
 
     private String[] dUrl;
+    private String deep_link;
+    /**
+     * 视频播放完成后，需要展示的封面图
+     */
+    private String video_endcover;
+    /**
+     * 强制观看时长(单位/秒)，此字段不存在或
+     * 等于 0 表示观看全部视频
+     */
+    private Long video_keep_time;
+
     private String appName;
 
-    private String deep_link;
     private String[] monitorUrl;
     private String[] clickUrl;
     private String[] dn_start;
@@ -210,6 +220,16 @@ public class NativeAdSlot implements AdSlot {
             return this;
         }
 
+        public Builder setVideo_endcover(String video_endcover) {
+            NativeAdSlot.this.video_endcover = video_endcover;
+            return this;
+        }
+
+        public Builder setVideo_keep_time(Long video_keep_time) {
+            NativeAdSlot.this.video_keep_time = video_keep_time;
+            return this;
+        }
+
         public Builder setClickid(String clickid) {
             NativeAdSlot.this.clickid = clickid;
             return this;
@@ -367,6 +387,14 @@ public class NativeAdSlot implements AdSlot {
 
     public String[] getVideo_replay() {
         return video_replay;
+    }
+
+    public String getVideo_endcover() {
+        return video_endcover;
+    }
+
+    public Long getVideo_keep_time() {
+        return video_keep_time;
     }
 
     public String getVideo_cover() {

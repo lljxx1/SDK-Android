@@ -33,6 +33,10 @@ public class NormalMediaView extends FrameLayout implements MediaView {
     private MediaPlayer mediaPlayer;
 
     private OnVideoLoadedListener onVideoLoadedListener;
+    private OnVideoKeepTimeFinishListener onVideoKeepTimeFinishListener;
+
+    private long keepTime = -1;
+
     private NativeAdMediaListener nativeAdMediaListener;
 
     /**
@@ -40,6 +44,7 @@ public class NormalMediaView extends FrameLayout implements MediaView {
      */
     private static final int UPDATE_TIME = 1;
 
+    private volatile boolean keepTimeFinishedPerformed;
     private volatile boolean oneQuarterPerformed;
     private volatile boolean oneHalfPerformed;
     private volatile boolean threeQuarterPerformed;
@@ -52,6 +57,13 @@ public class NormalMediaView extends FrameLayout implements MediaView {
             int currentTime = videoView.getCurrentPosition();
             updateTimeFormat(currentTimeView, currentTime);
             seekBar.setProgress(currentTime);
+
+            if (keepTime > 0 && currentTime >= keepTime && !keepTimeFinishedPerformed) {
+                keepTimeFinishedPerformed = true;
+                if (NormalMediaView.this.onVideoKeepTimeFinishListener != null) {
+                    NormalMediaView.this.onVideoKeepTimeFinishListener.onKeepTimeFinished();
+                }
+            }
 
             double totalTime = videoView.getDuration();
             double percent = currentTime / totalTime;
@@ -184,6 +196,14 @@ public class NormalMediaView extends FrameLayout implements MediaView {
         this.onVideoLoadedListener = onVideoLoadedListener;
     }
 
+    @Override
+    public void setOnVideoKeepTimeFinishListener(OnVideoKeepTimeFinishListener onVideoKeepTimeFinishListener, long keepTime) {
+        this.onVideoKeepTimeFinishListener = onVideoKeepTimeFinishListener;
+        if (keepTime > 0) {
+            this.keepTime = keepTime;
+        }
+    }
+
     private List<OnVideoCompleteListener> onVideoCompleteListeners = new ArrayList<>();
 
     @Override
@@ -278,6 +298,11 @@ public class NormalMediaView extends FrameLayout implements MediaView {
         int endTime = videoView.getDuration();
         updateTimeFormat(currentTimeView, endTime);
         seekBar.setProgress(endTime);
+
+        if (this.keepTime <= 0 && this.onVideoKeepTimeFinishListener != null) {//结束时，若没有回调过onKeepTimeFinished，则回调一次
+            this.onVideoKeepTimeFinishListener.onKeepTimeFinished();
+        }
+
         for (OnVideoCompleteListener onVideoCompleteListener : NormalMediaView.this.onVideoCompleteListeners) {
             onVideoCompleteListener.onCompleted();
         }
@@ -328,11 +353,6 @@ public class NormalMediaView extends FrameLayout implements MediaView {
 
     public NormalMediaView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
-
-    public NormalMediaView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
 

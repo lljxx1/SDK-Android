@@ -31,10 +31,12 @@ public class CSJBannerListenerImpl implements TTAdNative.BannerAdListener {
     public void onBannerAdLoad(TTBannerAd ttBannerAd) {
         CSJBannerAd bannerAd = new CSJBannerAd(this.adNativeWrapper.getSdkAdInfo(), ttBannerAd);
         View adView =ttBannerAd.getBannerView();
+
         TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
         touchContainer.setTouchPositionListener(new TouchPositionListener(bannerAd));
         touchContainer.addView(adView);
         adView=touchContainer;
+
         bannerAd.setAdView(adView);
 
         bannerADListener.onLoaded(bannerAd);

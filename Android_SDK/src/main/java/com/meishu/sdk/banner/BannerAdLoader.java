@@ -45,13 +45,13 @@ public class BannerAdLoader extends AdLoader {
     }
 
     @Override
-    protected DelegateChain createDelegate(SdkAdInfo sdkAdInfo) {
+    protected DelegateChain createDelegate(SdkAdInfo sdkAdInfo,MeishuAdInfo meishuAdInfo) {
         String key = sdkAdInfo.getSdk();
         DelegateChain delegate;
         if ("GDT".equalsIgnoreCase(key)) {
             delegate = new GDTViewWrapper(this, sdkAdInfo, adListener);
         } else if ("CSJ".equalsIgnoreCase(key)) {
-            delegate = new CSJTTAdNativeWrapper(this, sdkAdInfo);
+            delegate = new CSJTTAdNativeWrapper(this, sdkAdInfo,meishuAdInfo);
         } else {
             delegate = null;
         }

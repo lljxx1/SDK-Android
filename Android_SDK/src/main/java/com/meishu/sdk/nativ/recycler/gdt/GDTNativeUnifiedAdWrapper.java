@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.meishu.sdk.AdLoader;
 import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.nativ.recycler.AdListenerWrapper;
+import com.meishu.sdk.nativ.recycler.SdkAdListenerWrapper;
 import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
@@ -20,7 +20,7 @@ public class GDTNativeUnifiedAdWrapper extends BaseSdkAdWrapper {
     public GDTNativeUnifiedAdWrapper(@NonNull RecyclerAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
         super(adLoader.getActivity(), sdkAdInfo);
         this.adLoader = adLoader;
-        nativeUnifiedAD = new NativeUnifiedAD(getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTNativeAdListenerAdapter(this, new AdListenerWrapper(this, adLoader.getApiAdListener())));
+        nativeUnifiedAD = new NativeUnifiedAD(getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTNativeAdListenerAdapter(this, new SdkAdListenerWrapper(this, adLoader.getApiAdListener())));
     }
 
     @Override

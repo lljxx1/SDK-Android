@@ -25,10 +25,12 @@ public class BannerAdListenerAdapter implements AdListener {
         MeishuBannerAdAdapter meishuBannerAd= new MeishuBannerAdAdapter(bannerAd);
 
         View adView=bannerAd.getAdView();
+
         TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
         touchContainer.setTouchPositionListener(new TouchPositionListener(meishuBannerAd));
         touchContainer.addView(adView);
         adView= touchContainer;
+
         meishuBannerAd.setAdView(adView);
 
         bannerAdListener.onLoaded(meishuBannerAd);

@@ -8,8 +8,9 @@ import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.meishu.sdk.AdLoader;
 import com.meishu.sdk.BaseSdkAdWrapper;
+import com.meishu.sdk.domain.MeishuAdInfo;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.splash.AdListenerWrapper;
+import com.meishu.sdk.splash.SdkAdListenerWrapper;
 import com.meishu.sdk.splash.SplashAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
@@ -19,12 +20,14 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
     private TTAdNative ttAdNative;
     private TTAdNative.SplashAdListener ttAdListener;
     private SplashAdLoader adLoader;
+    private MeishuAdInfo meishuAdInfo;
 
-    public CSJTTAdNativeWrapper(@NonNull SplashAdLoader adLoader, SdkAdInfo sdkAdInfo) {
-        super(adLoader.getActivity(),sdkAdInfo);
-        this.adLoader=adLoader;
+    public CSJTTAdNativeWrapper(@NonNull SplashAdLoader adLoader, SdkAdInfo sdkAdInfo,@NonNull MeishuAdInfo meishuAdInfo) {
+        super(adLoader.getActivity(), sdkAdInfo);
+        this.adLoader = adLoader;
         this.ttAdNative = TTAdSdk.getAdManager().createAdNative(adLoader.getActivity());
-        this.ttAdListener = new TTSplashAdListenerImpl(this, new AdListenerWrapper(this, adLoader.getApiAdListener()));
+        this.ttAdListener = new TTSplashAdListenerImpl(this, new SdkAdListenerWrapper(this, adLoader.getApiAdListener()));
+        this.meishuAdInfo = meishuAdInfo;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(this.getSdkAdInfo().getPid()) //广告位id
                 .setSupportDeepLink(true)
-                .setImageAcceptedSize(1080, 1920)
+                .setImageAcceptedSize(meishuAdInfo.getWidth(), meishuAdInfo.getHeight())
                 .build();
         ttAdNative.loadSplashAd(adSlot, this.ttAdListener, this.adLoader.getFetchDelay());
     }

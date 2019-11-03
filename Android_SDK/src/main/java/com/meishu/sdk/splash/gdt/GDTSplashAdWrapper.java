@@ -7,7 +7,7 @@ import android.view.View;
 import com.meishu.sdk.AdLoader;
 import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.splash.AdListenerWrapper;
+import com.meishu.sdk.splash.SdkAdListenerWrapper;
 import com.meishu.sdk.splash.SplashAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
@@ -21,7 +21,7 @@ public class GDTSplashAdWrapper extends BaseSdkAdWrapper {
     public GDTSplashAdWrapper(@NonNull SplashAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
         super(adLoader.getActivity(), sdkAdInfo);
         this.adLoader = adLoader;
-        splashAD = new SplashAD(adLoader.getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTSplashADListenerImpl(this, new AdListenerWrapper(this, adLoader.getApiAdListener())), adLoader.getFetchDelay());
+        splashAD = new SplashAD(adLoader.getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTSplashADListenerImpl(this, new SdkAdListenerWrapper(this, adLoader.getApiAdListener())), adLoader.getFetchDelay());
     }
 
     @Override

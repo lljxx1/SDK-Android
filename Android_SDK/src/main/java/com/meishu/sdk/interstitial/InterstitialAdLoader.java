@@ -50,13 +50,13 @@ public class InterstitialAdLoader extends AdLoader {
     }
 
     @Override
-    protected DelegateChain createDelegate(SdkAdInfo sdkAdInfo) {
+    protected DelegateChain createDelegate(SdkAdInfo sdkAdInfo,@NonNull MeishuAdInfo meishuAdInfo) {
         String key = sdkAdInfo.getSdk();
         DelegateChain delegate;
         if ("GDT".equalsIgnoreCase(key)) {
             delegate = new GDTInterstitialAdWrapper(this, sdkAdInfo);
         } else if ("CSJ".equalsIgnoreCase(key)) {
-            delegate = new CSJTTAdNativeWrapper(this, sdkAdInfo);
+            delegate = new CSJTTAdNativeWrapper(this, sdkAdInfo,meishuAdInfo);
         } else {
             delegate = null;
         }

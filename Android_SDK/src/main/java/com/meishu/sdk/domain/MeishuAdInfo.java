@@ -92,6 +92,17 @@ public class MeishuAdInfo {
      */
     private Integer target_type;
     /**
+     * 视频播放完成后，需要展示的封面图
+     * 非必须
+     */
+    private String video_endcover;
+    /**
+     * 强制观看时长(单位/秒)，此字段不存在或
+     * 等于 0 表示观看全部视频
+     * 非必须
+     */
+    private Long video_keep_time;
+    /**
      *
      * 非必须
      */
@@ -413,5 +424,21 @@ public class MeishuAdInfo {
 
     public void setClickid(String clickid) {
         this.clickid = clickid;
+    }
+
+    public String getVideo_endcover() {
+        return video_endcover;
+    }
+
+    public void setVideo_endcover(String video_endcover) {
+        this.video_endcover = video_endcover;
+    }
+
+    public Long getVideo_keep_time() {
+        return video_keep_time;
+    }
+
+    public void setVideo_keep_time(Long video_keep_time) {
+        this.video_keep_time = video_keep_time;
     }
 }

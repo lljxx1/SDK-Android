@@ -15,15 +15,16 @@
         android:id="@+id/skipView"
         android:layout_marginRight="5dp"
         android:layout_marginTop="25dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="@color/meishu_white"
+        android:background="#80ffffff"
+        android:textColor="#80000000"
         android:text="广告" />
 
 </RelativeLayout>

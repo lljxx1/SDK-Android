@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.meishu.sdk.AdLoader;
 import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.interstitial.AdListenerWrapper;
+import com.meishu.sdk.interstitial.SdkAdListenerWrapper;
 import com.meishu.sdk.interstitial.InterstitialAdLoader;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
@@ -20,7 +20,7 @@ public class GDTInterstitialAdWrapper extends BaseSdkAdWrapper {
         this.adLoader = adLoader;
         interstitialAD = new InterstitialAD(adLoader.getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid());
         if (adLoader.getApiAdListener() != null) {
-            interstitialAD.setADListener(new GDTInterstitialADListenerIml(this, new AdListenerWrapper(this, adLoader.getApiAdListener())));
+            interstitialAD.setADListener(new GDTInterstitialADListenerIml(this, new SdkAdListenerWrapper(this, adLoader.getApiAdListener())));
         }
     }
 

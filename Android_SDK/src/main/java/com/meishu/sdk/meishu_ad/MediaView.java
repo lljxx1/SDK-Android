@@ -11,6 +11,8 @@ public interface MediaView {
 
     void setOnVideoLoadedListener(OnVideoLoadedListener onVideoLoadedListener);
 
+    void setOnVideoKeepTimeFinishListener(OnVideoKeepTimeFinishListener onVideoKeepTimeFinishListener,long keepTime);
+
     void addOnVideoCompleteListener(OnVideoCompleteListener onVideoCompleteListener);
 
     void setVideoPath(String videoPath);
@@ -24,6 +26,10 @@ public interface MediaView {
 
     interface OnVideoLoadedListener {
         void onLoaded(MediaView mediaView);
+    }
+
+    interface  OnVideoKeepTimeFinishListener{
+        void onKeepTimeFinished();
     }
 
     interface OnVideoCompleteListener{

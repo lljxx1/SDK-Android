@@ -4,10 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.FrameLayout;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-public class TouchAdContainer extends FrameLayout {
+public class TouchAdContainer extends RelativeLayout {
 
     private TouchPositionListener touchPositionListener;
 
@@ -21,6 +22,11 @@ public class TouchAdContainer extends FrameLayout {
 
     public void setTouchPositionListener(@NonNull TouchPositionListener touchPositionListener) {
         this.touchPositionListener = touchPositionListener;
+    }
+
+    @Override
+    public void addView(View child) {
+        super.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     public TouchAdContainer(Context context) {

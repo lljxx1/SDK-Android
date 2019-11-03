@@ -99,13 +99,13 @@ public abstract class AdLoader {
         if (sdks != null && sdks.length > 0) {//要求加载其他厂商广告
 
             AdSdk.InitSdkConfigIfNoInit(activity, sdks[0]);
-            DelegateChain delegateChain = createDelegate(sdks[0]);
+            DelegateChain delegateChain = createDelegate(sdks[0],meishuAdInfo);
             prior = delegateChain;
             if (delegateChain != null) {
                 DelegateChain current = delegateChain;
                 for (int i = 1; i < sdks.length; i++) {
                     AdSdk.InitSdkConfigIfNoInit(activity, sdks[i]);
-                    current.setNext(createDelegate(sdks[i]));
+                    current.setNext(createDelegate(sdks[i],meishuAdInfo));
                     current = current.getNext();
                     tail = current;
                 }
@@ -136,7 +136,7 @@ public abstract class AdLoader {
 
     protected abstract DelegateChain createMeishuAdDelegate(Activity activity, MeishuAdInfo meishuAdInfo);
 
-    protected abstract DelegateChain createDelegate(SdkAdInfo sdkAdInfo);
+    protected abstract DelegateChain createDelegate(SdkAdInfo sdkAdInfo,MeishuAdInfo meishuAdInfo);
 
     protected abstract void handleNoAd();
 

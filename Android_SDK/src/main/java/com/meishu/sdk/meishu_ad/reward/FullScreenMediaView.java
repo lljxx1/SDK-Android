@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -21,16 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FullScreenMediaView extends FrameLayout implements MediaView {
-
+    private static final String TAG = "FullScreenMediaView";
     private VideoView videoView;
     private AQuery aQuery;
     private CircleProcessBar processBar;
     private MediaPlayer mediaPlayer;
 
     private OnVideoLoadedListener onVideoLoadedListener;
+    private OnVideoKeepTimeFinishListener onVideoKeepTimeFinishListener;
+
+    private long keepTime = -1;
+
     private NativeAdMediaListener nativeAdMediaListener;
 
-
+    private volatile boolean keepTimeFinishedPerformed;
     private volatile boolean oneQuarterPerformed;
     private volatile boolean oneHalfPerformed;
     private volatile boolean threeQuarterPerformed;
@@ -46,6 +51,14 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
             super.handleMessage(msg);
             int currentTime = videoView.getCurrentPosition();
             processBar.refreshProcess(currentTime);
+
+
+            if (keepTime > 0 && currentTime >= keepTime && !keepTimeFinishedPerformed) {
+                keepTimeFinishedPerformed = true;
+                if (FullScreenMediaView.this.onVideoKeepTimeFinishListener != null) {
+                    FullScreenMediaView.this.onVideoKeepTimeFinishListener.onKeepTimeFinished();
+                }
+            }
 
             double totalTime = videoView.getDuration();
             double percent = currentTime / totalTime;
@@ -148,7 +161,7 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 FullScreenMediaView.this.mediaPlayer = mp;
-                mp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+                mp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
 
                 if (started) {
                     onPlay();
@@ -174,6 +187,14 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
 
     public void setOnVideoLoadedListener(OnVideoLoadedListener onVideoLoadedListener) {
         this.onVideoLoadedListener = onVideoLoadedListener;
+    }
+
+    @Override
+    public void setOnVideoKeepTimeFinishListener(OnVideoKeepTimeFinishListener onVideoKeepTimeFinishListener, long keepTime) {
+        this.onVideoKeepTimeFinishListener = onVideoKeepTimeFinishListener;
+        if (keepTime > 0) {
+            this.keepTime = keepTime;
+        }
     }
 
     private List<OnVideoCompleteListener> onVideoCompleteListeners = new ArrayList<>();
@@ -202,6 +223,7 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
 
     @Override
     protected void onDetachedFromWindow() {
+        Log.d(TAG, "onDetachedFromWindow: ");
         super.onDetachedFromWindow();
         if (this.uiHandler != null) {
             this.uiHandler.removeCallbacksAndMessages(null);
@@ -252,6 +274,9 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
     private void onCompletion() {
         started = false;
         onPause();
+        if (this.keepTime <= 0 && this.onVideoKeepTimeFinishListener != null) {//结束时，若没有回调过onKeepTimeFinished，则回调一次
+            this.onVideoKeepTimeFinishListener.onKeepTimeFinished();
+        }
         for (OnVideoCompleteListener onVideoCompleteListener : FullScreenMediaView.this.onVideoCompleteListeners) {
             onVideoCompleteListener.onCompleted();
         }
@@ -289,11 +314,6 @@ public class FullScreenMediaView extends FrameLayout implements MediaView {
 
     public FullScreenMediaView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
-
-    public FullScreenMediaView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
 

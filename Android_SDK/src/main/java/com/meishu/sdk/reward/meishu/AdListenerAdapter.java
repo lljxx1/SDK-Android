@@ -2,11 +2,9 @@ package com.meishu.sdk.reward.meishu;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.meishu.sdk.meishu_ad.nativ.AdListener;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdData;
-import com.meishu.sdk.reward.RewardVideoAd;
 import com.meishu.sdk.reward.RewardVideoAdListener;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
@@ -41,7 +39,9 @@ public class AdListenerAdapter implements AdListener {
                 }
             }
         }
-        Log.d(TAG, "onADExposure: ");
+        if(this.apiAdListener!=null){
+            this.apiAdListener.onAdExposure();
+        }
     }
 
     @Override

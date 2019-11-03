@@ -8,9 +8,10 @@ import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.meishu.sdk.AdLoader;
 import com.meishu.sdk.BaseSdkAdWrapper;
 import com.meishu.sdk.DelegateChain;
+import com.meishu.sdk.domain.MeishuAdInfo;
 import com.meishu.sdk.domain.SdkAdInfo;
-import com.meishu.sdk.interstitial.AdListenerWrapper;
 import com.meishu.sdk.interstitial.InterstitialAdLoader;
+import com.meishu.sdk.interstitial.SdkAdListenerWrapper;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
 import com.meishu.sdk.utils.HttpUtil;
 
@@ -18,11 +19,13 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
     private TTAdNative ttAdNative;
     private DelegateChain next;
     private InterstitialAdLoader adLoader;
+    private MeishuAdInfo meishuAdInfo;
 
-    public CSJTTAdNativeWrapper(@NonNull InterstitialAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo) {
+    public CSJTTAdNativeWrapper(@NonNull InterstitialAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo, @NonNull MeishuAdInfo meishuAdInfo) {
         super(adLoader.getActivity(), sdkAdInfo);
         this.adLoader = adLoader;
         this.ttAdNative = TTAdSdk.getAdManager().createAdNative(adLoader.getActivity());
+        this.meishuAdInfo = meishuAdInfo;
     }
 
     @Override
@@ -32,9 +35,9 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(this.getSdkAdInfo().getPid())
                 .setSupportDeepLink(true)
-                .setImageAcceptedSize(600, 600) //根据广告平台选择的尺寸，传入同比例尺寸
+                .setImageAcceptedSize(meishuAdInfo.getWidth(), meishuAdInfo.getHeight()) //根据广告平台选择的尺寸，传入同比例尺寸
                 .build();
-        ttAdNative.loadInteractionAd(adSlot, new CSJInteractionAdListenerImpl(this, new AdListenerWrapper(this, this.adLoader.getApiAdListener())));
+        ttAdNative.loadInteractionAd(adSlot, new CSJInteractionAdListenerImpl(this, new SdkAdListenerWrapper(this, this.adLoader.getApiAdListener())));
     }
 
     @Override

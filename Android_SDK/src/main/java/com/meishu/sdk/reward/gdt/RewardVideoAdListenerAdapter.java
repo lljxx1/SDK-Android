@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.meishu.sdk.reward.RewardVideoAdListener;
+import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
+import com.meishu.sdk.utils.HttpUtil;
 import com.qq.e.ads.rewardvideo.RewardVideoADListener;
 import com.qq.e.comm.util.AdError;
 
@@ -38,27 +40,44 @@ public class RewardVideoAdListenerAdapter implements RewardVideoADListener {
 
     @Override
     public void onADExpose() {
-        Log.d(TAG, "onADExpose: ");
+        if (this.apiAdListener != null) {
+            this.apiAdListener.onAdExposure();
+        }
     }
 
     @Override
     public void onReward() {
-        Log.d(TAG, "onReward: ");
+        if (this.apiAdListener != null) {
+            this.apiAdListener.onReward();
+        }
     }
 
     @Override
     public void onADClick() {
-        Log.d(TAG, "onADClick: ");
+        if (adWrapper.getSdkAdInfo() != null) {
+            HttpUtil.asyncGetWithWebViewUA(
+                    adWrapper.getActivity(),
+                    adWrapper.getSdkAdInfo().getClk(),
+                    new DefaultHttpGetWithNoHandlerCallback()
+            );
+        }
+        if (this.adWrapper.getApiInteractionListener() != null) {
+            this.adWrapper.getApiInteractionListener().onAdClicked();
+        }
     }
 
     @Override
     public void onVideoComplete() {
-        Log.d(TAG, "onVideoComplete: ");
+        if (this.adWrapper.getApiRewardAdMediaListener() != null) {
+            this.adWrapper.getApiRewardAdMediaListener().onVideoCompleted();
+        }
     }
 
     @Override
     public void onADClose() {
-        Log.d(TAG, "onADClose: ");
+        if (this.apiAdListener != null) {
+            this.apiAdListener.onAdClosed();
+        }
     }
 
     @Override
