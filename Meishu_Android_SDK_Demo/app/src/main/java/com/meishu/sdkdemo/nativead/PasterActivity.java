@@ -28,7 +28,7 @@ public class PasterActivity extends AppCompatActivity implements RecyclerAdListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paster);
         video_container = findViewById(R.id.video_container);
-        RecyclerAdLoader nativeAD = new RecyclerAdLoader(this, "1003910", this);//文字类广告，文字内容取信息流广告中的title
+        RecyclerAdLoader nativeAD = new RecyclerAdLoader(this, "1003910", 1,this);//文字类广告，文字内容取信息流广告中的title
         nativeAD.loadAd();
     }
 

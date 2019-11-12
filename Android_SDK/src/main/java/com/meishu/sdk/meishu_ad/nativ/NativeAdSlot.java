@@ -12,7 +12,7 @@ public class NativeAdSlot implements AdSlot {
     /**
      * 预加载广告个数
      */
-    private int fetchCount = 1;
+    private Integer fetchCount;
 
     private String title;
     private String desc;
@@ -91,7 +91,7 @@ public class NativeAdSlot implements AdSlot {
             return this;
         }
 
-        private Builder setfetchCount(int fetchCount) {
+        public Builder setFetchCount(Integer fetchCount) {
             NativeAdSlot.this.fetchCount = fetchCount;
             return this;
         }
@@ -264,7 +264,7 @@ public class NativeAdSlot implements AdSlot {
         return height;
     }
 
-    public int getFetchCount() {
+    public Integer getFetchCount() {
         return fetchCount;
     }
 

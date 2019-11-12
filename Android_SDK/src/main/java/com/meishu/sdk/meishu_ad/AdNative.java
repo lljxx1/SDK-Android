@@ -207,7 +207,7 @@ public class AdNative {
 
     public void loadNativeAd(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
 
-        loadVideoView(adSlot, adListener, new NormalMediaView(this.activity));
+        loadVideoView(adSlot, adListener);
 
     }
 
@@ -252,7 +252,7 @@ public class AdNative {
         }
     }
 
-    private void loadVideoView(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener, MediaView mediaView) {
+    private void loadVideoView(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
         int fetchCount = 1;
         if (adSlot.getFetchCount() != 0) {
             fetchCount = adSlot.getFetchCount();
@@ -260,6 +260,9 @@ public class AdNative {
 
         final List<NativeAdData> adDatas = new ArrayList<>();
         for (int i = 0; i < fetchCount; i++) {
+            NormalMediaView mediaView = new NormalMediaView(this.activity);
+            final int finalFetchCount = fetchCount;
+            final int finalI = i;
             mediaView.setOnVideoLoadedListener(new MediaView.OnVideoLoadedListener() {
                 @Override
                 public void onLoaded(MediaView loadedMediaView) {
@@ -272,10 +275,8 @@ public class AdNative {
                             .setMediaView(loadedMediaView)
                             .build()
                     );
-                    if (adListener != null) {
+                    if (finalI == finalFetchCount - 1 && adListener != null) {
                         adListener.onAdLoaded(adDatas);
-                    }
-                    if (adListener != null) {
                         adListener.onADExposure();
                     }
                 }

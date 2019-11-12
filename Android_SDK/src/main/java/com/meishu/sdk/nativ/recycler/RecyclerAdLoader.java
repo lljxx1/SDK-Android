@@ -2,6 +2,7 @@ package com.meishu.sdk.nativ.recycler;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.meishu.sdk.AdLoader;
@@ -16,10 +17,12 @@ import com.meishu.sdk.nativ.recycler.meishu.MeishuAdNativeWrapper;
 
 public class RecyclerAdLoader extends AdLoader {
     private static final String TAG = "NativeAdLoader";
+    private Integer fetchCount;
     private RecyclerAdListener apiAdListener;
 
-    public RecyclerAdLoader(@NonNull Activity activity, @NonNull String posId, RecyclerAdListener listener) {
+    public RecyclerAdLoader(@NonNull Activity activity, @NonNull String posId, @Nullable Integer fetchCount, RecyclerAdListener listener) {
         super(activity, posId);
+        this.fetchCount = fetchCount;
         this.apiAdListener = listener;
     }
 
@@ -33,6 +36,7 @@ public class RecyclerAdLoader extends AdLoader {
                 .setInteractionType(meishuAdInfo.getTarget_type())
                 .setWidth(meishuAdInfo.getWidth())
                 .setHeight(meishuAdInfo.getHeight())
+                .setFetchCount(this.fetchCount)
                 .setDUrl(meishuAdInfo.getdUrl())
                 .setAppName(meishuAdInfo.getApp_name())
                 .setDeepLink(meishuAdInfo.getDeep_link())
@@ -77,13 +81,13 @@ public class RecyclerAdLoader extends AdLoader {
     }
 
     @Override
-    protected DelegateChain createDelegate(SdkAdInfo sdkAdInfo,@NonNull MeishuAdInfo meishuAdInfo) {
+    protected DelegateChain createDelegate(SdkAdInfo sdkAdInfo, @NonNull MeishuAdInfo meishuAdInfo) {
         String key = sdkAdInfo.getSdk();
         DelegateChain delegate;
         if ("GDT".equalsIgnoreCase(key)) {
-            delegate = new GDTNativeUnifiedAdWrapper(this, sdkAdInfo);
+            delegate = new GDTNativeUnifiedAdWrapper(this, sdkAdInfo,this.fetchCount);
         } else if ("CSJ".equalsIgnoreCase(key)) {
-            delegate = new CSJTTAdNativeWrapper(this, sdkAdInfo,meishuAdInfo);
+            delegate = new CSJTTAdNativeWrapper(this, sdkAdInfo, meishuAdInfo,this.fetchCount);
         } else {
             delegate = null;
         }

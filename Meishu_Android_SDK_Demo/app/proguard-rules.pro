@@ -19,3 +19,26 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# 加载美数广告必须添加
+-keep class com.meishu.sdk.** { *; }
+
+#加载广点通广告必须添加
+## 嵌入广点通sdk时必须添加
+-keep class com.qq.e.** {
+    public protected *;
+}
+
+## 嵌入广点通sdk时必须添加
+-keep class android.support.v4.**{ *;}
+## 如果使用了tbs版本的sdk需要进行以下配置
+-keep class com.tencent.smtt.** { *; }
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
+
+#加载穿山甲广告必须添加
+-keep class com.bytedance.sdk.openadsdk.** { *; }
+-keep public interface com.bytedance.sdk.openadsdk.downloadnew.** {*;}
+
+-keep class com.ss.** { *; }
+

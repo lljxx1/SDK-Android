@@ -1,10 +1,30 @@
 apply plugin: 'com.android.application'
 
 android {
+    //加载资源
+    Properties properties = new Properties()
+    InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+    properties.load(inputStream)
+    //读取文件
+    def sdkDir = properties.getProperty('key.file')
+    //读取字段
+    def keyfile =file(sdkDir)
+    def key_keyAlias = properties.getProperty('keyAlias')
+    def key_keyPassword = properties.getProperty('keyPassword')
+    def key_storePassword = properties.getProperty('storePassword')
+
+    signingConfigs {
+        release {
+            storeFile keyfile
+            storePassword key_storePassword
+            keyAlias = key_keyAlias
+            keyPassword key_keyPassword
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.meishu.meishu_sdk_demo"
-        minSdkVersion 23
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -12,8 +32,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles 'proguard-rules.pro', 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     repositories {

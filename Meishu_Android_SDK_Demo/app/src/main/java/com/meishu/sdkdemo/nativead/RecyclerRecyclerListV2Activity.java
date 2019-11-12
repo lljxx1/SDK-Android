@@ -39,7 +39,7 @@ public class RecyclerRecyclerListV2Activity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_native_recycler_list);
         initView();
-        recyclerAdLoader = new RecyclerAdLoader(this, "1003912", this);//信息流
+        recyclerAdLoader = new RecyclerAdLoader(this, "1003912", 2,this);//信息流
         recyclerAdLoader.loadAd();
     }
 

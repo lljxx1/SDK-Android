@@ -1,6 +1,7 @@
 package com.meishu.sdk.nativ.recycler.chuanshanjia;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdNative;
@@ -20,23 +21,26 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
     private TTAdNative ttAdNative;
     private RecyclerAdLoader adLoader;
     private MeishuAdInfo meishuAdInfo;
+    private Integer fetchCount;
 
-    public CSJTTAdNativeWrapper(@NonNull RecyclerAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo, @NonNull MeishuAdInfo meishuAdInfo) {
+    public CSJTTAdNativeWrapper(@NonNull RecyclerAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo, @NonNull MeishuAdInfo meishuAdInfo, @Nullable Integer fetchCount) {
         super(adLoader.getActivity(), sdkAdInfo);
         this.adLoader = adLoader;
         this.ttAdNative = TTAdSdk.getAdManager().createAdNative(adLoader.getActivity());
         this.meishuAdInfo = meishuAdInfo;
+        this.fetchCount = fetchCount;
     }
 
     @Override
     public void loadAd() {
         HttpUtil.asyncGetWithWebViewUA(this.getActivity(), this.getSdkAdInfo().getReq(), new DefaultHttpGetWithNoHandlerCallback());
+        int fetchAdCount = this.fetchCount == null ? 1 : this.fetchCount;
         //feed广告请求类型参数
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(this.getSdkAdInfo().getPid())
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(meishuAdInfo.getWidth(), meishuAdInfo.getHeight())
-                .setAdCount(1)
+                .setAdCount(fetchAdCount)
                 .build();
         this.ttAdNative.loadFeedAd(adSlot, new CSJFeedAdListener(this, new SdkAdListenerWrapper(this, this.adLoader.getApiAdListener())));
     }

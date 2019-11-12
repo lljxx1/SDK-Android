@@ -22,7 +22,7 @@ public class ImageAdLoader {
     private RecyclerAdLoader recyclerAdLoader;
 
     public ImageAdLoader(Activity context, String posId, NativeAdListener listener) {
-        this.recyclerAdLoader = new RecyclerAdLoader(context, posId, new MeishuRecyclerAdListenerAdapter(listener));
+        this.recyclerAdLoader = new RecyclerAdLoader(context, posId, 1,new MeishuRecyclerAdListenerAdapter(listener));
     }
 
     public void loadData() {

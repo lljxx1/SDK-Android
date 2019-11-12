@@ -23,10 +23,10 @@ import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.meishu.sdk.MeishuAdPatternType;
 import com.meishu.sdk.nativ.recycler.RecyclerAdData;
-import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
-import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdLoader;
+import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
 import com.meishu.sdkdemo.R;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class RecyclerRecyclerListV4Activity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_native_recycler_list);
         initView();
-        recyclerAdLoader = new RecyclerAdLoader(this, "1003912", this);//信息流
+        recyclerAdLoader = new RecyclerAdLoader(this, "1003912", 2,this);//信息流
         recyclerAdLoader.loadAd();
     }
 
