@@ -32,6 +32,7 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }
+        this.splashAd.setClicked(true);
         if (splashAd != null && splashAd.getInteractionListener() != null) {
             splashAd.getInteractionListener().onAdClicked();
         }

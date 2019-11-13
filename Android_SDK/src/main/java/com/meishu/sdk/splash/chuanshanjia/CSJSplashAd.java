@@ -18,6 +18,7 @@ public class CSJSplashAd extends BaseAdData implements SplashAd {
     private SplashInteractionListener interactionListener;
     private SdkAdInfo sdkAdInfo;
     private View adView;
+    private boolean clicked;
 
     public CSJSplashAd(SdkAdInfo sdkAdInfo, TTSplashAd ttSplashAd, SplashAdListener apiAdListener) {
         this.sdkAdInfo = sdkAdInfo;
@@ -45,6 +46,15 @@ public class CSJSplashAd extends BaseAdData implements SplashAd {
     @Override
     public SplashInteractionListener getInteractionListener() {
         return this.interactionListener;
+    }
+
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
+    }
+
+    @Override
+    public boolean isClicked() {
+        return this.clicked;
     }
 
     public SplashAdListener getApiAdListener() {

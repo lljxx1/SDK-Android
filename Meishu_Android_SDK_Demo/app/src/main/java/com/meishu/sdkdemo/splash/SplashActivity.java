@@ -1,6 +1,7 @@
 package com.meishu.sdkdemo.splash;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,10 +11,13 @@ import com.meishu.sdk.splash.SplashAd;
 import com.meishu.sdk.splash.SplashAdListener;
 import com.meishu.sdk.splash.SplashAdLoader;
 import com.meishu.sdk.splash.SplashInteractionListener;
+import com.meishu.sdkdemo.MainActivity;
 import com.meishu.sdkdemo.R;
 
 public class SplashActivity extends AppCompatActivity implements SplashAdListener {
     private static final String TAG = "SplashActivity";
+
+    private SplashAd splashAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +27,15 @@ public class SplashActivity extends AppCompatActivity implements SplashAdListene
         fetchSplashAD(this, adContainer, "1003907", this, 3000);
     }
 
-    private void fetchSplashAD(Activity activity, ViewGroup adContainer,String posId, SplashAdListener adListener, int fetchDelay) {
+    private void fetchSplashAD(Activity activity, ViewGroup adContainer, String posId, SplashAdListener adListener, int fetchDelay) {
         SplashAdLoader splashAD = new SplashAdLoader(activity, adContainer, posId, adListener, fetchDelay);
         splashAD.loadAd();
     }
 
     @Override
-    public void onLoaded(SplashAd bannerAd) {
-        bannerAd.setInteractionListener(new SplashInteractionListener() {
+    public void onLoaded(SplashAd splashAd) {
+        this.splashAd = splashAd;
+        splashAd.setInteractionListener(new SplashInteractionListener() {
             @Override
             public void onAdClicked() {
                 Log.d(TAG, "onAdClicked: 开屏广告被点击");
@@ -46,10 +51,26 @@ public class SplashActivity extends AppCompatActivity implements SplashAdListene
     @Override
     public void onAdClosed() {
         Log.d(TAG, "onAdClosed: 开屏广告被关闭");
+        if (this.splashAd != null && !this.splashAd.isClicked()) {
+            next();
+        }
     }
 
     @Override
     public void onError() {
         Log.d(TAG, "onError: 没有加载到广告");
+    }
+
+    private void next() {
+        this.startActivity(new Intent(this, MainActivity.class));
+        this.finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (this.splashAd != null && this.splashAd.isClicked()) {
+            next();
+        }
     }
 }

@@ -14,4 +14,6 @@ public interface SplashAd {
     void setInteractionListener(SplashInteractionListener listener);
 
     SplashInteractionListener getInteractionListener();
+
+    boolean isClicked();
 }

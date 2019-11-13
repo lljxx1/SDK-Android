@@ -11,6 +11,7 @@ public class MeishuSplashAdAdapter extends BaseAdData implements com.meishu.sdk.
     private NativeSplashAd nativeAd;
     private SplashInteractionListener interactionListener;
     private View adView;
+    private boolean clicked;
 
     public MeishuSplashAdAdapter(@NonNull NativeSplashAd nativeAd) {
         this.nativeAd = nativeAd;
@@ -28,11 +29,24 @@ public class MeishuSplashAdAdapter extends BaseAdData implements com.meishu.sdk.
     @Override
     public void setInteractionListener(SplashInteractionListener listener) {
         this.interactionListener = listener;
-        nativeAd.setInteractionListener(new MeishuSplashInteractionListener(this.nativeAd, listener));
+        nativeAd.setInteractionListener(new MeishuSplashInteractionListener(this, listener));
     }
 
     @Override
     public SplashInteractionListener getInteractionListener() {
         return this.interactionListener;
+    }
+
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
+    }
+
+    @Override
+    public boolean isClicked() {
+        return this.clicked;
+    }
+
+    public NativeSplashAd getNativeAd() {
+        return nativeAd;
     }
 }

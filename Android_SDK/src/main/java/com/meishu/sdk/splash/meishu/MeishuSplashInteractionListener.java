@@ -8,10 +8,10 @@ import com.meishu.sdk.splash.SplashInteractionListener;
 
 public class MeishuSplashInteractionListener implements NativeSplashAd.InteractionListener {
     private SplashInteractionListener interactionListener;
-    private NativeSplashAd nativeSplashAd;
+    private MeishuSplashAdAdapter meishuSplashAdAdapter;
 
-    public MeishuSplashInteractionListener(@NonNull NativeSplashAd nativeSplashAd, SplashInteractionListener interactionListener) {
-        this.nativeSplashAd = nativeSplashAd;
+    public MeishuSplashInteractionListener(@NonNull MeishuSplashAdAdapter meishuSplashAdAdapter, SplashInteractionListener interactionListener) {
+        this.meishuSplashAdAdapter = meishuSplashAdAdapter;
         this.interactionListener = interactionListener;
     }
 
@@ -21,8 +21,8 @@ public class MeishuSplashInteractionListener implements NativeSplashAd.Interacti
         if (interactionListener != null) {
             interactionListener.onAdClicked();
         }
-
-        ClickHandler.handleClick(nativeSplashAd);
+        this.meishuSplashAdAdapter.setClicked(true);
+        ClickHandler.handleClick(meishuSplashAdAdapter.getNativeAd());
     }
 
     @Override

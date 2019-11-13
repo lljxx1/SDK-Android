@@ -142,6 +142,7 @@ public class AdNative {
                             aQuery.id(R.id.splash_image).clicked(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    skipView.stop();
                                     if (nativeAd.getInteractionListener() != null) {
                                         nativeAd.getInteractionListener().onAdClicked();
                                     }
@@ -213,7 +214,7 @@ public class AdNative {
 
     public void loadRewardVideoAd(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
         int fetchCount = 1;
-        if (adSlot.getFetchCount() != 0) {
+        if (adSlot.getFetchCount() != null && adSlot.getFetchCount() != 0) {
             fetchCount = adSlot.getFetchCount();
         }
         MediaView rewardVideoView = new FullScreenMediaView(this.activity);
@@ -254,7 +255,7 @@ public class AdNative {
 
     private void loadVideoView(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
         int fetchCount = 1;
-        if (adSlot.getFetchCount() != 0) {
+        if (adSlot.getFetchCount() != null && adSlot.getFetchCount() != 0) {
             fetchCount = adSlot.getFetchCount();
         }
 

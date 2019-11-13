@@ -29,13 +29,19 @@ public class SkipView extends View {
      * ③内部灰色圆的半径
      */
 
-    /**①外部圆弧的宽度*/
+    /**
+     * ①外部圆弧的宽度
+     */
     public static final int ARC_WIDTH = 5;
 
-    /**②内部的字体大小36*/
+    /**
+     * ②内部的字体大小36
+     */
     public static final int TEXT_SIZE = 36;
 
-    /**③文字距离内部灰色圆边框的间距*/
+    /**
+     * ③文字距离内部灰色圆边框的间距
+     */
     public static final int INNER_PADDING = 10;
 
     //内部灰色圆的半径
@@ -44,16 +50,22 @@ public class SkipView extends View {
     //外部圆弧的半径 ：内部圆的直径 +  2 * 外部圆弧的宽度
     private float mOutArcRadius;
 
-    /**画外部圆弧时需要传递的矩形*/
+    /**
+     * 画外部圆弧时需要传递的矩形
+     */
     private RectF rectF;
 
     //通过画笔计算文字的宽度（计算内部灰色圆直径要用到的）
     float mMeasuresTextWidth;
 
-    /**角度变化的时间*/
+    /**
+     * 角度变化的时间
+     */
     private int mCurrentTime = 0;
 
-    /**角度变化的总时间*/
+    /**
+     * 角度变化的总时间
+     */
     private int mTotalTime = 5000;
 
     private Handler mHandler;
@@ -61,7 +73,9 @@ public class SkipView extends View {
     //发送每秒改变角度动画的消息
     private final int SPACE_TIME_ANGLE = 20190106;
 
-    /**在控件中准备一个成员变量作为OnSkipListener接口的实例*/
+    /**
+     * 在控件中准备一个成员变量作为OnSkipListener接口的实例
+     */
     private OnSkipListener mOnSkipListener;
 
 
@@ -74,7 +88,7 @@ public class SkipView extends View {
         init();
     }
 
-    private void init(){
+    private void init() {
         //准备三支画笔-内部的字体画笔
         mTextPaint = new Paint();//创建画笔
         mTextPaint.setTextSize(TEXT_SIZE);//设置字体大小
@@ -97,14 +111,14 @@ public class SkipView extends View {
         mInnerCircleRadius = (2 * INNER_PADDING + mMeasuresTextWidth) / 2;
 
         //外部圆弧的半径   = (内部圆的直径+2*外部圆弧的笔画宽度)/2
-        mOutArcRadius = (mInnerCircleRadius * 2 + 2 * ARC_WIDTH)/2;
+        mOutArcRadius = (mInnerCircleRadius * 2 + 2 * ARC_WIDTH) / 2;
 
         //绘制圆弧时用的的矩形
-        rectF = new RectF(0 + ARC_WIDTH / 2 + 1, 0  + ARC_WIDTH / 2 + 1,
-                mOutArcRadius * 2 - ARC_WIDTH / 2 - 1, mOutArcRadius * 2  - ARC_WIDTH / 2 - 1);
+        rectF = new RectF(0 + ARC_WIDTH / 2 + 1, 0 + ARC_WIDTH / 2 + 1,
+                mOutArcRadius * 2 - ARC_WIDTH / 2 - 1, mOutArcRadius * 2 - ARC_WIDTH / 2 - 1);
 
         //用handler做角度变化的动画效果
-        mHandler =  new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -112,19 +126,12 @@ public class SkipView extends View {
                 mCurrentTime += 100;
                 //开始重绘
                 invalidate();
-                if (mCurrentTime >= mTotalTime){
-                    //该停止了
-                    //Toast.makeText(getContext(),"该跳转页面了",Toast.LENGTH_SHORT).show();
-
-                    //避免空指针异常
-                    if (mOnSkipListener != null){
-                        //跳转到某个具体页面，具体逻辑咱么这里不写，交给使用了这个控件了类去实现
-                        mOnSkipListener.onSkip();
-                    }
+                if (mCurrentTime >= mTotalTime) {
+                    stop();
                     return;
                 }
                 //注意不return这里会一直循环下去 记得销毁handler 避免内存泄漏-发送延时消息 延时单位 毫秒
-                mHandler.sendEmptyMessageDelayed(SPACE_TIME_ANGLE,100);
+                mHandler.sendEmptyMessageDelayed(SPACE_TIME_ANGLE, 100);
             }
         };
     }
@@ -133,7 +140,7 @@ public class SkipView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         int eventAction = event.getAction();
 
-        switch (eventAction){
+        switch (eventAction) {
             case MotionEvent.ACTION_DOWN://用户按下的this
                 setAlpha(0.5f);//设置this的透明度为0.5F
                 break;
@@ -141,33 +148,41 @@ public class SkipView extends View {
 
                 break;
             case MotionEvent.ACTION_UP://用户抬起的手指
-                //让handler中的消息循环停止避免跳转2次
-                mHandler.removeCallbacksAndMessages(null);
-                setAlpha(1.0f);//设置this的透明度为正常
-                //要跳转页面-避免空指针异常
-                if (mOnSkipListener != null){
-                    //跳转到某个具体页面，具体逻辑交给使用了这个控件了类去实现
-                    mOnSkipListener.onSkip();
-                }
+                stop();
                 break;
         }
 
         return true;
     }
 
-    /**倒计时加载完毕跳转的接口**/
-    public interface OnSkipListener{
+    /**
+     * 倒计时加载完毕跳转的接口
+     **/
+    public interface OnSkipListener {
         void onSkip();
     }
 
-    /**给接口成员变量赋值的set方法*/
-    public void setOnSkipListener(OnSkipListener skipListener){
+    /**
+     * 给接口成员变量赋值的set方法
+     */
+    public void setOnSkipListener(OnSkipListener skipListener) {
         this.mOnSkipListener = skipListener;
     }
 
-    public void start(){
+    public void start() {
         /**这里发送后会调用延时消息 开始每秒钟循环发送消息 开始不断的重绘*/
         mHandler.sendEmptyMessage(SPACE_TIME_ANGLE);
+    }
+
+    public void stop() {
+        //让handler中的消息循环停止避免跳转2次
+        mHandler.removeCallbacksAndMessages(null);
+        setAlpha(1.0f);//设置this的透明度为正常
+        //要跳转页面-避免空指针异常
+        if (mOnSkipListener != null) {
+            //跳转到某个具体页面，具体逻辑交给使用了这个控件了类去实现
+            mOnSkipListener.onSkip();
+        }
     }
 
     @Override
@@ -177,20 +192,19 @@ public class SkipView extends View {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 
         //AT_MOST: 度量规格模式：子级可以任意大小，最多可以达到指定的大小 - wrap_content
-        if (widthMode == MeasureSpec.AT_MOST){
-            widthSize = (int)(mOutArcRadius * 2);
+        if (widthMode == MeasureSpec.AT_MOST) {
+            widthSize = (int) (mOutArcRadius * 2);
         }
 
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        if (heightMode == MeasureSpec.AT_MOST){
-            heightSize = (int)(mOutArcRadius * 2);
+        if (heightMode == MeasureSpec.AT_MOST) {
+            heightSize = (int) (mOutArcRadius * 2);
         }
 
-        setMeasuredDimension(widthSize,heightSize);
+        setMeasuredDimension(widthSize, heightSize);
     }
-
 
 
     @Override
@@ -199,15 +213,15 @@ public class SkipView extends View {
 
         //将整个画布旋转（直接修起始角也可以）
         canvas.save();//存档
-        canvas.rotate(-90,getMeasuredWidth() / 2,getMeasuredHeight() / 2);//旋转
+        canvas.rotate(-90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);//旋转
         //角度变化计算 起始时间 / 总时间 * 360
         float spaceTime = mCurrentTime * 1f / mTotalTime * 360;
         //绘制 外部的圆弧，内部的灰色的圆，中间文字 先传递一个矩形，起始角，结束角， 连接useCenter ，画笔
-        canvas.drawArc(rectF,0,spaceTime,false,mOutArcPaint);
+        canvas.drawArc(rectF, 0, spaceTime, false, mOutArcPaint);
         canvas.restore();//读档-这样做是为了不影响其他控件，否者会全部被旋转
 
         //画内部灰色的圆 cx:圆心x坐标 cy:圆心Y坐标
-        canvas.drawCircle(getMeasuredWidth() / 2,getMeasuredHeight() / 2,mInnerCircleRadius,mInnerCriclePaint);
+        canvas.drawCircle(getMeasuredWidth() / 2, getMeasuredHeight() / 2, mInnerCircleRadius, mInnerCriclePaint);
 
         //获得文字高度上的基线
         Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
@@ -227,7 +241,7 @@ public class SkipView extends View {
         baseLine = (int) (baseLine - (top + bottom) / 2);
 
         //画内部的文字-注意一定要按照这样的顺序不然后画的会把先画的挡到 这里的的xy代表文字的左下角坐标
-        canvas.drawText("跳过",getMeasuredWidth() / 2 - mMeasuresTextWidth / 2,baseLine,mTextPaint);
+        canvas.drawText("跳过", getMeasuredWidth() / 2 - mMeasuresTextWidth / 2, baseLine, mTextPaint);
     }
 
 
@@ -237,7 +251,7 @@ public class SkipView extends View {
      */
     @Override
     protected void onDetachedFromWindow() {
-        if (mHandler != null){
+        if (mHandler != null) {
             //安卓性能优化之清除Handler的Message和Runnable
             mHandler.removeCallbacksAndMessages(null);
         }

@@ -1,5 +1,6 @@
 package com.meishu.sdk.splash.chuanshanjia;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
@@ -14,7 +15,7 @@ public class CSJSplashInteractionListenerImpl implements TTSplashAd.AdInteractio
     private SplashInteractionListener meishuInteractionListener;
     private CSJSplashAd csjSplashAd;
 
-    public CSJSplashInteractionListenerImpl(CSJSplashAd csjSplashAd, SplashInteractionListener meishuInteractionListener) {
+    public CSJSplashInteractionListenerImpl(@NonNull CSJSplashAd csjSplashAd, SplashInteractionListener meishuInteractionListener) {
         this.csjSplashAd = csjSplashAd;
         this.meishuInteractionListener = meishuInteractionListener;
     }
@@ -28,6 +29,7 @@ public class CSJSplashInteractionListenerImpl implements TTSplashAd.AdInteractio
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }
+        this.csjSplashAd.setClicked(true);
         if (meishuInteractionListener != null) {
             meishuInteractionListener.onAdClicked();
         }
