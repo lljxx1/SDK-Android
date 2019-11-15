@@ -15,6 +15,7 @@ public class AdListenerAdapter implements AdListener {
     private static final String TAG = "AdListenerAdapter";
     private RewardVideoAdListener apiAdListener;
     private MeishuRewardVideoAdWrapper adWrapper;
+    private volatile boolean hasExposed;
 
     public AdListenerAdapter(@NonNull MeishuRewardVideoAdWrapper adWrapper, RewardVideoAdListener apiAdListener) {
         this.adWrapper = adWrapper;
@@ -31,17 +32,21 @@ public class AdListenerAdapter implements AdListener {
 
     @Override
     public void onADExposure() {
-        String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
-        if (monitorUrls != null) {
-            for (String monitorUrl : monitorUrls) {
-                if (!TextUtils.isEmpty(monitorUrl)) {
-                    HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+        if(!hasExposed){
+            String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
+            if (monitorUrls != null) {
+                for (String monitorUrl : monitorUrls) {
+                    if (!TextUtils.isEmpty(monitorUrl)) {
+                        HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+                    }
                 }
             }
+            if(this.apiAdListener!=null){
+                this.apiAdListener.onAdExposure();
+            }
+            hasExposed=true;
         }
-        if(this.apiAdListener!=null){
-            this.apiAdListener.onAdExposure();
-        }
+
     }
 
     @Override

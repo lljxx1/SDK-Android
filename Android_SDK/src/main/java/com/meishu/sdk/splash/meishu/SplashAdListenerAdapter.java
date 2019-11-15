@@ -16,6 +16,7 @@ import com.meishu.sdk.utils.HttpUtil;
 public class SplashAdListenerAdapter implements AdListener {
     private com.meishu.sdk.splash.SplashAdListener splashAdListener;
     private MeishuAdNativeWrapper adWrapper;
+    private volatile boolean hasExposed;
 
     public SplashAdListenerAdapter(MeishuAdNativeWrapper adWrapper, @NonNull SplashAdListener splashAdListener) {
         this.adWrapper = adWrapper;
@@ -47,15 +48,19 @@ public class SplashAdListenerAdapter implements AdListener {
 
     @Override
     public void onADExposure() {
-        String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
-        if (monitorUrls != null) {
-            for (String monitorUrl : monitorUrls) {
-                if (!TextUtils.isEmpty(monitorUrl)) {
-                    HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+        if(!hasExposed){
+            String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
+            if (monitorUrls != null) {
+                for (String monitorUrl : monitorUrls) {
+                    if (!TextUtils.isEmpty(monitorUrl)) {
+                        HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+                    }
                 }
             }
+            splashAdListener.onAdExposure();
+            hasExposed=true;
         }
-        splashAdListener.onAdExposure();
+
     }
 
     @Override

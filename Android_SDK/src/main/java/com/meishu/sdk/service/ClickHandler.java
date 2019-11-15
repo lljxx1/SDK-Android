@@ -89,8 +89,14 @@ public class ClickHandler {
                     }
                 }
                 context.startActivity(intent);
-            } else {//程序未安装，要转到下载
-                download(nativeAd);
+            } else {//程序未安装，要转到落地页
+                if (nativeAd.getAdSlot().getdUrl() != null && nativeAd.getAdSlot().getdUrl().length > 0) {
+                    Intent deeplink_fail_intent = new Intent(context, WebviewActivity.class);
+                    deeplink_fail_intent.putExtra(WebviewActivity.urlIntent, nativeAd.getAdSlot().getdUrl());
+                    context.startActivity(deeplink_fail_intent);
+                }
+
+//                download(nativeAd);
                 /*String urls[] = adSlot.getDp_fail();
                 if (urls != null) {
                     for (String dp_fail : urls) {

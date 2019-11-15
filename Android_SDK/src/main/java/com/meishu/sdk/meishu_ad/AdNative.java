@@ -19,6 +19,7 @@ import com.meishu.sdk.TouchPositionListener;
 import com.meishu.sdk.activity.RewardVideoPlayerActivity;
 import com.meishu.sdk.meishu_ad.banner.BannerAdImpl;
 import com.meishu.sdk.meishu_ad.banner.BannerAdSlot;
+import com.meishu.sdk.meishu_ad.banner.MeishuBannerRootView;
 import com.meishu.sdk.meishu_ad.interstitial.InterstitialAdImpl;
 import com.meishu.sdk.meishu_ad.interstitial.InterstitialAdSlot;
 import com.meishu.sdk.meishu_ad.interstitial.Popup;
@@ -27,6 +28,7 @@ import com.meishu.sdk.meishu_ad.nativ.NativeAdDataImpl;
 import com.meishu.sdk.meishu_ad.nativ.NativeAdSlot;
 import com.meishu.sdk.meishu_ad.nativ.NormalMediaView;
 import com.meishu.sdk.meishu_ad.reward.FullScreenMediaView;
+import com.meishu.sdk.meishu_ad.splash.MeishuSplashRootView;
 import com.meishu.sdk.meishu_ad.splash.SkipView;
 import com.meishu.sdk.meishu_ad.splash.SplashAdImpl;
 import com.meishu.sdk.meishu_ad.splash.SplashAdSlot;
@@ -51,7 +53,8 @@ public class AdNative {
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         adView.setLayoutParams(layoutParams);
         LayoutInflater inflater = LayoutInflater.from(this.activity);
-        final View bannerRoot = inflater.inflate(R.layout.banner_ad_layout, null);
+        final MeishuBannerRootView bannerRoot = (MeishuBannerRootView) inflater.inflate(R.layout.banner_ad_layout, null);
+        bannerRoot.setAdListener(adListener);
         final AQuery aQuery = new AQuery(bannerRoot);
         final BannerAdImpl nativeBannerAd = new BannerAdImpl(adSlot);
         if (adSlot.getImageUrls() != null && adSlot.getImageUrls().length > 0) {
@@ -67,7 +70,6 @@ public class AdNative {
                             if (adListener != null) {
                                 nativeBannerAd.setAdView(bannerRoot);
                                 adListener.onLoaded(nativeBannerAd);
-                                adListener.onADExposure();
                             }
                         }
                     });
@@ -101,7 +103,8 @@ public class AdNative {
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         adView.setLayoutParams(layoutParams);
         LayoutInflater inflater = LayoutInflater.from(this.activity);
-        final View adRoot = inflater.inflate(R.layout.splash_ad_layout, null);
+        final MeishuSplashRootView adRoot = (MeishuSplashRootView) inflater.inflate(R.layout.splash_ad_layout, null);
+        adRoot.setAdListener(adListener);
         final AQuery aQuery = new AQuery(adRoot);
         final SplashAdImpl nativeAd = new SplashAdImpl(adSlot);
         if (adSlot.getImageUrls() != null && adSlot.getImageUrls().length > 0) {
@@ -120,7 +123,6 @@ public class AdNative {
                             }
                             if (adListener != null) {
                                 adListener.onLoaded(nativeAd);
-                                adListener.onADExposure();
                             }
                             final SkipView skipView = nativeAd.getAdView().findViewById(R.id.skipView);
                             skipView.setOnSkipListener(new SkipView.OnSkipListener() {
@@ -278,7 +280,6 @@ public class AdNative {
                     );
                     if (finalI == finalFetchCount - 1 && adListener != null) {
                         adListener.onAdLoaded(adDatas);
-                        adListener.onADExposure();
                     }
                 }
             });

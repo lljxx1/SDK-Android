@@ -51,6 +51,9 @@ public class MeishuRecyclerAdDataAdapter implements RecyclerAdData {
         container=touchContainer;
 
         this.nativeAdData.bindAdToView(activity, container, clickableViews, new MeishuInteractionListenerAdapter(this.nativeAdData, recylcerAdInteractionListener));
+        if(this.adWrapper.getMeishuAdListenerAdapter()!=null){//用户绑定view的时候曝光广告
+            this.adWrapper.getMeishuAdListenerAdapter().onADExposure();
+        }
     }
 
     @Override

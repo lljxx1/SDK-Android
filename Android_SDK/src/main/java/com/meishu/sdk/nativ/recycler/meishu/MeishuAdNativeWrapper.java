@@ -13,6 +13,7 @@ public class MeishuAdNativeWrapper extends BaseMeishuWrapper implements NativeAd
     private AdNative adNative;
     private NativeAdSlot adSlot;
     private RecyclerAdLoader adLoader;
+    private MeishuAdListenerAdapter meishuAdListenerAdapter;
 
     public MeishuAdNativeWrapper(@NonNull RecyclerAdLoader adLoader, NativeAdSlot adSlot) {
         super(adLoader.getActivity());
@@ -23,7 +24,8 @@ public class MeishuAdNativeWrapper extends BaseMeishuWrapper implements NativeAd
 
     @Override
     public void loadAd() {
-        adNative.loadNativeAd(this.adSlot, new MeishuAdListenerAdapter(this, this.adLoader.getApiAdListener()));
+        this.meishuAdListenerAdapter=new MeishuAdListenerAdapter(this, this.adLoader.getApiAdListener());
+        adNative.loadNativeAd(this.adSlot, this.meishuAdListenerAdapter);
     }
 
     @Override
@@ -33,5 +35,9 @@ public class MeishuAdNativeWrapper extends BaseMeishuWrapper implements NativeAd
 
     public NativeAdSlot getAdSlot() {
         return adSlot;
+    }
+
+    public MeishuAdListenerAdapter getMeishuAdListenerAdapter() {
+        return meishuAdListenerAdapter;
     }
 }

@@ -40,9 +40,7 @@ public abstract class AdLoader {
 
             @Override
             public void onResponse(OriginalResponse httpResponse) throws IOException {
-                if (httpResponse.getCode() == 204) {
-                    handleNoAd();
-                } else if (httpResponse.isSuccessful()) {
+                if (httpResponse.isSuccessful()) {
                     final Gson jsonUtil = new Gson();
                     final MeishuAdInfo meishuAdInfo = jsonUtil.fromJson(httpResponse.getBody(), MeishuAdInfo.class);
                     if (meishuAdInfo.getTarget_type() != null &&
@@ -82,7 +80,7 @@ public abstract class AdLoader {
                         loadAd(meishuAdInfo);
                     }
                 } else {
-                    Log.e(TAG, "onResponse: ", new Exception("广告请求出错，错误码[" + httpResponse.getBody() + "]"));
+                    handleNoAd();
                 }
             }
         });

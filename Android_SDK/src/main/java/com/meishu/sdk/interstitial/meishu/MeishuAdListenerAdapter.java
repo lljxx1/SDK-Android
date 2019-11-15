@@ -12,6 +12,7 @@ import com.meishu.sdk.utils.HttpUtil;
 public class MeishuAdListenerAdapter implements AdListener {
     private InterstitialAdListener meishuAdListener;
     private MeishuAdNativeWrapper adWrapper;
+    private volatile boolean hasExposed;
 
     public MeishuAdListenerAdapter(MeishuAdNativeWrapper adWrapper, InterstitialAdListener meishuAdListener) {
         this.adWrapper=adWrapper;
@@ -31,17 +32,21 @@ public class MeishuAdListenerAdapter implements AdListener {
 
     @Override
     public void onADExposure() {
-        String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
-        if (monitorUrls != null) {
-            for (String monitorUrl : monitorUrls) {
-                if (!TextUtils.isEmpty(monitorUrl)) {
-                    HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+        if(!hasExposed){//每个广告只曝光一次
+            String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
+            if (monitorUrls != null) {
+                for (String monitorUrl : monitorUrls) {
+                    if (!TextUtils.isEmpty(monitorUrl)) {
+                        HttpUtil.asyncGetWithWebViewUA(this.adWrapper.getActivity(), monitorUrl, new DefaultHttpGetWithNoHandlerCallback());
+                    }
                 }
             }
+            if (meishuAdListener != null) {
+                meishuAdListener.onAdExposure();
+            }
+            hasExposed=true;
         }
-        if (meishuAdListener != null) {
-            meishuAdListener.onAdExposure();
-        }
+
     }
 
     @Override
