@@ -216,9 +216,9 @@ public class AdNative {
 
     public void loadRewardVideoAd(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
         int fetchCount = 1;
-        if (adSlot.getFetchCount() != null && adSlot.getFetchCount() != 0) {
-            fetchCount = adSlot.getFetchCount();
-        }
+//        if (adSlot.getFetchCount() != null && adSlot.getFetchCount() != 0) {
+//            fetchCount = adSlot.getFetchCount();
+//        }
         MediaView rewardVideoView = new FullScreenMediaView(this.activity);
         final List<NativeAdData> adDatas = new ArrayList<>();
         for (int i = 0; i < fetchCount; i++) {
@@ -257,9 +257,9 @@ public class AdNative {
 
     private void loadVideoView(final NativeAdSlot adSlot, final com.meishu.sdk.meishu_ad.nativ.AdListener adListener) {
         int fetchCount = 1;
-        if (adSlot.getFetchCount() != null && adSlot.getFetchCount() != 0) {
-            fetchCount = adSlot.getFetchCount();
-        }
+//        if (adSlot.getFetchCount() != null && adSlot.getFetchCount() != 0) {
+//            fetchCount = adSlot.getFetchCount();
+//        }
 
         final List<NativeAdData> adDatas = new ArrayList<>();
         for (int i = 0; i < fetchCount; i++) {
