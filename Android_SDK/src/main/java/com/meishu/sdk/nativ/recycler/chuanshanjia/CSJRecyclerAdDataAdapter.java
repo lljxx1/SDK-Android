@@ -27,6 +27,7 @@ public class CSJRecyclerAdDataAdapter extends BaseAdData implements RecyclerAdDa
 
     private RecyclerAdListener adListener;
     private CSJTTAdNativeWrapper adNativeWrapper;
+    private volatile boolean hasExposed;
 
     public CSJRecyclerAdDataAdapter(@NonNull CSJTTAdNativeWrapper adNativeWrapper, @NonNull TTFeedAd ttFeedAd) {
         this.adNativeWrapper = adNativeWrapper;
@@ -143,5 +144,17 @@ public class CSJRecyclerAdDataAdapter extends BaseAdData implements RecyclerAdDa
 
     public CSJTTAdNativeWrapper getAdWrapper() {
         return adNativeWrapper;
+    }
+
+    public boolean isHasExposed() {
+        return hasExposed;
+    }
+
+    /**
+     * 不允许开发者调用此接口
+     * @param hasExposed
+     */
+    protected void setHasExposed(boolean hasExposed) {
+        this.hasExposed = hasExposed;
     }
 }

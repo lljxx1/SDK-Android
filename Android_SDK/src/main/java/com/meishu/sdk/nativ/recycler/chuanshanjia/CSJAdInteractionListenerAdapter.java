@@ -25,7 +25,7 @@ public class CSJAdInteractionListenerAdapter implements TTNativeAd.AdInteraction
         if (this.adData.getAdWrapper() != null) {
             HttpUtil.asyncGetWithWebViewUA(
                     adData.getAdWrapper().getActivity(),
-                    ClickHandler.replaceOtherMacros(this.adData.getAdWrapper().getSdkAdInfo().getClk(),this.adData),
+                    ClickHandler.replaceOtherMacros(this.adData.getAdWrapper().getSdkAdInfo().getClk(), this.adData),
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }
@@ -36,14 +36,13 @@ public class CSJAdInteractionListenerAdapter implements TTNativeAd.AdInteraction
 
     @Override
     public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
-        if (this.meishuInteractionListener != null) {
-            this.meishuInteractionListener.onAdClicked();
-        }
+        this.onAdClicked(view, ttNativeAd);
     }
 
     @Override
     public void onAdShow(TTNativeAd ttNativeAd) {
-        if (this.adData.getAdListener() != null) {
+        if (this.adData.getAdListener() != null && !this.adData.isHasExposed()) {
+            this.adData.setHasExposed(true);
             this.adData.getAdListener().onAdExposure();
         }
     }

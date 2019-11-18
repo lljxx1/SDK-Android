@@ -24,7 +24,7 @@ public class GDTNativeAdListenerAdapter implements NativeADUnifiedListener {
         if (list != null && this.meishuAdListener != null) {
             List<RecyclerAdData> meishuAdDatas = new ArrayList<>();
             for (NativeUnifiedADData nativeUnifiedADData : list) {
-                meishuAdDatas.add(new GDTNativeRecyclerAdDataAdapter(adWrapper,nativeUnifiedADData, this.meishuAdListener));
+                meishuAdDatas.add(new GDTNativeRecyclerAdDataAdapter(adWrapper,nativeUnifiedADData));
             }
             this.meishuAdListener.onAdLoaded(meishuAdDatas);
         }

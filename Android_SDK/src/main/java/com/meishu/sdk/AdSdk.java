@@ -31,8 +31,7 @@ public class AdSdk {
 //            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/deep_link";
 //            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad_no_ad/1003908";
         } else {
-            //TODO 添加生产环境地址
-            MeishuConstants.ad_request_url = "http://123.59.48.113/sdk/req_ad";
+            MeishuConstants.ad_request_url = "http://sdk.1rtb.com/sdk/req_ad";
         }
         MeishuAdConfig adConfig = MeishuAdConfig.getInstance();
         adConfig.setAppId(appId);

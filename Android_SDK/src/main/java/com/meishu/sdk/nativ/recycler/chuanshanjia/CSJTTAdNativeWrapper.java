@@ -22,6 +22,7 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
     private RecyclerAdLoader adLoader;
     private MeishuAdInfo meishuAdInfo;
     private Integer fetchCount;
+    private RecyclerAdListener sdkAdListenerWrapper;
 
     public CSJTTAdNativeWrapper(@NonNull RecyclerAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo, @NonNull MeishuAdInfo meishuAdInfo, @Nullable Integer fetchCount) {
         super(adLoader.getActivity(), sdkAdInfo);
@@ -42,7 +43,8 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
                 .setImageAcceptedSize(meishuAdInfo.getWidth(), meishuAdInfo.getHeight())
                 .setAdCount(fetchAdCount)
                 .build();
-        this.ttAdNative.loadFeedAd(adSlot, new CSJFeedAdListener(this, new SdkAdListenerWrapper(this, this.adLoader.getApiAdListener())));
+        this.sdkAdListenerWrapper =new SdkAdListenerWrapper(this, this.adLoader.getApiAdListener());
+        this.ttAdNative.loadFeedAd(adSlot, new CSJFeedAdListener(this, this.sdkAdListenerWrapper));
     }
 
     @Override
@@ -51,7 +53,7 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
     }
 
     public RecyclerAdListener getAdListener() {
-        return adLoader.getApiAdListener();
+        return this.sdkAdListenerWrapper;
     }
 
 }

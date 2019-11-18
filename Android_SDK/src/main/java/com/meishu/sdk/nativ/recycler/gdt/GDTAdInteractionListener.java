@@ -36,8 +36,9 @@ public class GDTAdInteractionListener implements NativeADEventListener {
 
     @Override
     public void onADExposed() {
-        if (this.adData.getApiAdListener() != null) {
-            this.adData.getApiAdListener().onAdExposure();
+        if (this.adData.getAdWrapper().getAdListener() != null && !this.adData.isHasExposed()) {
+            this.adData.setHasExposed(true);
+            this.adData.getAdWrapper().getAdListener().onAdExposure();
         }
     }
 

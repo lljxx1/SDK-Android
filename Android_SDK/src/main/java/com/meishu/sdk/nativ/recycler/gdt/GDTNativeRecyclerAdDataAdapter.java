@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 import com.meishu.sdk.BaseAdData;
 import com.meishu.sdk.TouchAdContainer;
 import com.meishu.sdk.TouchPositionListener;
-import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
-import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdData;
-import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
+import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdUtils;
+import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.nativ.MediaView;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -24,12 +23,11 @@ import java.util.List;
 public class GDTNativeRecyclerAdDataAdapter extends BaseAdData implements RecyclerAdData {
     private static final String TAG = "GDTNativeAdDataAdapter";
     private NativeUnifiedADData nativeUnifiedADData;
-    private RecyclerAdListener apiAdListener;
     private GDTNativeUnifiedAdWrapper adWrapper;
+    private volatile boolean hasExposed;
 
-    public GDTNativeRecyclerAdDataAdapter(@NonNull GDTNativeUnifiedAdWrapper adWrapper, @NonNull NativeUnifiedADData nativeUnifiedADData, RecyclerAdListener apiAdListener) {
+    public GDTNativeRecyclerAdDataAdapter(@NonNull GDTNativeUnifiedAdWrapper adWrapper, @NonNull NativeUnifiedADData nativeUnifiedADData) {
         this.adWrapper = adWrapper;
-        this.apiAdListener = apiAdListener;
         this.nativeUnifiedADData = nativeUnifiedADData;
     }
 
@@ -150,11 +148,15 @@ public class GDTNativeRecyclerAdDataAdapter extends BaseAdData implements Recycl
         }
     }
 
-    public RecyclerAdListener getApiAdListener() {
-        return apiAdListener;
-    }
-
     public GDTNativeUnifiedAdWrapper getAdWrapper() {
         return adWrapper;
+    }
+
+    public boolean isHasExposed() {
+        return hasExposed;
+    }
+
+    protected void setHasExposed(boolean hasExposed) {
+        this.hasExposed = hasExposed;
     }
 }

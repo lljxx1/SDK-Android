@@ -18,11 +18,13 @@ public class GDTNativeUnifiedAdWrapper extends BaseSdkAdWrapper {
     private NativeUnifiedAD nativeUnifiedAD;
     private RecyclerAdLoader adLoader;
     private Integer fetchCount;
+    private RecyclerAdListener sdkAdListenerWrapper;
 
     public GDTNativeUnifiedAdWrapper(@NonNull RecyclerAdLoader adLoader, @NonNull SdkAdInfo sdkAdInfo, @Nullable Integer fetchCount) {
         super(adLoader.getActivity(), sdkAdInfo);
         this.adLoader = adLoader;
-        nativeUnifiedAD = new NativeUnifiedAD(getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTNativeAdListenerAdapter(this, new SdkAdListenerWrapper(this, adLoader.getApiAdListener())));
+        this.sdkAdListenerWrapper=new SdkAdListenerWrapper(this, adLoader.getApiAdListener());
+        this.nativeUnifiedAD = new NativeUnifiedAD(getActivity(), sdkAdInfo.getApp_id(), sdkAdInfo.getPid(), new GDTNativeAdListenerAdapter(this, this.sdkAdListenerWrapper));
         this.fetchCount = fetchCount;
     }
 
@@ -40,7 +42,7 @@ public class GDTNativeUnifiedAdWrapper extends BaseSdkAdWrapper {
     }
 
     public RecyclerAdListener getAdListener() {
-        return this.adLoader.getApiAdListener();
+        return this.sdkAdListenerWrapper;
     }
 
 }
