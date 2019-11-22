@@ -30,7 +30,7 @@ import java.util.TreeSet;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
-public class RecyclerRecyclerListV2Activity extends AppCompatActivity implements RecyclerAdListener {
+public class ImageTextButtonActivity extends AppCompatActivity implements RecyclerAdListener {
     private static final String TAG = "NativeRecyclerListActiv";
     private RecyclerAdLoader recyclerAdLoader;
 
@@ -65,7 +65,7 @@ public class RecyclerRecyclerListV2Activity extends AppCompatActivity implements
 
                 if (!mIsLoading && newState == SCROLL_STATE_IDLE && !recyclerView.canScrollVertically(1)) {
                     mIsLoading = true;
-                    RecyclerRecyclerListV2Activity.this.recyclerAdLoader.loadAd();
+                    ImageTextButtonActivity.this.recyclerAdLoader.loadAd();
                 }
 
             }
@@ -210,7 +210,7 @@ public class RecyclerRecyclerListV2Activity extends AppCompatActivity implements
             List<View> clickableViews = new ArrayList<>();
             clickableViews.add(holder.download);
             clickableViews.add(holder.container);
-            ad.bindAdToView(RecyclerRecyclerListV2Activity.this, holder.container,
+            ad.bindAdToView(ImageTextButtonActivity.this, holder.container,
                     clickableViews, new RecylcerAdInteractionListener() {
                         @Override
                         public void onAdClicked() {

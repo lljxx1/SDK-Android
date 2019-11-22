@@ -1,11 +1,16 @@
 package com.meishu.sdk.service;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.meishu.sdk.AdData;
 import com.meishu.sdk.MeishuConstants;
@@ -52,7 +57,7 @@ public class ClickHandler {
         ).toString();
     }
 
-    public static void handleClick(NativeAd nativeAd) {
+    public static void handleClick(final NativeAd nativeAd) {
         AdSlot adSlot = nativeAd.getAdSlot();
         String[] clickUrls = adSlot.getClickUrl();
         if (clickUrls != null) {
@@ -71,7 +76,7 @@ public class ClickHandler {
             }
             adSlot.setdUrl(handledDUrls);
         }
-        Context context = nativeAd.getAdView().getContext();
+        final Context context = nativeAd.getAdView().getContext();
         if (!TextUtils.isEmpty(adSlot.getDeep_link())) {
             Intent intent = new Intent();
             intent.setAction("android.intent.action.VIEW");
@@ -108,7 +113,29 @@ public class ClickHandler {
                 }*/
             }
         } else if (nativeAd.getInteractionType() == MeishuConstants.interactionType_download) {
-            download(nativeAd);
+            if (isInternetConnected(context) && !isWifiConnected(context)) {//流量网络要让用户确认下载
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                alertBuilder.setTitle("下载");
+                alertBuilder.setMessage("确认要下载吗？");
+                alertBuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        download(nativeAd);
+                    }
+                });
+                alertBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertBuilder.create().show();
+            } else if (isInternetConnected(context)) {
+                download(nativeAd);
+            } else {
+                Toast.makeText(context, "没有网络", Toast.LENGTH_SHORT).show();
+            }
+
         } else if (nativeAd.getInteractionType() == MeishuConstants.interactionType_url) {
             Intent intent = new Intent(context, WebviewActivity.class);
             intent.putExtra(WebviewActivity.urlIntent, nativeAd.getAdSlot().getdUrl());
@@ -133,7 +160,31 @@ public class ClickHandler {
                             adSlot.getAppName() + ".apk");
             downloadUtils.setDownloadListener(new NativeDownloadListenerImpl(nativeAd));
             downloadUtils.downloadAPK();
+            Toast.makeText(nativeAd.getAdView().getContext(), "开始下载", Toast.LENGTH_SHORT).show();
         }
     }
 
+
+    private static boolean isWifiConnected(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isWifiConnected = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            String type = networkInfo.getTypeName();
+            if (type.equalsIgnoreCase("WIFI")) {
+                isWifiConnected = true;
+            }
+        }
+        return isWifiConnected;
+    }
+
+    private static boolean isInternetConnected(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isInternetConnected = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isInternetConnected = true;
+        }
+        return isInternetConnected;
+    }
 }

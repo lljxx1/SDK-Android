@@ -24,15 +24,15 @@ public class NativeRecyclerListSelectActivity extends AppCompatActivity implemen
         Intent intent;
         switch (v.getId()) {
             case R.id.img_text_button:
-                intent = new Intent(this, RecyclerRecyclerListV2Activity.class);
+                intent = new Intent(this, ImageTextButtonActivity.class);
                 startActivity(intent);
                 break;
             case R.id.img_text:
-                intent = new Intent(this, RecyclerRecyclerListV3Activity.class);
+                intent = new Intent(this, ImageTextActivity.class);
                 startActivity(intent);
                 break;
             case R.id.large_img_or_video:
-                intent = new Intent(this, RecyclerRecyclerListV4Activity.class);
+                intent = new Intent(this, TextAboveImageActivity.class);
                 startActivity(intent);
                 break;
         }

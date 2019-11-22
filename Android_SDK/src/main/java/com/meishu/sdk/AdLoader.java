@@ -1,6 +1,7 @@
 package com.meishu.sdk;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import com.meishu.sdk.utils.OriginalResponse;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 public abstract class AdLoader {
@@ -57,21 +59,21 @@ public abstract class AdLoader {
 
                             @Override
                             public void onResponse(OriginalResponse dUrlResponse) throws IOException {
-                                boolean hasError=true;
+                                boolean hasError = true;
                                 try {
                                     if (dUrlResponse.isSuccessful()) {
                                         ClickIdResponse clickIdResponse = jsonUtil.fromJson(dUrlResponse.getBody(), ClickIdResponse.class);
                                         meishuAdInfo.setClickid(clickIdResponse.getData().getClickid());
                                         meishuAdInfo.setdUrl(new String[]{clickIdResponse.getData().getDstlink()});
                                         loadAd(meishuAdInfo);
-                                        hasError=false;
-                                    }else{
+                                        hasError = false;
+                                    } else {
                                         Log.d(TAG, "onResponse: 从dUrl请求clickId失败");
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     Log.e(TAG, "onResponse: ", e);
                                 }
-                                if(hasError){
+                                if (hasError) {
                                     handleNoAd();
                                 }
                             }
@@ -95,15 +97,15 @@ public abstract class AdLoader {
         DelegateChain tail = null;
         SdkAdInfo[] sdks = meishuAdInfo.getSdk();
         if (sdks != null && sdks.length > 0) {//要求加载其他厂商广告
-
+            sdks = removeUnsupportedSdk(sdks);
             AdSdk.InitSdkConfigIfNoInit(activity, sdks[0]);
-            DelegateChain delegateChain = createDelegate(sdks[0],meishuAdInfo);
+            DelegateChain delegateChain = createDelegate(sdks[0], meishuAdInfo);
             prior = delegateChain;
             if (delegateChain != null) {
                 DelegateChain current = delegateChain;
                 for (int i = 1; i < sdks.length; i++) {
                     AdSdk.InitSdkConfigIfNoInit(activity, sdks[i]);
-                    current.setNext(createDelegate(sdks[i],meishuAdInfo));
+                    current.setNext(createDelegate(sdks[i], meishuAdInfo));
                     current = current.getNext();
                     tail = current;
                 }
@@ -134,7 +136,7 @@ public abstract class AdLoader {
 
     protected abstract DelegateChain createMeishuAdDelegate(Activity activity, MeishuAdInfo meishuAdInfo);
 
-    protected abstract DelegateChain createDelegate(SdkAdInfo sdkAdInfo,MeishuAdInfo meishuAdInfo);
+    protected abstract DelegateChain createDelegate(SdkAdInfo sdkAdInfo, MeishuAdInfo meishuAdInfo);
 
     protected abstract void handleNoAd();
 
@@ -156,5 +158,24 @@ public abstract class AdLoader {
 
     public void setCurrent(AdDelegate current) {
         this.current = current;
+    }
+
+    private SdkAdInfo[] removeUnsupportedSdk(SdkAdInfo[] originalSdks) {
+        SdkAdInfo[] filteredSdksArray = null;
+        if (originalSdks != null) {
+            ArrayList<SdkAdInfo> filteredSdks = new ArrayList<>(originalSdks.length);
+            for (int i = 0; i < originalSdks.length; i++) {
+                if (!TextUtils.isEmpty(originalSdks[i].getSdk())
+                        && (
+                        originalSdks[i].getSdk().equalsIgnoreCase("GDT")
+                                || originalSdks[i].getSdk().equalsIgnoreCase("CSJ")
+                )
+                ) {
+                    filteredSdks.add(originalSdks[i]);
+                }
+            }
+            filteredSdksArray = filteredSdks.toArray(new SdkAdInfo[0]);
+        }
+        return filteredSdksArray;
     }
 }

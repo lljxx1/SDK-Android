@@ -1,7 +1,6 @@
 package com.meishu.sdkdemo.nativead;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,20 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-import com.meishu.sdk.MeishuAdPatternType;
 import com.meishu.sdk.nativ.recycler.RecyclerAdData;
 import com.meishu.sdk.nativ.recycler.RecylcerAdInteractionListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdListener;
 import com.meishu.sdk.nativ.recycler.RecyclerAdLoader;
-import com.meishu.sdk.nativ.recycler.RecyclerAdMediaListener;
 import com.meishu.sdkdemo.R;
 
 import java.util.ArrayList;
@@ -36,8 +29,8 @@ import java.util.TreeSet;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
-public class RecyclerRecyclerListV1Activity extends AppCompatActivity implements RecyclerAdListener {
-    private static final String TAG = "NativeRecyclerListActiv";
+public class ImageTextActivity extends AppCompatActivity implements RecyclerAdListener {
+    private static final String TAG = "ImageTextButtonActivity";
     private RecyclerAdLoader recyclerAdLoader;
 
     @Override
@@ -71,7 +64,7 @@ public class RecyclerRecyclerListV1Activity extends AppCompatActivity implements
 
                 if (!mIsLoading && newState == SCROLL_STATE_IDLE && !recyclerView.canScrollVertically(1)) {
                     mIsLoading = true;
-                    RecyclerRecyclerListV1Activity.this.recyclerAdLoader.loadAd();
+                    ImageTextActivity.this.recyclerAdLoader.loadAd();
                 }
 
             }
@@ -173,7 +166,7 @@ public class RecyclerRecyclerListV1Activity extends AppCompatActivity implements
             View view;
             switch (viewType) {
                 case TYPE_AD:
-                    view = LayoutInflater.from(mContext).inflate(R.layout.item_ad_unified_v1, null);
+                    view = LayoutInflater.from(mContext).inflate(R.layout.item_ad_unified_img_text, null);
                     break;
 
                 case TYPE_DATA:
@@ -209,73 +202,13 @@ public class RecyclerRecyclerListV1Activity extends AppCompatActivity implements
                 iconUrl = ad.getImgUrls()[0];
             }
             if (!TextUtils.isEmpty(iconUrl)) {
-                logoAQ.id(R.id.img_logo).image(iconUrl, false, true);
+                logoAQ.id(R.id.small_img).image(iconUrl, false, true);
             }
             holder.name.setText(ad.getTitle());
             holder.desc.setText(ad.getDesc());
             List<View> clickableViews = new ArrayList<>();
-            clickableViews.add(holder.download);
-            clickableViews.add(holder.adInfoContainer);
-            // 视频广告
-            if (ad.getAdPatternType() == MeishuAdPatternType.VIDEO) {
-                showVideo(holder);
-            } else {
-                String[] imgs = ad.getImgUrls();
-                if (imgs != null && imgs.length == 1) {
-                    showPoster(holder);
-                    logoAQ.id(R.id.img_poster).image(ad.getImgUrls()[0], false, true, 0, 0,
-                            new BitmapAjaxCallback() {
-                                @Override
-                                protected void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                                    if (iv.getVisibility() == View.VISIBLE) {
-                                        iv.setImageBitmap(bm);
-                                    }
-                                }
-                            });
-                } else if (imgs != null && imgs.length > 1) {
-                    hideAll(holder);
-                    if (imgs.length > 0 && !TextUtils.isEmpty(imgs[0])) {
-                        holder.img1.setVisibility(View.VISIBLE);
-                        logoAQ.id(R.id.img_1).image(ad.getImgUrls()[0], false, true, 0, 0,
-                                new BitmapAjaxCallback() {
-                                    @Override
-                                    protected void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                                        if (iv.getVisibility() == View.VISIBLE) {
-                                            iv.setImageBitmap(bm);
-                                        }
-                                    }
-                                });
-
-                    }
-                    if (imgs.length > 1 && !TextUtils.isEmpty(imgs[1])) {
-                        holder.img2.setVisibility(View.VISIBLE);
-                        logoAQ.id(R.id.img_2).image(ad.getImgUrls()[1], false, true, 0, 0,
-                                new BitmapAjaxCallback() {
-                                    @Override
-                                    protected void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                                        if (iv.getVisibility() == View.VISIBLE) {
-                                            iv.setImageBitmap(bm);
-                                        }
-                                    }
-                                });
-                    }
-                    if (imgs.length > 2 && !TextUtils.isEmpty(imgs[2])) {
-                        holder.img3.setVisibility(View.VISIBLE);
-                        logoAQ.id(R.id.img_3).image(ad.getImgUrls()[2], false, true, 0, 0,
-                                new BitmapAjaxCallback() {
-                                    @Override
-                                    protected void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                                        if (iv.getVisibility() == View.VISIBLE) {
-                                            iv.setImageBitmap(bm);
-                                        }
-                                    }
-                                });
-                    }
-                } else {
-
-                }
-            }
-            ad.bindAdToView(RecyclerRecyclerListV1Activity.this, holder.container,
+            clickableViews.add(holder.container);
+            ad.bindAdToView(ImageTextActivity.this, holder.container,
                     clickableViews, new RecylcerAdInteractionListener() {
                         @Override
                         public void onAdClicked() {
@@ -283,52 +216,6 @@ public class RecyclerRecyclerListV1Activity extends AppCompatActivity implements
                         }
 
                     });
-
-
-            String buttonText;
-            if (ad.getInteractionType() == 0) {
-                buttonText = "浏览";
-            } else {
-                buttonText = "下载";
-            }
-            holder.download.setText(buttonText);
-
-            setAdListener(holder, ad);
-
-        }
-
-        private void setAdListener(final CustomHolder holder, final RecyclerAdData ad) {
-            // 视频广告
-            if (ad.getAdPatternType() == MeishuAdPatternType.VIDEO) {
-                ad.bindMediaView(holder.mediaView, new RecyclerAdMediaListener() {
-
-                    @Override
-                    public void onVideoLoaded() {
-                        Log.d(TAG, "onVideoLoaded: 视频加载完成");
-                    }
-
-                    @Override
-                    public void onVideoStart() {
-                        Log.d(TAG, "onVideoStart: 视频开始播放");
-                    }
-
-                    @Override
-                    public void onVideoPause() {
-                        Log.d(TAG, "onVideoPause: 视频暂停");
-                    }
-
-                    @Override
-                    public void onVideoCompleted() {
-                        Log.d(TAG, "onVideoCompleted: 视频结束");
-                    }
-
-
-                    @Override
-                    public void onVideoError() {
-                        Log.e(TAG, "onVideoError: ", new Exception("视频出错"));
-                    }
-                });
-            }
         }
 
         @Override
@@ -337,43 +224,12 @@ public class RecyclerRecyclerListV1Activity extends AppCompatActivity implements
         }
     }
 
-    private void showVideo(CustomHolder holder) {
-        holder.poster.setVisibility(View.INVISIBLE);
-        holder.img1.setVisibility(View.GONE);
-        holder.img2.setVisibility(View.GONE);
-        holder.img3.setVisibility(View.GONE);
-        holder.mediaView.setVisibility(View.VISIBLE);
-    }
-
-    private void showPoster(CustomHolder holder) {
-        holder.poster.setVisibility(View.VISIBLE);
-        holder.img1.setVisibility(View.GONE);
-        holder.img2.setVisibility(View.GONE);
-        holder.img3.setVisibility(View.GONE);
-        holder.mediaView.setVisibility(View.INVISIBLE);
-    }
-
-    private void hideAll(CustomHolder holder) {
-        holder.poster.setVisibility(View.INVISIBLE);
-        holder.img1.setVisibility(View.GONE);
-        holder.img2.setVisibility(View.GONE);
-        holder.img3.setVisibility(View.GONE);
-        holder.mediaView.setVisibility(View.INVISIBLE);
-    }
-
     class CustomHolder extends RecyclerView.ViewHolder {
 
         public TextView title;
-        public ViewGroup mediaView;
-        public RelativeLayout adInfoContainer;
         public TextView name;
         public TextView desc;
         public ImageView logo;
-        public ImageView poster;
-        public ImageView img1;
-        public ImageView img2;
-        public ImageView img3;
-        public Button download;
         public ViewGroup container;
         public AQuery logoAQ;
 
@@ -381,16 +237,9 @@ public class RecyclerRecyclerListV1Activity extends AppCompatActivity implements
             super(itemView);
             switch (adType) {
                 case TYPE_AD:
-                    mediaView = itemView.findViewById(R.id.api_media_view);
-                    adInfoContainer = itemView.findViewById(R.id.ad_info_container_top);
-                    logo = itemView.findViewById(R.id.img_logo);
-                    poster = itemView.findViewById(R.id.img_poster);
-                    img1 = itemView.findViewById(R.id.img_1);
-                    img2 = itemView.findViewById(R.id.img_2);
-                    img3 = itemView.findViewById(R.id.img_3);
+                    logo = itemView.findViewById(R.id.small_img);
                     name = itemView.findViewById(R.id.text_title);
                     desc = itemView.findViewById(R.id.text_desc);
-                    download = itemView.findViewById(R.id.btn_download);
                     container = itemView.findViewById(R.id.native_ad_container);
                     logoAQ = new AQuery(itemView);
 

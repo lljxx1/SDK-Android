@@ -37,7 +37,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class RecyclerRecyclerListV4Activity extends AppCompatActivity implements RecyclerAdListener {
+public class TextAboveImageActivity extends AppCompatActivity implements RecyclerAdListener {
     private static final String TAG = "NativeRecyclerListActiv";
     private RecyclerAdLoader recyclerAdLoader;
 
@@ -72,7 +72,7 @@ public class RecyclerRecyclerListV4Activity extends AppCompatActivity implements
 
                 if (!mIsLoading && newState == SCROLL_STATE_IDLE && !recyclerView.canScrollVertically(1)) {
                     mIsLoading = true;
-                    RecyclerRecyclerListV4Activity.this.recyclerAdLoader.loadAd();
+                    TextAboveImageActivity.this.recyclerAdLoader.loadAd();
                 }
 
             }
@@ -270,7 +270,7 @@ public class RecyclerRecyclerListV4Activity extends AppCompatActivity implements
 
                 }
             }
-            ad.bindAdToView(RecyclerRecyclerListV4Activity.this, holder.container,
+            ad.bindAdToView(TextAboveImageActivity.this, holder.container,
                     clickableViews, new RecylcerAdInteractionListener() {
                         @Override
                         public void onAdClicked() {

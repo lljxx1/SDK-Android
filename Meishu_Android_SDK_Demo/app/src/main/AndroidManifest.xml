@@ -25,12 +25,11 @@
         <activity android:name=".nativead.PasterActivity"></activity>
         <activity android:name=".RewardVideoActivity" />
         <activity android:name=".nativead.NativeRecyclerListSelectActivity" />
-        <activity android:name=".nativead.RecyclerRecyclerListV1Activity" />
-        <activity android:name=".nativead.RecyclerRecyclerListV2Activity" />
-        <activity android:name=".nativead.RecyclerRecyclerListV3Activity" />
-        <activity android:name=".nativead.RecyclerRecyclerListV4Activity" />
+        <activity android:name=".nativead.ImageTextButtonActivity" />
+        <activity android:name=".nativead.ImageTextActivity" />
+        <activity android:name=".nativead.TextAboveImageActivity" />
         <activity android:name=".nativead.NativeVideoActivity" />
-        <activity android:name=".nativead.NativeAdActivity" />
+        <activity android:name=".nativead.ImageNotInRecyclerActivity" />
         <activity android:name=".nativead.NativeAdSelectActivity" />
         <activity android:name=".InterstitialAdActivity" />
         <activity android:name=".splash.SplashActivity"

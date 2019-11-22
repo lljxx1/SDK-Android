@@ -22,7 +22,7 @@ public class NativeAdSelectActivity extends AppCompatActivity implements View.On
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.native_image_ad:
-                intent.setClass(this, NativeAdActivity.class);
+                intent.setClass(this, ImageNotInRecyclerActivity.class);
                 startActivity(intent);
                 break;
             case R.id.paster_ad:
