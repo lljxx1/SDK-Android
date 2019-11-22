@@ -50,10 +50,18 @@ public class CSJRewardVideoAdWrapper extends BaseSdkAdWrapper {
                 orientation = TTAdConstant.HORIZONTAL;
                 break;
         }
+
+        int adContentWidth=1080;
+        int adContentHeight=1920;
+        if(meishuAdInfo.getWidth()!=null&& meishuAdInfo.getHeight()!=null){
+            adContentWidth=meishuAdInfo.getWidth();
+            adContentHeight=meishuAdInfo.getHeight();
+        }
+
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(this.sdkAdInfo.getPid())
                 .setSupportDeepLink(true)
-                .setImageAcceptedSize(meishuAdInfo.getWidth(), meishuAdInfo.getHeight())
+                .setImageAcceptedSize(adContentWidth, adContentHeight)
                 //必传参数，表来标识应用侧唯一用户；若非服务器回调模式或不需sdk透传
                 //可设置为空字符串
                 .setUserID("")

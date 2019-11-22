@@ -29,7 +29,8 @@ public class AdSdk {
 //            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad";
 //            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad_sdk";
 //            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/deep_link";
-//            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad_no_ad/1003908";
+//            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/no_ad";
+//            MeishuConstants.ad_request_url = "http://192.168.43.151:8080/req_ad_only_sdk";
         } else {
             MeishuConstants.ad_request_url = "http://sdk.1rtb.com/sdk/req_ad";
         }

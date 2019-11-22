@@ -36,11 +36,19 @@ public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
     public void loadAd() {
         HttpUtil.asyncGetWithWebViewUA(this.getActivity(), this.getSdkAdInfo().getReq(), new DefaultHttpGetWithNoHandlerCallback());
         int fetchAdCount = this.fetchCount == null ? 1 : this.fetchCount;
+
+        int adContentWidth=1080;
+        int adContentHeight=1920;
+        if(meishuAdInfo.getWidth()!=null&& meishuAdInfo.getHeight()!=null){
+            adContentWidth=meishuAdInfo.getWidth();
+            adContentHeight=meishuAdInfo.getHeight();
+        }
+
         //feed广告请求类型参数
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(this.getSdkAdInfo().getPid())
                 .setSupportDeepLink(true)
-                .setImageAcceptedSize(meishuAdInfo.getWidth(), meishuAdInfo.getHeight())
+                .setImageAcceptedSize(adContentWidth, adContentHeight)
                 .setAdCount(fetchAdCount)
                 .build();
         this.sdkAdListenerWrapper =new SdkAdListenerWrapper(this, this.adLoader.getApiAdListener());

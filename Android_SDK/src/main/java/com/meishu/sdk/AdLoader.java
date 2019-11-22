@@ -42,7 +42,9 @@ public abstract class AdLoader {
 
             @Override
             public void onResponse(OriginalResponse httpResponse) throws IOException {
-                if (httpResponse.isSuccessful()) {
+                if (httpResponse.getCode() == 204) {
+                    handleNoAd();
+                } else if (httpResponse.isSuccessful()) {
                     final Gson jsonUtil = new Gson();
                     final MeishuAdInfo meishuAdInfo = jsonUtil.fromJson(httpResponse.getBody(), MeishuAdInfo.class);
                     if (meishuAdInfo.getTarget_type() != null &&
