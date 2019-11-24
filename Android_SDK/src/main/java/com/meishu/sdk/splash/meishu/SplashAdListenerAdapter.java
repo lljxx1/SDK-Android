@@ -17,6 +17,7 @@ public class SplashAdListenerAdapter implements AdListener {
     private com.meishu.sdk.splash.SplashAdListener splashAdListener;
     private MeishuAdNativeWrapper adWrapper;
     private volatile boolean hasExposed;
+    private MeishuSplashAdAdapter meishuSplashAd;
 
     public SplashAdListenerAdapter(MeishuAdNativeWrapper adWrapper, @NonNull SplashAdListener splashAdListener) {
         this.adWrapper = adWrapper;
@@ -25,21 +26,21 @@ public class SplashAdListenerAdapter implements AdListener {
 
     @Override
     public void onLoaded(NativeSplashAd splashAd) {
-        View adView =splashAd.getAdView();
-        if(adView!=null){
-            MeishuSplashAdAdapter meishuSplashAd=new MeishuSplashAdAdapter(splashAd);
+        View adView = splashAd.getAdView();
+        if (adView != null) {
+            this.meishuSplashAd = new MeishuSplashAdAdapter(splashAd);
 
             ViewGroup parent = (ViewGroup) adView.getParent();
-            if(parent!=null){
+            if (parent != null) {
                 parent.removeView(adView);
             }
             TouchAdContainer touchContainer = new TouchAdContainer(adView.getContext());
             touchContainer.setTouchPositionListener(new TouchPositionListener(meishuSplashAd));
             touchContainer.addView(adView);
-            if(parent!=null){
+            if (parent != null) {
                 parent.addView(touchContainer);
             }
-            adView=touchContainer;
+            adView = touchContainer;
 
             meishuSplashAd.setAdView(adView);
             splashAdListener.onLoaded(meishuSplashAd);
@@ -48,7 +49,7 @@ public class SplashAdListenerAdapter implements AdListener {
 
     @Override
     public void onADExposure() {
-        if(!hasExposed){
+        if (!hasExposed) {
             String[] monitorUrls = this.adWrapper.getAdSlot().getMonitorUrl();
             if (monitorUrls != null) {
                 for (String monitorUrl : monitorUrls) {
@@ -58,7 +59,7 @@ public class SplashAdListenerAdapter implements AdListener {
                 }
             }
             splashAdListener.onAdExposure();
-            hasExposed=true;
+            hasExposed = true;
         }
 
     }

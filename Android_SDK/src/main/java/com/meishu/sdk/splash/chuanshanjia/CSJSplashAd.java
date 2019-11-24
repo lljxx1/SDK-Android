@@ -1,12 +1,11 @@
 package com.meishu.sdk.splash.chuanshanjia;
 
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.meishu.sdk.BaseAdData;
-import com.meishu.sdk.TouchAdContainer;
-import com.meishu.sdk.TouchPositionListener;
+import com.meishu.sdk.MeishuConstants;
 import com.meishu.sdk.domain.SdkAdInfo;
 import com.meishu.sdk.splash.SplashAd;
 import com.meishu.sdk.splash.SplashAdListener;
@@ -18,7 +17,6 @@ public class CSJSplashAd extends BaseAdData implements SplashAd {
     private SplashInteractionListener interactionListener;
     private SdkAdInfo sdkAdInfo;
     private View adView;
-    private boolean clicked;
 
     public CSJSplashAd(SdkAdInfo sdkAdInfo, TTSplashAd ttSplashAd, SplashAdListener apiAdListener) {
         this.sdkAdInfo = sdkAdInfo;
@@ -48,14 +46,6 @@ public class CSJSplashAd extends BaseAdData implements SplashAd {
         return this.interactionListener;
     }
 
-    public void setClicked(boolean clicked) {
-        this.clicked = clicked;
-    }
-
-    @Override
-    public boolean isClicked() {
-        return this.clicked;
-    }
 
     public SplashAdListener getApiAdListener() {
         return apiAdListener;
@@ -63,5 +53,17 @@ public class CSJSplashAd extends BaseAdData implements SplashAd {
 
     public SdkAdInfo getSdkAdInfo() {
         return this.sdkAdInfo;
+    }
+
+    public int getInteractionType() {
+        int interactionType = 0;
+        if (this.ttSplashAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
+            interactionType = MeishuConstants.interactionType_download;
+        } else if (this.ttSplashAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_LANDING_PAGE) {
+            interactionType = MeishuConstants.interactionType_url;
+        } else {
+
+        }
+        return interactionType;
     }
 }

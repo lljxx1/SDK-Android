@@ -24,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageNotInRecyclerActivity extends AppCompatActivity implements NativeAdListener {
-    private static final String TAG = "NativeADActivity";
-
+    private static final String TAG = "ImageNotInRecyclerActiv";
     private AQuery mAQuery;
 
     private RelativeLayout mContainer;
@@ -40,7 +39,6 @@ public class ImageNotInRecyclerActivity extends AppCompatActivity implements Nat
 
         initView();
         ImageAdLoader nativeAD = new ImageAdLoader(this, "1003912", this);//文字类广告，文字内容取信息流广告中的title
-//        NativeAdLoader nativeAD = new NativeAdLoader(this, "100424013", this);//图片类广告
         nativeAD.loadData();
     }
 

@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
 
-    <com.meishu.sdk.meishu_ad.splash.SkipView
+    <com.meishu.sdk.meishu_ad.splash.SplashSkipView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/skipView"

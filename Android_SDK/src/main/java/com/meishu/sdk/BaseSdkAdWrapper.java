@@ -11,7 +11,6 @@ public abstract class BaseSdkAdWrapper implements DelegateChain {
 
     public BaseSdkAdWrapper(Activity activity, SdkAdInfo sdkAdInfo) {
         this.activity = activity;
-        this.next = next;
         this.sdkAdInfo = sdkAdInfo;
     }
 

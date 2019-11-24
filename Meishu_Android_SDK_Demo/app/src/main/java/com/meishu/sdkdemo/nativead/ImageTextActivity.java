@@ -30,7 +30,7 @@ import java.util.TreeSet;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class ImageTextActivity extends AppCompatActivity implements RecyclerAdListener {
-    private static final String TAG = "ImageTextButtonActivity";
+    private static final String TAG = "ImageTextActivity";
     private RecyclerAdLoader recyclerAdLoader;
 
     @Override

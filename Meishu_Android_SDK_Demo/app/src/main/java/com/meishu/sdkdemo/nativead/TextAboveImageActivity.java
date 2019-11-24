@@ -38,7 +38,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class TextAboveImageActivity extends AppCompatActivity implements RecyclerAdListener {
-    private static final String TAG = "NativeRecyclerListActiv";
+    private static final String TAG = "TextAboveImageActivity";
     private RecyclerAdLoader recyclerAdLoader;
 
     @Override

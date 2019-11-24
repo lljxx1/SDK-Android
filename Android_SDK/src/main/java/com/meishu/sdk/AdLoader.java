@@ -1,6 +1,9 @@
 package com.meishu.sdk;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -98,11 +101,11 @@ public abstract class AdLoader {
         DelegateChain prior = null;
         DelegateChain tail = null;
         SdkAdInfo[] sdks = meishuAdInfo.getSdk();
+        sdks = removeUnsupportedSdk(sdks);
         if (sdks != null && sdks.length > 0) {//要求加载其他厂商广告
-            sdks = removeUnsupportedSdk(sdks);
             AdSdk.InitSdkConfigIfNoInit(activity, sdks[0]);
             DelegateChain delegateChain = createDelegate(sdks[0], meishuAdInfo);
-            prior = delegateChain;
+            prior = tail = delegateChain;
             if (delegateChain != null) {
                 DelegateChain current = delegateChain;
                 for (int i = 1; i < sdks.length; i++) {
@@ -117,12 +120,14 @@ public abstract class AdLoader {
             //若美数返回的广告内容中包含美数广告，则把美数广告作为哨兵元素
             //当存在sdk广告时优先加载sdk广告，若不存在sdk广告或sdk加载广告失败，则加载美数广告
             DelegateChain meishuAdDelegate = createMeishuAdDelegate(AdLoader.this.activity, meishuAdInfo);
-            if (prior == null) {
-                prior = meishuAdDelegate;
-            }
+
             if (tail != null) {
                 tail.setNext(meishuAdDelegate);
-                tail = tail.getNext();
+            }
+            tail = meishuAdDelegate;
+
+            if (prior == null) {
+                prior = tail;
             }
         }
         if (prior != null) {
@@ -172,6 +177,7 @@ public abstract class AdLoader {
                         originalSdks[i].getSdk().equalsIgnoreCase("GDT")
                                 || originalSdks[i].getSdk().equalsIgnoreCase("CSJ")
                 )
+                        && testGdtSdkHasExternalStoragePermission(originalSdks[i].getSdk())
                 ) {
                     filteredSdks.add(originalSdks[i]);
                 }
@@ -179,5 +185,25 @@ public abstract class AdLoader {
             filteredSdksArray = filteredSdks.toArray(new SdkAdInfo[0]);
         }
         return filteredSdksArray;
+    }
+
+    private boolean testGdtSdkHasExternalStoragePermission(String sdk) {
+        if (!"GDT".equalsIgnoreCase(sdk)) {//非广点通，不用判断权限
+            return true;
+        }
+        if ("GDT".equalsIgnoreCase(sdk)
+                && (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)
+        ) {
+            //广点通需要判断存储权限，若没有存储权限，程序无法正常运行
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

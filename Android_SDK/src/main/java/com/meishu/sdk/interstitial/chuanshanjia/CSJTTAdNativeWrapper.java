@@ -17,7 +17,6 @@ import com.meishu.sdk.utils.HttpUtil;
 
 public class CSJTTAdNativeWrapper extends BaseSdkAdWrapper {
     private TTAdNative ttAdNative;
-    private DelegateChain next;
     private InterstitialAdLoader adLoader;
     private MeishuAdInfo meishuAdInfo;
 

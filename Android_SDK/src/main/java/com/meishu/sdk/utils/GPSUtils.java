@@ -2,13 +2,11 @@ package com.meishu.sdk.utils;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 
@@ -89,9 +87,10 @@ public class GPSUtils {
             //如果是Network
             locationProvider = LocationManager.NETWORK_PROVIDER;
         } else {
-            Intent i = new Intent();
-            i.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            mContext.startActivity(i);
+            //没有权限
+//            Intent i = new Intent();
+//            i.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//            mContext.startActivity(i);
             return null;
         }
 

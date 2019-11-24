@@ -29,7 +29,7 @@ import com.meishu.sdk.meishu_ad.nativ.NativeAdSlot;
 import com.meishu.sdk.meishu_ad.nativ.NormalMediaView;
 import com.meishu.sdk.meishu_ad.reward.FullScreenMediaView;
 import com.meishu.sdk.meishu_ad.splash.MeishuSplashRootView;
-import com.meishu.sdk.meishu_ad.splash.SkipView;
+import com.meishu.sdk.meishu_ad.splash.SplashSkipView;
 import com.meishu.sdk.meishu_ad.splash.SplashAdImpl;
 import com.meishu.sdk.meishu_ad.splash.SplashAdSlot;
 
@@ -124,8 +124,8 @@ public class AdNative {
                             if (adListener != null) {
                                 adListener.onLoaded(nativeAd);
                             }
-                            final SkipView skipView = nativeAd.getAdView().findViewById(R.id.skipView);
-                            skipView.setOnSkipListener(new SkipView.OnSkipListener() {
+                            final SplashSkipView splashSkipView = nativeAd.getAdView().findViewById(R.id.skipView);
+                            splashSkipView.setOnSkipListener(new SplashSkipView.OnSkipListener() {
                                 @Override
                                 public void onSkip() {
                                     Log.d(TAG, "onSkip: ");
@@ -140,11 +140,10 @@ public class AdNative {
                                     }
                                 }
                             });
-                            skipView.start();
+                            splashSkipView.start();
                             aQuery.id(R.id.splash_image).clicked(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    skipView.stop();
                                     if (nativeAd.getInteractionListener() != null) {
                                         nativeAd.getInteractionListener().onAdClicked();
                                     }

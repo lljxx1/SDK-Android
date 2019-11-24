@@ -1,20 +1,19 @@
 package com.meishu.sdk.service;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.meishu.sdk.AdData;
 import com.meishu.sdk.MeishuConstants;
 import com.meishu.sdk.TouchPositionListener;
+import com.meishu.sdk.activity.AlertDialogActivity;
 import com.meishu.sdk.activity.WebviewActivity;
 import com.meishu.sdk.meishu_ad.NativeAd;
 import com.meishu.sdk.meishu_ad.NativeDownloadListenerImpl;
@@ -114,22 +113,29 @@ public class ClickHandler {
             }
         } else if (nativeAd.getInteractionType() == MeishuConstants.interactionType_download) {
             if (isInternetConnected(context) && !isWifiConnected(context)) {//流量网络要让用户确认下载
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-                alertBuilder.setTitle("下载");
-                alertBuilder.setMessage("确认要下载吗？");
-                alertBuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                AlertDialogActivity.setConfirmHandler(new AlertDialogActivity.ConfirmHandler() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void handle() {
                         download(nativeAd);
                     }
                 });
-                alertBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                alertBuilder.create().show();
+                context.startActivity(new Intent(context,AlertDialogActivity.class));
+//                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+//                alertBuilder.setTitle("下载");
+//                alertBuilder.setMessage("确认要下载吗？");
+//                alertBuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        download(nativeAd);
+//                    }
+//                });
+//                alertBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                });
+//                alertBuilder.create().show();
             } else if (isInternetConnected(context)) {
                 download(nativeAd);
             } else {

@@ -1,10 +1,10 @@
 package com.meishu.sdk.splash.chuanshanjia;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 
 import com.bytedance.sdk.openadsdk.TTSplashAd;
+import com.meishu.sdk.MeishuConstants;
 import com.meishu.sdk.service.ClickHandler;
 import com.meishu.sdk.splash.SplashInteractionListener;
 import com.meishu.sdk.utils.DefaultHttpGetWithNoHandlerCallback;
@@ -25,11 +25,10 @@ public class CSJSplashInteractionListenerImpl implements TTSplashAd.AdInteractio
         if (this.csjSplashAd.getSdkAdInfo() != null) {
             HttpUtil.asyncGetWithWebViewUA(
                     csjSplashAd.getAdView().getContext(),
-                    ClickHandler.replaceOtherMacros(this.csjSplashAd.getSdkAdInfo().getClk(),this.csjSplashAd),
+                    ClickHandler.replaceOtherMacros(this.csjSplashAd.getSdkAdInfo().getClk(), this.csjSplashAd),
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }
-        this.csjSplashAd.setClicked(true);
         if (meishuInteractionListener != null) {
             meishuInteractionListener.onAdClicked();
         }
@@ -37,21 +36,21 @@ public class CSJSplashInteractionListenerImpl implements TTSplashAd.AdInteractio
 
     @Override
     public void onAdShow(View view, int i) {
-        if(csjSplashAd.getApiAdListener()!=null){
+        if (csjSplashAd.getApiAdListener() != null) {
             csjSplashAd.getApiAdListener().onAdExposure();
         }
     }
 
     @Override
     public void onAdSkip() {
-        if(csjSplashAd.getApiAdListener()!=null){
+        if (csjSplashAd.getApiAdListener() != null) {
             csjSplashAd.getApiAdListener().onAdClosed();
         }
     }
 
     @Override
     public void onAdTimeOver() {
-        if(csjSplashAd.getApiAdListener()!=null){
+        if (csjSplashAd.getApiAdListener() != null) {
             csjSplashAd.getApiAdListener().onAdClosed();
         }
     }

@@ -15,6 +15,7 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
     private SplashAdListener splashADListener;
 
     private GDTSplashAdWrapper splashAdWrapper;
+//    private volatile boolean onClosedMethodInvoked;
 
     public GDTSplashADListenerImpl(@NonNull GDTSplashAdWrapper splashAdWrapper, SplashAdListener splashADListener) {
         this.splashAdWrapper = splashAdWrapper;
@@ -28,11 +29,10 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
         if (this.splashAdWrapper.getSdkAdInfo() != null) {
             HttpUtil.asyncGetWithWebViewUA(
                     this.splashAdWrapper.getView().getContext(),
-                    ClickHandler.replaceOtherMacros(this.splashAdWrapper.getSdkAdInfo().getClk(),this.splashAd),
+                    ClickHandler.replaceOtherMacros(this.splashAdWrapper.getSdkAdInfo().getClk(), this.splashAd),
                     new DefaultHttpGetWithNoHandlerCallback()
             );
         }
-        this.splashAd.setClicked(true);
         if (splashAd != null && splashAd.getInteractionListener() != null) {
             splashAd.getInteractionListener().onAdClicked();
         }
@@ -46,15 +46,19 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
     }
 
     @Override
-    public void onADTick(long l) {
-        Log.d(TAG, "onADTick: ");
+    public void onADTick(long leftMiliseconds) {
+        long leftSeconds = leftMiliseconds / 1000;
+        Log.d(TAG, "onADTick: 剩余" + leftSeconds + "秒");
+//        if (leftSeconds <= 0 && splashADListener != null && !this.onClosedMethodInvoked) {
+//            this.onClosedMethodInvoked = true;
+//        }
     }
 
     @Override
     public void onADDismissed() {
-        if (splashADListener != null) {
-            splashADListener.onAdClosed();
-        }
+        Log.d(TAG, "onADDismissed: ");
+
+        splashADListener.onAdClosed();
     }
 
     @Override
@@ -68,7 +72,7 @@ public class GDTSplashADListenerImpl implements com.qq.e.ads.splash.SplashADList
     public void onADPresent() {
         if (splashAdWrapper != null && splashAdWrapper.getView() != null) {
             splashAd = new GDTSplashAd();
-            View adView=splashAdWrapper.getView();
+            View adView = splashAdWrapper.getView();
 
             //广点通开屏广告不允许给adView添加TouchAdContainer，否则会导致开屏广告无法正常显示
 //            ViewGroup parent = (ViewGroup) adView.getParent();

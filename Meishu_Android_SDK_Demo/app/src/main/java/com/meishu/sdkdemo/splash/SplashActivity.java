@@ -18,6 +18,7 @@ public class SplashActivity extends AppCompatActivity implements SplashAdListene
     private static final String TAG = "SplashActivity";
 
     private SplashAd splashAd;
+    private volatile boolean canJump = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +52,25 @@ public class SplashActivity extends AppCompatActivity implements SplashAdListene
     @Override
     public void onAdClosed() {
         Log.d(TAG, "onAdClosed: 开屏广告被关闭");
-        if (this.splashAd != null && !this.splashAd.isClicked()) {
+
+        if (canJump) {
             next();
         }
+        canJump = true;
     }
 
     @Override
-    public void onError() {
-        Log.d(TAG, "onError: 没有加载到广告");
+    protected void onPause() {
+        Log.d(TAG, "onPause: 暂停");
+        super.onPause();
+        canJump = false;
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: 开屏界面停止运行");
+        super.onStop();
+        canJump=true;
     }
 
     private void next() {
@@ -68,9 +80,16 @@ public class SplashActivity extends AppCompatActivity implements SplashAdListene
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume: ");
         super.onResume();
-        if (this.splashAd != null && this.splashAd.isClicked()) {
+        if (this.splashAd != null && canJump) {
             next();
         }
+        canJump = true;
+    }
+
+    @Override
+    public void onError() {
+        Log.d(TAG, "onError: 没有加载到广告");
     }
 }
